@@ -14,7 +14,10 @@ const LandingPage = () => {
             <h2>EduniGo</h2>
           </div>
           <div className={styles["navbar-menu"]}>
-            <button className={styles["navbar-link"]} onClick={() => navigate("/login")}>
+            <button
+              className={styles["navbar-link"]}
+              onClick={() => navigate("/login")}
+            >
               Login
             </button>
             <button
@@ -31,7 +34,7 @@ const LandingPage = () => {
       <section className={styles["hero-section"]}>
         <div className={styles["hero-container"]}>
           <div className={styles["hero-content"]}>
-            <h1 className={styles["hero-title"]}>EduniGo</h1>
+            <h1 className={styles["hero-title"]}>EduniGo - CICD</h1>
             <p className={styles["hero-subtitle"]}>
               Find the best study and visa applications tailored for you
             </p>
@@ -91,7 +94,10 @@ const LandingPage = () => {
             Join thousands of students who have found their perfect educational
             path with EduniGo
           </p>
-          <button className={styles["cta-button"]} onClick={() => navigate("/gocheck")}>
+          <button
+            className={styles["cta-button"]}
+            onClick={() => navigate("/gocheck")}
+          >
             Explore Opportunities
           </button>
         </div>
