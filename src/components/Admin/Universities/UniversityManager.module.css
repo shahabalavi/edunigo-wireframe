@@ -1,0 +1,458 @@
+/* CSS Module for University Manager Component */
+
+.university-manager-container {
+  padding: 0;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #e2e8f0;
+  color: #374151;
+  transform: translateX(-2px);
+}
+
+.university-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.university-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid #e2e8f0;
+}
+
+.university-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-fallback {
+  display: none;
+  color: #64748b;
+}
+
+.university-details h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 4px 0;
+}
+
+.university-details p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 12px 0;
+}
+
+.university-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.country-badge {
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  color: #1e40af;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.website-link {
+  color: #0037ff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.website-link:hover {
+  color: #0026cc;
+  text-decoration: underline;
+}
+
+/* Submodules Section */
+.submodules-section {
+  margin-bottom: 32px;
+}
+
+.section-header {
+  margin-bottom: 24px;
+  padding: 0 24px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 4px 0;
+}
+
+.section-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.submodules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 0 24px;
+}
+
+.submodule-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.submodule-card:hover:not(.disabled) {
+  border-color: #0037ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 55, 255, 0.1);
+}
+
+.submodule-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.submodule-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.submodule-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.submodule-content h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 4px 0;
+}
+
+.submodule-content p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.coming-soon {
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Stats Section */
+.stats-section {
+  margin-bottom: 32px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 0 24px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  background: #eff6ff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f1f5f9;
+  border-top: 3px solid #0037ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.loading-container p {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error State */
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 400px;
+}
+
+.error-icon {
+  color: #cbd5e1;
+}
+
+.error-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.error-content p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.error-content .back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0037ff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-content .back-btn:hover {
+  background: #0026cc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 55, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .header-left {
+    width: 100%;
+  }
+
+  .university-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .university-logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .university-details h1 {
+    font-size: 24px;
+  }
+
+  .university-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .section-header {
+    padding: 0 20px;
+  }
+
+  .submodules-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  .submodule-card {
+    padding: 20px;
+  }
+
+  .submodule-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 20px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 16px;
+  }
+
+  .section-header {
+    padding: 0 16px;
+  }
+
+  .submodules-grid {
+    padding: 0 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+
+  .university-details h1 {
+    font-size: 20px;
+  }
+
+  .submodule-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .submodule-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .stat-number {
+    font-size: 18px;
+  }
+}

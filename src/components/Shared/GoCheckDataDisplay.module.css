@@ -1,0 +1,235 @@
+/* CSS Module for GoCheckDataDisplay Component */
+/* Auto-generated on 2025-09-16T16:01:53.578Z */
+
+/* GoCheck Data Display Styles */
+.gocheck-data-display {
+  background: white;
+  border-radius: 8px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 16px;
+}
+
+.gocheck-data-display h3 {
+  color: #0037ff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gocheck-data-display h4 {
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.gocheck-answers-section {
+  margin-bottom: 18px;
+}
+
+.answers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.answer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.answer-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #0037ff;
+  color: white;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.answer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.answer-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.answer-value {
+  font-size: 0.875rem;
+  color: #1f2937;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.gocheck-university-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+}
+
+.university-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: #eff6ff;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+}
+
+.university-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #0037ff;
+  color: white;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.university-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.university-name {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.university-ranking {
+  font-size: 0.75rem;
+  color: #0037ff;
+  font-weight: 500;
+}
+
+/* Additional Section */
+.gocheck-additional-section {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.gocheck-additional-section h4 {
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+/* Matches Section */
+.gocheck-matches-section {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.gocheck-matches-section h4 {
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.matches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.match-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.match-item:hover {
+  border-color: #0037ff;
+  box-shadow: 0 2px 8px rgba(0, 55, 255, 0.1);
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.match-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+}
+
+.match-score {
+  background: #28a745;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.match-university {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+}
+
+.match-details {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .gocheck-data-display {
+    padding: 16px;
+  }
+
+  .answers-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .matches-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .answer-item,
+  .university-item,
+  .match-item {
+    padding: 10px;
+  }
+
+  .answer-icon,
+  .university-icon {
+    width: 28px;
+    height: 28px;
+  }
+}

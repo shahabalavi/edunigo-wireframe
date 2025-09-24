@@ -1,0 +1,636 @@
+/* CSS Module for Admin Form Components */
+
+.form-container {
+  padding: 0;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #374151;
+}
+
+.page-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #0037ff 0%, #0066ff 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 4px 0;
+}
+
+.page-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Form Section */
+.form-section {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin: 0 24px 24px;
+}
+
+.admin-form {
+  padding: 32px;
+}
+
+/* Form Layout */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+/* Form Inputs */
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #0037ff;
+  box-shadow: 0 0 0 3px rgba(0, 55, 255, 0.1);
+}
+
+.form-input.error,
+.form-select.error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.form-input:disabled,
+.form-select:disabled {
+  background: #f8fafc;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Password Input */
+.password-input-container {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.password-toggle:hover:not(:disabled) {
+  background: #f1f5f9;
+  color: #374151;
+}
+
+.password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Checkbox Input */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+}
+
+.checkbox-input {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.checkbox-input:checked + .checkbox-custom {
+  background: #0037ff;
+  border-color: #0037ff;
+  color: white;
+}
+
+.checkbox-text {
+  font-weight: 500;
+}
+
+/* Password Section */
+.password-section {
+  margin: 32px 0;
+  padding: 24px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 4px 0;
+}
+
+.section-header p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Error Messages */
+.error-message {
+  display: block;
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.submit-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cancel-btn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #374151;
+}
+
+.cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-btn {
+  background: #0037ff;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #0026cc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 55, 255, 0.3);
+}
+
+.submit-btn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.loading-container .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f1f5f9;
+  border-top: 3px solid #0037ff;
+  margin-bottom: 16px;
+}
+
+.loading-container p {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .header-left {
+    width: 100%;
+  }
+
+  .form-section {
+    margin: 0 20px 20px;
+  }
+
+  .admin-form {
+    padding: 24px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .password-section {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 16px;
+  }
+
+  .form-section {
+    margin: 0 16px 16px;
+  }
+
+  .admin-form {
+    padding: 20px;
+  }
+
+  .form-row {
+    gap: 12px;
+  }
+
+  .password-section {
+    padding: 16px;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 10px 12px;
+  }
+
+  .checkbox-label {
+    gap: 8px;
+  }
+
+  .checkbox-custom {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Role Selection Styles */
+.role-selection-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.selected-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 20px;
+}
+
+.role-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #dbeafe;
+}
+
+.remove-role-btn {
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: #dbeafe;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #2563eb;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.remove-role-btn:hover {
+  background: #bfdbfe;
+  transform: scale(1.1);
+}
+
+.role-dropdown-container {
+  position: relative;
+}
+
+.role-dropdown-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.role-dropdown-trigger:hover {
+  border-color: #0037ff;
+}
+
+.role-dropdown-trigger:focus {
+  outline: none;
+  border-color: #0037ff;
+  box-shadow: 0 0 0 3px rgba(0, 55, 255, 0.1);
+}
+
+.role-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.role-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.role-option:last-child {
+  border-bottom: none;
+}
+
+.role-option:hover {
+  background: #f8fafc;
+}
+
+.role-option.selected {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.role-option-content {
+  flex: 1;
+}
+
+.role-option-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a202c;
+  margin-bottom: 2px;
+}
+
+.role-option.selected .role-option-name {
+  color: #2563eb;
+}
+
+.role-option-description {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.role-option.selected .role-option-description {
+  color: #3b82f6;
+}
+
+.role-option-check {
+  width: 20px;
+  height: 20px;
+  background: #0037ff;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 12px;
+}
+
+.field-help {
+  font-size: 12px;
+  color: #64748b;
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+}
+
+/* Admin Roles Display in List */
+.admin-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.admin-roles .role-tag {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+.no-roles {
+  font-size: 12px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Responsive adjustments for role selection */
+@media (max-width: 768px) {
+  .role-dropdown {
+    max-height: 250px;
+  }
+
+  .role-option {
+    padding: 10px 12px;
+  }
+
+  .role-option-name {
+    font-size: 13px;
+  }
+
+  .role-option-description {
+    font-size: 11px;
+  }
+}
