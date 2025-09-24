@@ -1,0 +1,45 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            set -e
+
+            echo "🚀 Starting deployment to VPS..."
+
+            # Navigate to project directory
+            cd /home/apps/edunigo-wireframe
+
+            # Pull latest code
+            echo "📥 Pulling latest code from Git..."
+            git pull origin main
+
+            # Stop existing container
+            echo "🛑 Stopping existing container..."
+            docker stop edunigo-wireframe_edunigo-wireframe_1 2>/dev/null || true
+            docker rm edunigo-wireframe_edunigo-wireframe_1 2>/dev/null || true
+
+            # Also stop any container with similar name
+            docker stop edunigo-wireframe 2>/dev/null || true
+            docker rm edunigo-wireframe 2>/dev/null || true
+
+            # Rebuild and start container
+            echo "🔨 Rebuilding container..."
+            docker-compose down 2>/dev/null || true
+            docker-compose up --build -d
+
+            echo "✅ Deployment completed successfully!"
+            echo "🌐 Application is now running at: http://${{ secrets.SERVER_HOST }}:3001"
