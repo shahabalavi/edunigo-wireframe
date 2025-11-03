@@ -726,80 +726,62 @@ const GoCheck = () => {
   if (currentStage === 3) {
     return (
       <div className={styles["gocheck-container"]}>
-        <div className={styles["university-selection-screen"]}>
+        <div className={styles["program-selection-screen"]}>
           <div className={styles["selection-header"]}>
             <h1 className={styles["selection-title"]}>
               Choose Your Program 🎯
             </h1>
             <p className={styles["selection-subtitle"]}>
-              Based on your answers, here are your top program matches. Select
-              the one that best fits your goals and career aspirations.
+              Based on your answers, here are your top program matches.
             </p>
           </div>
 
-          <div className={styles["universities-grid"]}>
-            {programs.map((program, index) => (
-              <div
-                key={program.id}
-                className={[
-                  styles["university-selection-card"],
-                  styles["program-card"],
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                onClick={() => handleProgramSelection(program)}
-              >
-                <div className={styles["program-header"]}>
-                  <div className={styles["university-ranking"]}>
-                    {program.ranking}
+          <div className={styles["programs-container"]}>
+            <div className={styles["programs-list"]}>
+              {programs.map((program, index) => (
+                <div
+                  key={program.id}
+                  className={styles["program-card-minimal"]}
+                  onClick={() => handleProgramSelection(program)}
+                >
+                  <div className={styles["program-card-header"]}>
+                    <div className={styles["program-info"]}>
+                      <h3 className={styles["program-university"]}>
+                        {program.university}
+                      </h3>
+                      <p className={styles["program-name"]}>
+                        {program.program}
+                      </p>
+                      <span className={styles["program-field"]}>
+                        {program.field}
+                      </span>
+                    </div>
+                    <div className={styles["program-ranking"]}>
+                      {program.ranking}
+                    </div>
                   </div>
-                  <div className={styles["program-field"]}>{program.field}</div>
-                </div>
 
-                <h3 className={styles["university-name"]}>
-                  {program.university}
-                </h3>
-                <h4 className={styles["program-name"]}>{program.program}</h4>
+                  <div className={styles["program-details-minimal"]}>
+                    <div className={styles["detail-item"]}>
+                      <span className={styles["detail-icon"]}>⏱️</span>
+                      <span>{program.duration}</span>
+                    </div>
+                    <div className={styles["detail-item"]}>
+                      <span className={styles["detail-icon"]}>💰</span>
+                      <span>{program.tuition}</span>
+                    </div>
+                    <div className={styles["detail-item"]}>
+                      <span className={styles["detail-icon"]}>📅</span>
+                      <span>{program.academicYear}</span>
+                    </div>
+                  </div>
 
-                <div className={styles["program-details"]}>
-                  <div className={styles["detail-row"]}>
-                    <span className={styles["detail-label"]}>Duration:</span>
-                    <span className={styles["detail-value"]}>
-                      {program.duration}
-                    </span>
-                  </div>
-                  <div className={styles["detail-row"]}>
-                    <span className={styles["detail-label"]}>Start Date:</span>
-                    <span className={styles["detail-value"]}>
-                      {program.academicYear}
-                    </span>
-                  </div>
-                  <div className={styles["detail-row"]}>
-                    <span className={styles["detail-label"]}>Tuition:</span>
-                    <span className={styles["detail-value"]}>
-                      {program.tuition}
-                    </span>
+                  <div className={styles["select-indicator"]}>
+                    <ArrowRight size={20} />
                   </div>
                 </div>
-
-                <p className={styles["university-description"]}>
-                  {program.description}
-                </p>
-
-                <div className={styles["program-highlights"]}>
-                  {program.highlights.map((highlight, idx) => (
-                    <span key={idx} className={styles["highlight-tag"]}>
-                      {highlight}
-                    </span>
-                  ))}
-                </div>
-
-                <div className={styles["selection-button"]}>
-                  <span>Select This Program</span>
-                  <ArrowRight size={16} />
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

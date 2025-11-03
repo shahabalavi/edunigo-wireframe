@@ -1107,41 +1107,180 @@
   }
 }
 
-/* University Selection Screen */
-.university-selection-screen {
+/* Program Selection Screen - Minimal Design */
+.program-selection-screen {
   min-height: 100vh;
-  background: linear-gradient(to bottom right, #f9fafb, white);
-  padding: 32px 24px;
+  background: #ffffff;
+  padding: 40px 24px;
+  overflow-y: auto;
 }
 
 .selection-header {
   text-align: center;
-  margin-bottom: 48px;
-  max-width: 800px;
+  margin-bottom: 40px;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .selection-title {
-  font-size: 2.5rem;
-  font-weight: 300;
+  font-size: 2rem;
+  font-weight: 600;
   color: #111827;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
 }
 
 .selection-subtitle {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #6b7280;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-.universities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 32px;
-  max-width: 1200px;
+.programs-container {
+  max-width: 800px;
   margin: 0 auto;
+}
+
+.programs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Minimal Program Card */
+.program-card-minimal {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.program-card-minimal:hover {
+  border-color: #0037ff;
+  box-shadow: 0 4px 12px rgba(0, 55, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.program-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex: 1;
+  gap: 20px;
+}
+
+.program-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.program-university {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.program-name {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.program-field {
+  display: inline-block;
+  background: #f0f4ff;
+  color: #0037ff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.program-ranking {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0037ff;
+  text-align: right;
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.program-details-minimal {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.detail-icon {
+  font-size: 0.875rem;
+}
+
+.select-indicator {
+  color: #9ca3af;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.program-card-minimal:hover .select-indicator {
+  color: #0037ff;
+  transform: translateX(4px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .program-selection-screen {
+    padding: 24px 16px;
+  }
+
+  .selection-title {
+    font-size: 1.75rem;
+  }
+
+  .program-card-minimal {
+    padding: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .program-card-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .program-ranking {
+    text-align: left;
+  }
+
+  .program-details-minimal {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .select-indicator {
+    align-self: center;
+  }
 }
 
 .university-selection-card {

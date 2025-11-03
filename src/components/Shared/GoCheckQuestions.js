@@ -97,8 +97,7 @@ const GoCheckQuestions = ({
           : 0;
       setReadinessScore(Math.min(baseScore + bonusScore, 100));
 
-      // Hide microcopy after 3 seconds
-      setTimeout(() => setShowMicrocopy(false), 3000);
+      // Keep microcopy visible - removed automatic timeout
     }
   };
 
@@ -142,7 +141,8 @@ const GoCheckQuestions = ({
   };
 
   const goToStep = (stepIndex) => {
-    if (stepIndex !== currentStep && answers[questions[stepIndex].id]) {
+    // Allow navigation to any valid step (0 to questions.length - 1)
+    if (stepIndex >= 0 && stepIndex < questions.length) {
       setCurrentStep(stepIndex);
       setShowHistoryPanel(false);
     }
@@ -191,7 +191,11 @@ const GoCheckQuestions = ({
   // Close history dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showHistoryPanel && !event.target.closest(".history-wrapper")) {
+      if (
+        showHistoryPanel &&
+        !event.target.closest(`.${styles["history-dropdown-minimal"]}`) &&
+        !event.target.closest(`.${styles["history-button-minimal"]}`)
+      ) {
         setShowHistoryPanel(false);
       }
     };
@@ -218,10 +222,8 @@ const GoCheckQuestions = ({
     return null;
   };
 
-  // Get completed questions
-  const completedQuestions = questions.filter(
-    (q, index) => answers[q.id] && index < currentStep
-  );
+  // Get completed questions (all questions that have been answered)
+  const completedQuestions = questions.filter((q) => answers[q.id]);
 
   const renderInput = () => {
     const hasError = errors[currentQuestion.id];
@@ -356,51 +358,71 @@ const GoCheckQuestions = ({
           </div>
 
           <div className={styles["progress-right"]}>
-            {showHistory && completedQuestions.length > 0 && (
+            {showHistory && (
               <button
                 onClick={() => setShowHistoryPanel(!showHistoryPanel)}
                 className={styles["history-button-minimal"]}
               >
-                History ({completedQuestions.length})
+                Questions ({completedQuestions.length}/{questions.length})
               </button>
-            )}
-
-            {currentStage === 2 && (
-              <div className={styles["stage-info"]}>
-                <span className={styles["completion-badge"]}>
-                  {Math.round(profileCompletion)}% Complete
-                </span>
-                <span className={styles["score-badge"]}>
-                  {Math.round(readinessScore)}% Ready
-                </span>
-              </div>
             )}
           </div>
 
           {/* History Dropdown */}
           {showHistoryPanel && (
             <div className={styles["history-dropdown-minimal"]}>
-              <div className={styles["history-header"]}>Answered Questions</div>
-              {completedQuestions.map((question, index) => {
-                const questionIndex = questions.findIndex(
-                  (q) => q.id === question.id
-                );
+              <div className={styles["history-header"]}>All Questions</div>
+              {questions.map((question, index) => {
+                const isAnswered = answers[question.id];
+                const isCurrentStep = index === currentStep;
                 return (
                   <button
                     key={question.id}
-                    onClick={() => goToStep(questionIndex)}
-                    className={styles["history-item-minimal"]}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      goToStep(index);
+                    }}
+                    className={[
+                      styles["history-item-minimal"],
+                      isCurrentStep ? styles["current-step"] : "",
+                      !isAnswered ? styles["unanswered"] : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    type="button"
                   >
-                    <div className={styles["history-icon-minimal"]}>
-                      <Check size={14} />
+                    <div
+                      className={[
+                        styles["history-icon-minimal"],
+                        isAnswered
+                          ? styles["answered"]
+                          : styles["unanswered-icon"],
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      {isAnswered ? (
+                        <Check size={14} />
+                      ) : (
+                        <span>{index + 1}</span>
+                      )}
                     </div>
                     <div className={styles["history-content"]}>
                       <div className={styles["history-question-minimal"]}>
                         {question.title}
+                        {isCurrentStep && (
+                          <span className={styles["current-indicator"]}>
+                            {" "}
+                            (Current)
+                          </span>
+                        )}
                       </div>
-                      <div className={styles["history-answer-minimal"]}>
-                        {answers[question.id]}
-                      </div>
+                      {isAnswered && (
+                        <div className={styles["history-answer-minimal"]}>
+                          {answers[question.id]}
+                        </div>
+                      )}
                     </div>
                   </button>
                 );
@@ -438,25 +460,6 @@ const GoCheckQuestions = ({
                   <span className={styles["microcopy-text"]}>
                     {getMicrocopy()}
                   </span>
-                </div>
-              </div>
-            )}
-
-            {/* Readiness Score Display */}
-            {readinessScore > 0 && currentStage === 2 && (
-              <div className={styles["readiness-score"]}>
-                <div className={styles["score-label"]}>
-                  Your Readiness Score
-                </div>
-                <div className={styles["score-value"]}>
-                  {Math.round(readinessScore)}%
-                </div>
-                <div className={styles["score-explanation"]}>
-                  {readinessScore < 50
-                    ? "Keep going! More info = better matches"
-                    : readinessScore < 80
-                    ? "Great progress! You're getting closer to perfect matches"
-                    : "Excellent! You're ready for the best program matches"}
                 </div>
               </div>
             )}
