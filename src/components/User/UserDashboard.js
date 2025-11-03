@@ -26,6 +26,7 @@ import Applications from "./Applications/Applications";
 import ApplicationDetails from "./Applications/ApplicationDetails";
 import Programs from "./Programs/Programs";
 import Documents from "./Documents/Documents";
+import DocumentDetail from "./Documents/DocumentDetail";
 import Profile from "./Profile/Profile";
 import Accommodation from "./StudentServices/Accommodation";
 import Tests from "./StudentServices/Tests";
@@ -217,6 +218,10 @@ const UserDashboard = ({ onLogout }) => {
     if (path === "/user/applications") {
       return location.pathname.startsWith("/user/applications");
     }
+    // Handle nested routes for documents
+    if (path === "/user/documents") {
+      return location.pathname.startsWith("/user/documents");
+    }
     // Handle student services submenu
     if (path === "/user/student-services") {
       return location.pathname.startsWith("/user/student-services");
@@ -238,6 +243,7 @@ const UserDashboard = ({ onLogout }) => {
         <Route path="applications/:id" element={<ApplicationDetails />} />
         <Route path="programs" element={<Programs />} />
         <Route path="documents" element={<Documents />} />
+        <Route path="documents/:id" element={<DocumentDetail />} />
         <Route path="profile" element={<Profile />} />
         <Route
           path="student-services/accommodation"

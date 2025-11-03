@@ -16,6 +16,8 @@ import {
   UserCircle,
   MapPin,
   Ticket,
+  FileText,
+  FileCheck,
 } from "lucide-react";
 import AdminDashboardHome from "./Dashboard/AdminDashboardHome";
 import Countries from "./Countries/Countries";
@@ -25,6 +27,7 @@ import Universities from "./Universities/Universities";
 import CreateUniversity from "./Universities/CreateUniversity";
 import EditUniversity from "./Universities/EditUniversity";
 import UniversityManager from "./Universities/UniversityManager";
+import UniversityDocuments from "./Universities/UniversityDocuments";
 import Majors from "./Majors/Majors";
 import Courses from "./Courses/Courses";
 import CreateCourse from "./Courses/CreateCourse";
@@ -49,6 +52,11 @@ import Roles from "./Roles/Roles";
 import CreateRole from "./Roles/CreateRole";
 import EditRole from "./Roles/EditRole";
 import Profile from "./Profile/Profile";
+import Documents from "./Documents/Documents";
+import CreateDocument from "./Documents/CreateDocument";
+import EditDocument from "./Documents/EditDocument";
+import DocumentSubmissions from "./DocumentSubmissions/DocumentSubmissions";
+import DocumentSubmissionDetail from "./DocumentSubmissions/DocumentSubmissionDetail";
 import styles from "../Dashboard.module.css";
 
 const AdminDashboard = ({ onLogout }) => {
@@ -108,6 +116,18 @@ const AdminDashboard = ({ onLogout }) => {
       label: "Courses",
       icon: CourseIcon,
       path: "/admin/courses",
+    },
+    {
+      id: "document-templates",
+      label: "Document Templates",
+      icon: FileText,
+      path: "/admin/documents",
+    },
+    {
+      id: "document-submissions",
+      label: "Document Submissions",
+      icon: FileCheck,
+      path: "/admin/document-submissions",
     },
     {
       id: "admins",
@@ -202,6 +222,14 @@ const AdminDashboard = ({ onLogout }) => {
         return <CreateCourse />;
       case "/admin/courses/edit":
         return <EditCourse />;
+      case "/admin/documents":
+      case "/admin/documents/":
+        return <Documents />;
+      case "/admin/documents/create":
+        return <CreateDocument />;
+      case "/admin/document-submissions":
+      case "/admin/document-submissions/":
+        return <DocumentSubmissions />;
       case "/admin/admins":
       case "/admin/admins/":
         return <Admins />;
@@ -251,8 +279,17 @@ const AdminDashboard = ({ onLogout }) => {
         if (currentPath.startsWith("/admin/universities/manage/")) {
           return <UniversityManager />;
         }
+        if (currentPath.match(/^\/admin\/universities\/\d+\/documents$/)) {
+          return <UniversityDocuments />;
+        }
         if (currentPath.startsWith("/admin/courses/edit/")) {
           return <EditCourse />;
+        }
+        if (currentPath.startsWith("/admin/documents/edit/")) {
+          return <EditDocument />;
+        }
+        if (currentPath.startsWith("/admin/document-submissions/")) {
+          return <DocumentSubmissionDetail />;
         }
         if (currentPath.startsWith("/admin/admins/edit/")) {
           return <EditAdmin />;

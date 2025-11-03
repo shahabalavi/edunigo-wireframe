@@ -3,37 +3,16 @@ import { useNavigate } from "react-router-dom";
 import {
   User,
   GraduationCap,
-  Target,
-  BookOpen,
-  Calendar,
-  CreditCard,
-  Edit,
   Plus,
   FileCheck,
-  X,
-  Save,
   ChevronDown,
   Check,
-  CheckCircle,
 } from "lucide-react";
 import styles from "./Profile.module.css";
-import {
-  hasCompletedGoCheck,
-  hasCompletedAdditionalQuestions,
-  getUserSelectedUniversity,
-  getCurrentSessionId,
-  getSessionData,
-} from "../../../utils/gocheckSessionManager";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [activeModal, setActiveModal] = useState(null);
-  const [goCheckStatus, setGoCheckStatus] = useState({
-    hasCompleted: false,
-    hasCompletedAdditional: false,
-    selectedUniversity: null,
-    canContinue: false,
-  });
+  const [loadingDocuments, setLoadingDocuments] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [profileData, setProfileData] = useState({
     personalInfo: {
@@ -78,43 +57,330 @@ const Profile = () => {
     ],
   });
 
-  const [editData, setEditData] = useState({});
+  // Map education documents to profile education array
+  const mapEducationDocuments = (submissions) => {
+    const educationDocs = submissions.filter(
+      (sub) =>
+        sub.document.category === "Academic Records" &&
+        (sub.document.name.includes("Degree") ||
+          sub.document.name.includes("Diploma"))
+    );
 
-  // Check GoCheck status on component mount
-  useEffect(() => {
-    const checkGoCheckStatus = () => {
-      const hasCompleted = hasCompletedGoCheck();
-      const hasCompletedAdditional = hasCompletedAdditionalQuestions();
-      const selectedUniversity = getUserSelectedUniversity();
-      const currentSessionId = getCurrentSessionId();
+    return educationDocs.map((doc) => {
+      const fields = doc.fieldValues || {};
+      const graduationDate = fields["Graduation Date"]
+        ? new Date(fields["Graduation Date"]).getFullYear()
+        : fields["Graduation Year"] || "N/A";
+      const startYear = graduationDate !== "N/A" ? graduationDate - 4 : "N/A";
 
-      let canContinue = false;
-      if (currentSessionId) {
-        const sessionData = getSessionData(currentSessionId);
-        if (sessionData) {
-          // Check if user has started but not completed GoCheck
-          const hasStage1Answers =
-            sessionData.answers && Object.keys(sessionData.answers).length > 0;
-          const hasStage2Answers =
-            sessionData.additionalAnswers &&
-            Object.keys(sessionData.additionalAnswers).length > 0;
-          const hasSelectedUniversity = sessionData.selectedUniversity;
+      return {
+        id: doc.id,
+        degree: fields["Degree Name"] || doc.document.name,
+        institution: fields.Institution || fields["School Name"] || "N/A",
+        period: `${startYear} - ${graduationDate}`,
+        status: doc.status === "verified" ? "Verified" : "Pending",
+        documentStatus: doc.status,
+        fieldOfStudy: fields["Field of Study"] || null,
+        gpa: fields.GPA || null,
+      };
+    });
+  };
 
-          canContinue =
-            (hasStage1Answers && !hasStage2Answers) ||
-            (hasStage2Answers && !hasSelectedUniversity);
-        }
+  // Map language certificate documents to test scores
+  const mapTestScoreDocuments = (submissions) => {
+    const languageDocs = submissions.filter(
+      (sub) => sub.document.category === "Language Certificates"
+    );
+
+    return languageDocs.map((doc) => {
+      const fields = doc.fieldValues || {};
+      const submissionDate = doc.submittedAt
+        ? new Date(doc.submittedAt)
+        : new Date();
+      const dateStr = submissionDate.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
+
+      let score = "";
+      if (doc.document.name.includes("TOEFL")) {
+        score = `${fields["Total Score"] || "N/A"}/120`;
+      } else if (doc.document.name.includes("IELTS")) {
+        score = `${fields["Overall Score"] || "N/A"}/9`;
+      } else {
+        score = "See Document";
       }
 
-      setGoCheckStatus({
-        hasCompleted,
-        hasCompletedAdditional,
-        selectedUniversity,
-        canContinue,
-      });
+      return {
+        test: doc.document.name,
+        score: score,
+        date: dateStr,
+        documentStatus: doc.status,
+        documentId: doc.id,
+      };
+    });
+  };
+
+  // Map identity documents to personal info
+  const mapPersonalInfoDocuments = (submissions) => {
+    const identityDocs = submissions.filter(
+      (sub) => sub.document.category === "Identity Documents"
+    );
+
+    const personalInfo = {};
+    identityDocs.forEach((doc) => {
+      if (!doc.fieldValues) return;
+
+      // Extract from Passport
+      if (doc.document.name === "Passport") {
+        personalInfo.firstName = doc.fieldValues["First Name"] || "";
+        personalInfo.lastName = doc.fieldValues["Last Name"] || "";
+        personalInfo.name =
+          `${personalInfo.firstName} ${personalInfo.lastName}`.trim() ||
+          "Not provided";
+        personalInfo.passport = doc.fieldValues["Passport Number"] || "";
+        personalInfo.dob =
+          doc.fieldValues["Date of Birth"] || doc.fieldValues["DOB"] || "";
+        personalInfo.nationality = doc.fieldValues["Nationality"] || "";
+        personalInfo.address = doc.fieldValues["Address"] || "";
+      }
+
+      // Extract from National ID
+      if (doc.document.name === "National ID") {
+        if (!personalInfo.firstName)
+          personalInfo.firstName = doc.fieldValues["First Name"] || "";
+        if (!personalInfo.lastName)
+          personalInfo.lastName = doc.fieldValues["Last Name"] || "";
+        if (!personalInfo.name)
+          personalInfo.name =
+            `${personalInfo.firstName} ${personalInfo.lastName}`.trim();
+        if (!personalInfo.dob)
+          personalInfo.dob = doc.fieldValues["Date of Birth"] || "";
+        if (!personalInfo.address)
+          personalInfo.address = doc.fieldValues["Address"] || "";
+      }
+    });
+
+    return personalInfo;
+  };
+
+  // Map language certificate documents to language proficiency
+  const mapLanguageProficiencyDocuments = (submissions) => {
+    const languageDocs = submissions.filter(
+      (sub) => sub.document.category === "Language Certificates"
+    );
+
+    const languages = [];
+    const languageMap = {
+      "IELTS Certificate": { name: "English", proficiency: 85 },
+      "TOEFL Score Report": { name: "English", proficiency: 90 },
+      "Cambridge Certificate": { name: "English", proficiency: 95 },
+      // Add more language certificate mappings as needed
     };
 
-    checkGoCheckStatus();
+    languageDocs.forEach((doc) => {
+      const langInfo = languageMap[doc.document.name];
+      if (langInfo) {
+        // Check if English already exists, use highest proficiency
+        const existingLang = languages.find((l) => l.name === langInfo.name);
+        if (existingLang) {
+          if (langInfo.proficiency > existingLang.proficiency) {
+            existingLang.proficiency = langInfo.proficiency;
+            existingLang.level = getProficiencyLevel(langInfo.proficiency);
+            existingLang.documentId = doc.id;
+            existingLang.documentStatus = doc.status;
+          }
+        } else {
+          languages.push({
+            name: langInfo.name,
+            level: getProficiencyLevel(langInfo.proficiency),
+            proficiency: langInfo.proficiency,
+            documentId: doc.id,
+            documentStatus: doc.status,
+          });
+        }
+      }
+    });
+
+    return languages;
+  };
+
+  // Convert proficiency score to level
+  const getProficiencyLevel = (score) => {
+    if (score >= 90) return "Native/Fluent";
+    if (score >= 75) return "Advanced";
+    if (score >= 60) return "Intermediate";
+    if (score >= 40) return "Elementary";
+    return "Beginner";
+  };
+
+  // Handle navigation to Documents section with category filter
+  const handleAddDocument = (category) => {
+    navigate("/user/documents?category=" + encodeURIComponent(category));
+  };
+
+  // Get document status badge
+  const getDocumentStatusBadge = (status) => {
+    switch (status) {
+      case "verified":
+        return { text: "Verified", className: "verified" };
+      case "pending":
+        return { text: "Pending", className: "pending" };
+      case "rejected":
+        return { text: "Rejected", className: "rejected" };
+      case "expired":
+        return { text: "Expired", className: "expired" };
+      default:
+        return { text: "Unknown", className: "" };
+    }
+  };
+
+  // Fetch document submissions to populate profile
+  useEffect(() => {
+    // Simulate API call - in real app, this would fetch from your API
+    setTimeout(() => {
+      // Sample submissions - would come from API
+      const sampleSubmissions = [
+        {
+          id: 1,
+          document: {
+            id: 1,
+            name: "Passport",
+            category: "Identity Documents",
+          },
+          status: "verified",
+          fieldValues: {
+            "First Name": "Sarah",
+            "Last Name": "Johnson",
+            "Passport Number": "US123456789",
+            "Date of Birth": "1998-03-15",
+            Nationality: "American",
+            Address: "123 Main Street, San Francisco, CA 94102, USA",
+          },
+          uploadedFiles: [],
+        },
+        {
+          id: 8,
+          document: {
+            id: 2,
+            name: "National ID",
+            category: "Identity Documents",
+          },
+          status: "verified",
+          fieldValues: {
+            "First Name": "Sarah",
+            "Last Name": "Johnson",
+            "Date of Birth": "1998-03-15",
+            Address: "123 Main Street, San Francisco, CA 94102, USA",
+          },
+          uploadedFiles: [],
+        },
+        {
+          id: 3,
+          document: {
+            id: 6,
+            name: "Bachelor's Degree Certificate",
+            category: "Academic Records",
+          },
+          status: "verified",
+          fieldValues: {
+            Institution: "Harvard University",
+            "Degree Name": "Bachelor of Science",
+            "Field of Study": "Computer Science",
+            GPA: "3.8",
+            "Graduation Date": "2022-05-15",
+          },
+          submittedAt: "2024-12-05T16:45:00Z",
+        },
+        {
+          id: 6,
+          document: {
+            id: 7,
+            name: "Master's Degree Certificate",
+            category: "Academic Records",
+          },
+          status: "pending",
+          fieldValues: {
+            Institution: "MIT",
+            "Degree Name": "Master of Science",
+            "Field of Study": "Artificial Intelligence",
+            GPA: "4.0",
+            "Graduation Date": "2024-05-20",
+          },
+          submittedAt: "2024-12-12T10:20:00Z",
+        },
+        {
+          id: 7,
+          document: {
+            id: 5,
+            name: "High School Diploma",
+            category: "Academic Records",
+          },
+          status: "verified",
+          fieldValues: {
+            "School Name": "Lincoln High School",
+            "Graduation Year": "2018",
+            GPA: "3.9",
+          },
+          submittedAt: "2024-11-20T14:30:00Z",
+        },
+        {
+          id: 4,
+          document: {
+            id: 4,
+            name: "TOEFL Score Report",
+            category: "Language Certificates",
+          },
+          status: "verified",
+          fieldValues: {
+            "Total Score": "110",
+            Reading: "28",
+            Listening: "27",
+            Speaking: "26",
+            Writing: "29",
+          },
+          submittedAt: "2024-12-08T14:20:00Z",
+        },
+        {
+          id: 2,
+          document: {
+            id: 3,
+            name: "IELTS Certificate",
+            category: "Language Certificates",
+          },
+          status: "pending",
+          fieldValues: {
+            "Overall Score": "7.5",
+            "Listening Score": "8.0",
+            "Reading Score": "7.0",
+            "Writing Score": "7.0",
+            "Speaking Score": "8.0",
+          },
+          submittedAt: "2024-12-11T08:15:00Z",
+        },
+      ];
+
+      setLoadingDocuments(false);
+
+      // Map documents to profile data
+      const educationFromDocs = mapEducationDocuments(sampleSubmissions);
+      const testScoresFromDocs = mapTestScoreDocuments(sampleSubmissions);
+      const personalInfoFromDocs = mapPersonalInfoDocuments(sampleSubmissions);
+      const languagesFromDocs =
+        mapLanguageProficiencyDocuments(sampleSubmissions);
+
+      setProfileData((prev) => ({
+        ...prev,
+        education: educationFromDocs,
+        testScores: testScoresFromDocs,
+        languages:
+          languagesFromDocs.length > 0 ? languagesFromDocs : prev.languages, // Keep existing if no docs
+        personalInfo: {
+          ...prev.personalInfo,
+          ...personalInfoFromDocs,
+        },
+      }));
+    }, 1000);
   }, []);
 
   // Custom Multi-Select Component
@@ -262,502 +528,8 @@ const Profile = () => {
     return Math.round((completedFields / totalFields) * 100);
   };
 
-  const openModal = (modalType, data = {}) => {
-    setActiveModal(modalType);
-    setEditData(data);
-  };
-
-  const closeModal = () => {
-    setActiveModal(null);
-    setEditData({});
-  };
-
-  const handleSave = (type, data) => {
-    // Simulate save - in real app this would update backend
-    console.log(`Saving ${type}:`, data);
-    closeModal();
-  };
-
-  const renderPersonalInfoModal = () => (
-    <div className={styles["modal-overlay"]} onClick={closeModal}>
-      <div className={styles["modal"]} onClick={(e) => e.stopPropagation()}>
-        <div className={styles["modal-header"]}>
-          <h3>Edit Personal Information</h3>
-          <button className={styles["close-btn"]} onClick={closeModal}>
-            <X size={20} />
-          </button>
-        </div>
-        <div className={styles["modal-content"]}>
-          <div className={styles["form-group"]}>
-            <label>Full Name</label>
-            <input
-              type="text"
-              defaultValue={profileData.personalInfo.name}
-              onChange={(e) =>
-                setEditData({ ...editData, name: e.target.value })
-              }
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Email</label>
-            <input
-              type="email"
-              defaultValue={profileData.personalInfo.email}
-              onChange={(e) =>
-                setEditData({ ...editData, email: e.target.value })
-              }
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Phone</label>
-            <input
-              type="tel"
-              defaultValue={profileData.personalInfo.phone}
-              onChange={(e) =>
-                setEditData({ ...editData, phone: e.target.value })
-              }
-            />
-          </div>
-          <div className={styles["form-row"]}>
-            <div className={styles["form-group"]}>
-              <label>Date of Birth</label>
-              <input
-                type="date"
-                defaultValue="1998-03-15"
-                onChange={(e) =>
-                  setEditData({ ...editData, dob: e.target.value })
-                }
-              />
-            </div>
-            <div className={styles["form-group"]}>
-              <label>Nationality</label>
-              <input
-                type="text"
-                defaultValue={profileData.personalInfo.nationality}
-                onChange={(e) =>
-                  setEditData({ ...editData, nationality: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Passport Number</label>
-            <input
-              type="text"
-              defaultValue={profileData.personalInfo.passport}
-              onChange={(e) =>
-                setEditData({ ...editData, passport: e.target.value })
-              }
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Address</label>
-            <input
-              type="text"
-              defaultValue={profileData.personalInfo.address}
-              onChange={(e) =>
-                setEditData({ ...editData, address: e.target.value })
-              }
-            />
-          </div>
-        </div>
-        <div className={styles["modal-footer"]}>
-          <button className={styles["btn-secondary"]} onClick={closeModal}>
-            Cancel
-          </button>
-          <button
-            className={styles["btn-primary"]}
-            onClick={() => handleSave("personalInfo", editData)}
-          >
-            <Save size={16} />
-            Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderEducationModal = () => (
-    <div className={styles["modal-overlay"]} onClick={closeModal}>
-      <div className={styles["modal"]} onClick={(e) => e.stopPropagation()}>
-        <div className={styles["modal-header"]}>
-          <h3>Add Education</h3>
-          <button className={styles["close-btn"]} onClick={closeModal}>
-            <X size={20} />
-          </button>
-        </div>
-        <div className={styles["modal-content"]}>
-          <div className={styles["form-group"]}>
-            <label>Degree/Qualification</label>
-            <input
-              type="text"
-              placeholder="e.g., Bachelor of Computer Science"
-              onChange={(e) =>
-                setEditData({ ...editData, degree: e.target.value })
-              }
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Institution</label>
-            <input
-              type="text"
-              placeholder="e.g., University of California, Berkeley"
-              onChange={(e) =>
-                setEditData({ ...editData, institution: e.target.value })
-              }
-            />
-          </div>
-          <div className={styles["form-row"]}>
-            <div className={styles["form-group"]}>
-              <label>Start Year</label>
-              <input
-                type="number"
-                placeholder="2016"
-                onChange={(e) =>
-                  setEditData({ ...editData, startYear: e.target.value })
-                }
-              />
-            </div>
-            <div className={styles["form-group"]}>
-              <label>End Year</label>
-              <input
-                type="number"
-                placeholder="2020"
-                onChange={(e) =>
-                  setEditData({ ...editData, endYear: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className={styles["form-row"]}>
-            <div className={styles["form-group"]}>
-              <label>Status</label>
-              <select
-                onChange={(e) =>
-                  setEditData({ ...editData, status: e.target.value })
-                }
-              >
-                <option value="Completed">Completed</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Dropped">Dropped</option>
-              </select>
-            </div>
-            <div className={styles["form-group"]}>
-              <label>Graduation Score/Grade</label>
-              <input
-                type="text"
-                placeholder="e.g., 3.8/4.0 or 85%"
-                onChange={(e) =>
-                  setEditData({ ...editData, grade: e.target.value })
-                }
-              />
-            </div>
-          </div>
-        </div>
-        <div className={styles["modal-footer"]}>
-          <button className={styles["btn-secondary"]} onClick={closeModal}>
-            Cancel
-          </button>
-          <button
-            className={styles["btn-primary"]}
-            onClick={() => handleSave("education", editData)}
-          >
-            <Save size={16} />
-            Add Education
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderGoalsModal = () => (
-    <div className={styles["modal-overlay"]} onClick={closeModal}>
-      <div className={styles["modal"]} onClick={(e) => e.stopPropagation()}>
-        <div className={styles["modal-header"]}>
-          <h3>Edit EduniGo Goals</h3>
-          <button className={styles["close-btn"]} onClick={closeModal}>
-            <X size={20} />
-          </button>
-        </div>
-        <div className={styles["modal-content"]}>
-          <CustomMultiSelect
-            label="Target Countries"
-            placeholder="Select target countries..."
-            options={[
-              { value: "United States", label: "United States" },
-              { value: "Canada", label: "Canada" },
-              { value: "United Kingdom", label: "United Kingdom" },
-              { value: "Australia", label: "Australia" },
-              { value: "Germany", label: "Germany" },
-              { value: "France", label: "France" },
-              { value: "Netherlands", label: "Netherlands" },
-              { value: "Sweden", label: "Sweden" },
-              { value: "Switzerland", label: "Switzerland" },
-              { value: "Singapore", label: "Singapore" },
-              { value: "Japan", label: "Japan" },
-              { value: "South Korea", label: "South Korea" },
-            ]}
-            selectedValues={editData.countries || profileData.goals.countries}
-            onChange={(countries) => setEditData({ ...editData, countries })}
-          />
-
-          <CustomMultiSelect
-            label="Preferred Programs"
-            placeholder="Select preferred programs..."
-            options={[
-              { value: "Computer Science", label: "Computer Science" },
-              { value: "Data Science", label: "Data Science" },
-              {
-                value: "AI & Machine Learning",
-                label: "AI & Machine Learning",
-              },
-              { value: "Software Engineering", label: "Software Engineering" },
-              { value: "Cybersecurity", label: "Cybersecurity" },
-              {
-                value: "Business Administration",
-                label: "Business Administration",
-              },
-              { value: "Finance", label: "Finance" },
-              { value: "Marketing", label: "Marketing" },
-              { value: "Engineering", label: "Engineering" },
-              { value: "Medicine", label: "Medicine" },
-              { value: "Law", label: "Law" },
-              { value: "Psychology", label: "Psychology" },
-            ]}
-            selectedValues={editData.programs || profileData.goals.programs}
-            onChange={(programs) => setEditData({ ...editData, programs })}
-          />
-          <div className={styles["form-group"]}>
-            <label>Intake Preference</label>
-            <select
-              defaultValue={profileData.goals.intake}
-              onChange={(e) =>
-                setEditData({ ...editData, intake: e.target.value })
-              }
-            >
-              <option value="Fall 2025">Fall 2025</option>
-              <option value="Spring 2025">Spring 2025</option>
-              <option value="Fall 2026">Fall 2026</option>
-              <option value="Spring 2026">Spring 2026</option>
-            </select>
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Budget Range</label>
-            <select
-              defaultValue={profileData.goals.budget}
-              onChange={(e) =>
-                setEditData({ ...editData, budget: e.target.value })
-              }
-            >
-              <option value="$30,000 - $50,000">$30,000 - $50,000</option>
-              <option value="$50,000 - $80,000">$50,000 - $80,000</option>
-              <option value="$80,000 - $120,000">$80,000 - $120,000</option>
-              <option value="$120,000+">$120,000+</option>
-            </select>
-          </div>
-        </div>
-        <div className={styles["modal-footer"]}>
-          <button className={styles["btn-secondary"]} onClick={closeModal}>
-            Cancel
-          </button>
-          <button
-            className={styles["btn-primary"]}
-            onClick={() => handleSave("goals", editData)}
-          >
-            <Save size={16} />
-            Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderLanguageModal = () => (
-    <div className={styles["modal-overlay"]} onClick={closeModal}>
-      <div className={styles["modal"]} onClick={(e) => e.stopPropagation()}>
-        <div className={styles["modal-header"]}>
-          <h3>Add Language</h3>
-          <button className={styles["close-btn"]} onClick={closeModal}>
-            <X size={20} />
-          </button>
-        </div>
-        <div className={styles["modal-content"]}>
-          <div className={styles["form-group"]}>
-            <label>Language</label>
-            <input
-              type="text"
-              placeholder="e.g., German"
-              onChange={(e) =>
-                setEditData({ ...editData, name: e.target.value })
-              }
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Proficiency Level</label>
-            <select
-              onChange={(e) =>
-                setEditData({ ...editData, level: e.target.value })
-              }
-            >
-              <option value="Beginner">Beginner</option>
-              <option value="Elementary">Elementary</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-              <option value="Fluent">Fluent</option>
-              <option value="Native">Native</option>
-            </select>
-          </div>
-        </div>
-        <div className={styles["modal-footer"]}>
-          <button className={styles["btn-secondary"]} onClick={closeModal}>
-            Cancel
-          </button>
-          <button
-            className={styles["btn-primary"]}
-            onClick={() => handleSave("language", editData)}
-          >
-            <Save size={16} />
-            Add Language
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderTestScoreModal = () => {
-    const getTestScoreFields = (testName) => {
-      switch (testName) {
-        case "IELTS":
-          return [
-            { label: "Listening", placeholder: "e.g., 7.5" },
-            { label: "Reading", placeholder: "e.g., 8.0" },
-            { label: "Writing", placeholder: "e.g., 7.0" },
-            { label: "Speaking", placeholder: "e.g., 8.5" },
-            { label: "Overall Band", placeholder: "e.g., 7.5" },
-          ];
-        case "TOEFL iBT":
-          return [
-            { label: "Reading", placeholder: "e.g., 28" },
-            { label: "Listening", placeholder: "e.g., 26" },
-            { label: "Speaking", placeholder: "e.g., 24" },
-            { label: "Writing", placeholder: "e.g., 30" },
-            { label: "Total Score", placeholder: "e.g., 108" },
-          ];
-        case "GRE":
-          return [
-            { label: "Verbal Reasoning", placeholder: "e.g., 160" },
-            { label: "Quantitative Reasoning", placeholder: "e.g., 165" },
-            { label: "Analytical Writing", placeholder: "e.g., 4.5" },
-            { label: "Total Score", placeholder: "e.g., 325" },
-          ];
-        case "GMAT":
-          return [
-            { label: "Verbal", placeholder: "e.g., 35" },
-            { label: "Quantitative", placeholder: "e.g., 48" },
-            { label: "Integrated Reasoning", placeholder: "e.g., 8" },
-            { label: "Analytical Writing", placeholder: "e.g., 5.0" },
-            { label: "Total Score", placeholder: "e.g., 720" },
-          ];
-        case "SAT":
-          return [
-            { label: "Evidence-Based Reading", placeholder: "e.g., 650" },
-            { label: "Math", placeholder: "e.g., 700" },
-            { label: "Writing & Language", placeholder: "e.g., 650" },
-            { label: "Total Score", placeholder: "e.g., 1350" },
-          ];
-        case "ACT":
-          return [
-            { label: "English", placeholder: "e.g., 32" },
-            { label: "Math", placeholder: "e.g., 30" },
-            { label: "Reading", placeholder: "e.g., 34" },
-            { label: "Science", placeholder: "e.g., 31" },
-            { label: "Composite Score", placeholder: "e.g., 32" },
-          ];
-        default:
-          return [{ label: "Score", placeholder: "Enter your score" }];
-      }
-    };
-
-    const scoreFields = getTestScoreFields(editData.test);
-
-    return (
-      <div className={styles["modal-overlay"]} onClick={closeModal}>
-        <div className={styles["modal"]} onClick={(e) => e.stopPropagation()}>
-          <div className={styles["modal-header"]}>
-            <h3>Add Test Score</h3>
-            <button className={styles["close-btn"]} onClick={closeModal}>
-              <X size={20} />
-            </button>
-          </div>
-          <div className={styles["modal-content"]}>
-            <div className={styles["form-group"]}>
-              <label>Test Name</label>
-              <select
-                onChange={(e) =>
-                  setEditData({ ...editData, test: e.target.value, scores: {} })
-                }
-              >
-                <option value="">Select Test</option>
-                <option value="TOEFL iBT">TOEFL iBT</option>
-                <option value="IELTS">IELTS</option>
-                <option value="GRE">GRE</option>
-                <option value="GMAT">GMAT</option>
-                <option value="SAT">SAT</option>
-                <option value="ACT">ACT</option>
-              </select>
-            </div>
-
-            {editData.test && (
-              <div className={styles["test-score-fields"]}>
-                <h4>Enter Your Scores</h4>
-                {scoreFields.map((field, index) => (
-                  <div key={index} className={styles["form-group"]}>
-                    <label>{field.label}</label>
-                    <input
-                      type="text"
-                      placeholder={field.placeholder}
-                      onChange={(e) =>
-                        setEditData({
-                          ...editData,
-                          scores: {
-                            ...editData.scores,
-                            [field.label]: e.target.value,
-                          },
-                        })
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className={styles["form-group"]}>
-              <label>Test Date</label>
-              <input
-                type="date"
-                onChange={(e) =>
-                  setEditData({ ...editData, date: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className={styles["modal-footer"]}>
-            <button className={styles["btn-secondary"]} onClick={closeModal}>
-              Cancel
-            </button>
-            <button
-              className={styles["btn-primary"]}
-              onClick={() => handleSave("testScore", editData)}
-              disabled={!editData.test || !editData.scores}
-            >
-              <Save size={16} />
-              Add Score
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  // All data now comes from documents - no modals needed
+  // Modal functions removed - use Documents section instead
 
   return (
     <div className={styles["profile-content"]}>
@@ -797,49 +569,74 @@ const Profile = () => {
             <h3>Personal Information</h3>
             <button
               className={styles["edit-btn"]}
-              onClick={() => openModal("personalInfo")}
+              onClick={() => handleAddDocument("Identity Documents")}
             >
-              <Edit size={16} />
-              Edit
+              <Plus size={16} />
+              Add Document
             </button>
           </div>
           <div className={styles["widget-content"]}>
-            <div className={styles["profile-info"]}>
-              <div className={styles["profile-avatar"]}>
-                <User size={24} />
+            {loadingDocuments ? (
+              <div className={styles["loading-placeholder"]}>
+                <p>Loading personal information...</p>
               </div>
-              <div className={styles["profile-details"]}>
-                <h4>{profileData.personalInfo.name}</h4>
-                <p>{profileData.personalInfo.email}</p>
-                <p>{profileData.personalInfo.phone}</p>
-              </div>
-            </div>
-            <div className={styles["info-grid"]}>
-              <div className={styles["info-item"]}>
-                <span className={styles["info-label"]}>Date of Birth</span>
-                <span className={styles["info-value"]}>
-                  {profileData.personalInfo.dob}
-                </span>
-              </div>
-              <div className={styles["info-item"]}>
-                <span className={styles["info-label"]}>Nationality</span>
-                <span className={styles["info-value"]}>
-                  {profileData.personalInfo.nationality}
-                </span>
-              </div>
-              <div className={styles["info-item"]}>
-                <span className={styles["info-label"]}>Passport Number</span>
-                <span className={styles["info-value"]}>
-                  {profileData.personalInfo.passport}
-                </span>
-              </div>
-              <div className={styles["info-item"]}>
-                <span className={styles["info-label"]}>Address</span>
-                <span className={styles["info-value"]}>
-                  {profileData.personalInfo.address}
-                </span>
-              </div>
-            </div>
+            ) : (
+              <>
+                <div className={styles["profile-info"]}>
+                  <div className={styles["profile-avatar"]}>
+                    <User size={24} />
+                  </div>
+                  <div className={styles["profile-details"]}>
+                    <h4>{profileData.personalInfo.name || "Not provided"}</h4>
+                    <p>{profileData.personalInfo.email || "Not provided"}</p>
+                    <p>{profileData.personalInfo.phone || "Not provided"}</p>
+                  </div>
+                </div>
+                <div className={styles["info-grid"]}>
+                  <div className={styles["info-item"]}>
+                    <span className={styles["info-label"]}>Date of Birth</span>
+                    <span className={styles["info-value"]}>
+                      {profileData.personalInfo.dob || "Not provided"}
+                    </span>
+                  </div>
+                  <div className={styles["info-item"]}>
+                    <span className={styles["info-label"]}>Nationality</span>
+                    <span className={styles["info-value"]}>
+                      {profileData.personalInfo.nationality || "Not provided"}
+                    </span>
+                  </div>
+                  <div className={styles["info-item"]}>
+                    <span className={styles["info-label"]}>
+                      Passport Number
+                    </span>
+                    <span className={styles["info-value"]}>
+                      {profileData.personalInfo.passport || "Not provided"}
+                    </span>
+                  </div>
+                  <div className={styles["info-item"]}>
+                    <span className={styles["info-label"]}>Address</span>
+                    <span className={styles["info-value"]}>
+                      {profileData.personalInfo.address || "Not provided"}
+                    </span>
+                  </div>
+                </div>
+                {(!profileData.personalInfo.name ||
+                  !profileData.personalInfo.dob ||
+                  !profileData.personalInfo.passport) && (
+                  <div
+                    className={styles["empty-state"]}
+                    style={{ marginTop: "20px", padding: "20px" }}
+                  >
+                    <p
+                      style={{ margin: 0, color: "#64748b", fontSize: "13px" }}
+                    >
+                      Upload identity documents to populate your personal
+                      information.
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
 
@@ -853,114 +650,72 @@ const Profile = () => {
             <h3>Education History</h3>
             <button
               className={styles["edit-btn"]}
-              onClick={() => openModal("education")}
+              onClick={() => handleAddDocument("Academic Records")}
             >
               <Plus size={16} />
               Add
             </button>
           </div>
           <div className={styles["widget-content"]}>
-            {profileData.education.map((edu) => (
-              <div key={edu.id} className={styles["education-item"]}>
-                <div className={styles["education-icon"]}>
-                  <GraduationCap size={20} />
-                </div>
-                <div className={styles["education-details"]}>
-                  <h4>{edu.degree}</h4>
-                  <p>{edu.institution}</p>
-                  <span className={styles["education-period"]}>
-                    {edu.period}
-                  </span>
-                </div>
-                <div className={styles["education-status"]}>
-                  <span
-                    className={[styles["status-badge"], styles["completed"]]
-                      .filter(Boolean)
-                      .join(" ")}
+            {loadingDocuments ? (
+              <div className={styles["loading-placeholder"]}>
+                <p>Loading education records...</p>
+              </div>
+            ) : profileData.education && profileData.education.length > 0 ? (
+              profileData.education.map((edu) => {
+                const statusBadge = getDocumentStatusBadge(
+                  edu.documentStatus || "pending"
+                );
+                return (
+                  <div
+                    key={edu.id}
+                    className={styles["education-item"]}
+                    onClick={() => navigate(`/user/documents/${edu.id}`)}
+                    style={{ cursor: "pointer" }}
                   >
-                    {edu.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* EduniGo Goals Widget */}
-        <div
-          className={[styles["widget"], styles["profile-widget"]]
-            .filter(Boolean)
-            .join(" ")}
-        >
-          <div className={styles["widget-header"]}>
-            <h3>EduniGo Goals</h3>
-            <button
-              className={styles["edit-btn"]}
-              onClick={() => openModal("goals")}
-            >
-              <Edit size={16} />
-              Edit
-            </button>
-          </div>
-          <div className={styles["widget-content"]}>
-            <div className={styles["goals-grid"]}>
-              <div className={styles["goal-item"]}>
-                <div className={styles["goal-icon"]}>
-                  <Target size={20} />
-                </div>
-                <div className={styles["goal-details"]}>
-                  <h4>Target Countries</h4>
-                  <div className={styles["goal-tags"]}>
-                    {profileData.goals.countries.map((country, index) => (
-                      <span key={index} className={styles["goal-tag"]}>
-                        {country}
+                    <div className={styles["education-icon"]}>
+                      <GraduationCap size={20} />
+                    </div>
+                    <div className={styles["education-details"]}>
+                      <h4>{edu.degree}</h4>
+                      <p>{edu.institution}</p>
+                      {edu.fieldOfStudy && (
+                        <p className={styles["education-field"]}>
+                          {edu.fieldOfStudy}
+                          {edu.gpa && ` • GPA: ${edu.gpa}`}
+                        </p>
+                      )}
+                      <span className={styles["education-period"]}>
+                        {edu.period}
                       </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className={styles["goal-item"]}>
-                <div className={styles["goal-icon"]}>
-                  <BookOpen size={20} />
-                </div>
-                <div className={styles["goal-details"]}>
-                  <h4>Preferred Programs</h4>
-                  <div className={styles["goal-tags"]}>
-                    {profileData.goals.programs.map((program, index) => (
-                      <span key={index} className={styles["goal-tag"]}>
-                        {program}
+                    </div>
+                    <div className={styles["education-status"]}>
+                      <span
+                        className={[
+                          styles["status-badge"],
+                          styles[statusBadge.className],
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      >
+                        {statusBadge.text}
                       </span>
-                    ))}
+                    </div>
                   </div>
-                </div>
+                );
+              })
+            ) : (
+              <div className={styles["empty-state"]}>
+                <GraduationCap size={32} className={styles["empty-icon"]} />
+                <p>No education records found</p>
+                <button
+                  className={styles["add-document-btn"]}
+                  onClick={() => handleAddDocument("Academic Records")}
+                >
+                  Upload Education Document
+                </button>
               </div>
-              <div className={styles["goal-item"]}>
-                <div className={styles["goal-icon"]}>
-                  <Calendar size={20} />
-                </div>
-                <div className={styles["goal-details"]}>
-                  <h4>Intake Preference</h4>
-                  <div className={styles["goal-tags"]}>
-                    <span className={styles["goal-tag"]}>
-                      {profileData.goals.intake}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className={styles["goal-item"]}>
-                <div className={styles["goal-icon"]}>
-                  <CreditCard size={20} />
-                </div>
-                <div className={styles["goal-details"]}>
-                  <h4>Budget Range</h4>
-                  <div className={styles["goal-tags"]}>
-                    <span className={styles["goal-tag"]}>
-                      {profileData.goals.budget}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -974,21 +729,71 @@ const Profile = () => {
             <h3>Language Proficiency</h3>
             <button
               className={styles["edit-btn"]}
-              onClick={() => openModal("language")}
+              onClick={() => handleAddDocument("Language Certificates")}
             >
               <Plus size={16} />
               Add
             </button>
           </div>
           <div className={styles["widget-content"]}>
-            {profileData.languages.map((lang, index) => (
-              <div key={index} className={styles["language-item"]}>
-                <div className={styles["language-info"]}>
-                  <span className={styles["language-name"]}>{lang.name}</span>
-                  <span className={styles["language-level"]}>{lang.level}</span>
-                </div>
+            {loadingDocuments ? (
+              <div className={styles["loading-placeholder"]}>
+                <p>Loading language proficiency...</p>
               </div>
-            ))}
+            ) : profileData.languages && profileData.languages.length > 0 ? (
+              profileData.languages.map((lang, index) => {
+                const statusBadge = getDocumentStatusBadge(
+                  lang.documentStatus || "pending"
+                );
+                return (
+                  <div
+                    key={index}
+                    className={styles["language-item"]}
+                    onClick={() =>
+                      lang.documentId &&
+                      navigate(`/user/documents/${lang.documentId}`)
+                    }
+                    style={{
+                      cursor: lang.documentId ? "pointer" : "default",
+                    }}
+                  >
+                    <div className={styles["language-info"]}>
+                      <span className={styles["language-name"]}>
+                        {lang.name}
+                      </span>
+                      <span className={styles["language-level"]}>
+                        {lang.level}
+                      </span>
+                    </div>
+                    {lang.documentId && (
+                      <div className={styles["language-status"]}>
+                        <span
+                          className={[
+                            styles["status-badge"],
+                            styles[statusBadge.className],
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                        >
+                          {statusBadge.text}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              <div className={styles["empty-state"]}>
+                <FileCheck size={32} className={styles["empty-icon"]} />
+                <p>No language certificates found</p>
+                <button
+                  className={styles["add-document-btn"]}
+                  onClick={() => handleAddDocument("Language Certificates")}
+                >
+                  Upload Language Certificate
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -1002,106 +807,76 @@ const Profile = () => {
             <h3>Test Scores</h3>
             <button
               className={styles["edit-btn"]}
-              onClick={() => openModal("testScore")}
+              onClick={() => handleAddDocument("Language Certificates")}
             >
               <Plus size={16} />
               Add Score
             </button>
           </div>
           <div className={styles["widget-content"]}>
-            <div className={styles["test-scores"]}>
-              {profileData.testScores.map((test, index) => (
-                <div key={index} className={styles["test-item"]}>
-                  <div className={styles["test-icon"]}>
-                    <FileCheck size={20} />
-                  </div>
-                  <div className={styles["test-details"]}>
-                    <h4>{test.test}</h4>
-                    <span className={styles["test-score"]}>{test.score}</span>
-                    <span className={styles["test-date"]}>{test.date}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* GoCheck Widget */}
-        <div
-          className={[styles["widget"], styles["profile-widget"]]
-            .filter(Boolean)
-            .join(" ")}
-        >
-          <div className={styles["widget-header"]}>
-            <h3>GoCheck Assessment</h3>
-            <button
-              className={styles["edit-btn"]}
-              onClick={() => navigate("/gocheck")}
-            >
-              <CheckCircle size={16} />
-              {goCheckStatus.canContinue
-                ? "Continue GoCheck"
-                : goCheckStatus.hasCompleted
-                ? "View Results"
-                : "Start GoCheck"}
-            </button>
-          </div>
-          <div className={styles["widget-content"]}>
-            <div className={styles["gocheck-info"]}>
-              <div className={styles["gocheck-icon"]}>
-                <CheckCircle size={24} />
+            {loadingDocuments ? (
+              <div className={styles["loading-placeholder"]}>
+                <p>Loading test scores...</p>
               </div>
-              <div className={styles["gocheck-details"]}>
-                <h4>University Matching Assessment</h4>
-                {goCheckStatus.canContinue ? (
-                  <p>
-                    You have an incomplete GoCheck assessment. Continue to
-                    complete the remaining questions and select your university.
-                  </p>
-                ) : goCheckStatus.hasCompleted ? (
-                  <p>
-                    Your GoCheck assessment is complete! You can view your
-                    results or retake the assessment.
-                  </p>
-                ) : (
-                  <p>
-                    Complete our GoCheck questionnaire to discover universities
-                    that match your profile and goals.
-                  </p>
-                )}
-
-                {goCheckStatus.selectedUniversity && (
-                  <div className={styles["selected-university-info"]}>
-                    <h5>Selected University:</h5>
-                    <p className={styles["university-name"]}>
-                      {goCheckStatus.selectedUniversity.name}
-                    </p>
-                  </div>
-                )}
-
-                <div className={styles["gocheck-features"]}>
-                  <span className={styles["feature-tag"]}>
-                    Personalized Matches
-                  </span>
-                  <span className={styles["feature-tag"]}>
-                    Program Recommendations
-                  </span>
-                  <span className={styles["feature-tag"]}>
-                    Admission Readiness
-                  </span>
-                </div>
+            ) : profileData.testScores && profileData.testScores.length > 0 ? (
+              <div className={styles["test-scores"]}>
+                {profileData.testScores.map((test, index) => {
+                  const statusBadge = getDocumentStatusBadge(
+                    test.documentStatus || "pending"
+                  );
+                  return (
+                    <div
+                      key={index}
+                      className={styles["test-item"]}
+                      onClick={() =>
+                        test.documentId &&
+                        navigate(`/user/documents/${test.documentId}`)
+                      }
+                      style={{
+                        cursor: test.documentId ? "pointer" : "default",
+                      }}
+                    >
+                      <div className={styles["test-icon"]}>
+                        <FileCheck size={20} />
+                      </div>
+                      <div className={styles["test-details"]}>
+                        <h4>{test.test}</h4>
+                        <span className={styles["test-score"]}>
+                          {test.score}
+                        </span>
+                        <span className={styles["test-date"]}>{test.date}</span>
+                      </div>
+                      <div className={styles["test-status"]}>
+                        <span
+                          className={[
+                            styles["status-badge"],
+                            styles[statusBadge.className],
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                        >
+                          {statusBadge.text}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
+            ) : (
+              <div className={styles["empty-state"]}>
+                <FileCheck size={32} className={styles["empty-icon"]} />
+                <p>No test scores found</p>
+                <button
+                  className={styles["add-document-btn"]}
+                  onClick={() => handleAddDocument("Language Certificates")}
+                >
+                  Upload Language Certificate
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Modals */}
-      {activeModal === "personalInfo" && renderPersonalInfoModal()}
-      {activeModal === "education" && renderEducationModal()}
-      {activeModal === "goals" && renderGoalsModal()}
-      {activeModal === "language" && renderLanguageModal()}
-      {activeModal === "testScore" && renderTestScoreModal()}
     </div>
   );
 };

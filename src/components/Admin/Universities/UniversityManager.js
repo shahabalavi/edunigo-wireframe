@@ -179,8 +179,10 @@ const UniversityManager = () => {
         console.log("Programs submodule - coming soon");
         break;
       case "documents":
-        // Future implementation
-        console.log("Documents submodule - coming soon");
+        const universityIdForDocs = university?.id || id;
+        if (universityIdForDocs) {
+          navigate(`/admin/universities/${universityIdForDocs}/documents`);
+        }
         break;
       case "analytics":
         // Future implementation
@@ -227,10 +229,10 @@ const UniversityManager = () => {
     {
       id: "documents",
       name: "Documents",
-      description: "Manage university documents and files",
+      description: "Manage required documents for this university",
       icon: FileText,
       color: "#ea580c",
-      available: false,
+      available: true,
     },
     {
       id: "analytics",
