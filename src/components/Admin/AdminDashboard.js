@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   BarChart3,
@@ -18,6 +18,11 @@ import {
   Ticket,
   FileText,
   FileCheck,
+  Sparkles,
+  ChevronDown,
+  ChevronRight,
+  School,
+  Calendar,
 } from "lucide-react";
 import AdminDashboardHome from "./Dashboard/AdminDashboardHome";
 import Countries from "./Countries/Countries";
@@ -57,11 +62,19 @@ import CreateDocument from "./Documents/CreateDocument";
 import EditDocument from "./Documents/EditDocument";
 import DocumentSubmissions from "./DocumentSubmissions/DocumentSubmissions";
 import DocumentSubmissionDetail from "./DocumentSubmissions/DocumentSubmissionDetail";
+import AIImportCities from "./AIImport/Cities/Cities";
+import AIImportUniversity from "./AIImport/University/University";
+import AIImportCampus from "./AIImport/Campus/Campus";
+import AIImportCourse from "./AIImport/Course/Course";
+import AIImportIntake from "./AIImport/Intake/Intake";
 import styles from "../Dashboard.module.css";
 
 const AdminDashboard = ({ onLogout }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isAIImportOpen, setIsAIImportOpen] = useState(
+    location.pathname.startsWith("/admin/ai-import")
+  );
 
   const handleLogout = () => {
     if (onLogout) {
@@ -166,6 +179,45 @@ const AdminDashboard = ({ onLogout }) => {
       path: "/admin/roles",
     },
     {
+      id: "ai-import",
+      label: "AI Import",
+      icon: Sparkles,
+      path: "/admin/ai-import",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "ai-import-cities",
+          label: "Cities",
+          icon: MapPin,
+          path: "/admin/ai-import/cities",
+        },
+        {
+          id: "ai-import-university",
+          label: "University",
+          icon: Building2,
+          path: "/admin/ai-import/university",
+        },
+        {
+          id: "ai-import-campus",
+          label: "Campus",
+          icon: School,
+          path: "/admin/ai-import/campus",
+        },
+        {
+          id: "ai-import-course",
+          label: "Course",
+          icon: BookOpen,
+          path: "/admin/ai-import/course",
+        },
+        {
+          id: "ai-import-intake",
+          label: "Intake",
+          icon: Calendar,
+          path: "/admin/ai-import/intake",
+        },
+      ],
+    },
+    {
       id: "profile",
       label: "Profile",
       icon: UserCircle,
@@ -175,6 +227,17 @@ const AdminDashboard = ({ onLogout }) => {
 
   const getCurrentPageLabel = () => {
     const currentPath = location.pathname;
+    
+    // Handle AI Import submenu items
+    if (currentPath.startsWith("/admin/ai-import")) {
+      if (currentPath === "/admin/ai-import/cities") return "AI Import - Cities";
+      if (currentPath === "/admin/ai-import/university") return "AI Import - University";
+      if (currentPath === "/admin/ai-import/campus") return "AI Import - Campus";
+      if (currentPath === "/admin/ai-import/course") return "AI Import - Course";
+      if (currentPath === "/admin/ai-import/intake") return "AI Import - Intake";
+      return "AI Import";
+    }
+    
     const currentItem = menuItems.find((item) => currentPath === item.path);
     return currentItem ? currentItem.label : "Dashboard";
   };
@@ -183,8 +246,22 @@ const AdminDashboard = ({ onLogout }) => {
     navigate(path);
   };
 
+  const handleSubmenuToggle = (itemId) => {
+    if (itemId === "ai-import") {
+      setIsAIImportOpen(!isAIImportOpen);
+    }
+  };
+
   const isActiveRoute = (path) => {
+    // Handle AI Import submenu
+    if (path === "/admin/ai-import") {
+      return location.pathname.startsWith("/admin/ai-import");
+    }
     return location.pathname === path;
+  };
+
+  const isSubmenuActive = (submenuItems) => {
+    return submenuItems.some((subItem) => location.pathname === subItem.path);
   };
 
   const renderPage = () => {
@@ -271,6 +348,21 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/profile":
       case "/admin/profile/":
         return <Profile />;
+      case "/admin/ai-import/cities":
+      case "/admin/ai-import/cities/":
+        return <AIImportCities />;
+      case "/admin/ai-import/university":
+      case "/admin/ai-import/university/":
+        return <AIImportUniversity />;
+      case "/admin/ai-import/campus":
+      case "/admin/ai-import/campus/":
+        return <AIImportCampus />;
+      case "/admin/ai-import/course":
+      case "/admin/ai-import/course/":
+        return <AIImportCourse />;
+      case "/admin/ai-import/intake":
+      case "/admin/ai-import/intake/":
+        return <AIImportIntake />;
       default:
         // Handle dynamic edit routes
         if (currentPath.startsWith("/admin/universities/edit/")) {
@@ -326,20 +418,74 @@ const AdminDashboard = ({ onLogout }) => {
         <nav className={styles["sidebar-nav"]}>
           {menuItems.map((item) => {
             const IconComponent = item.icon;
+            const hasActiveSubmenu =
+              item.hasSubmenu && isSubmenuActive(item.submenuItems);
+            const isMainItemActive =
+              isActiveRoute(item.path) || hasActiveSubmenu;
+
             return (
-              <button
-                key={item.id}
-                className={[
-                  styles["nav-item"],
-                  isActiveRoute(item.path) ? styles["active"] : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                onClick={() => handleNavClick(item.path)}
-              >
-                <IconComponent className={styles["nav-icon"]} size={20} />
-                <span className={styles["nav-label"]}>{item.label}</span>
-              </button>
+              <div key={item.id} className={styles["nav-item-container"]}>
+                <button
+                  className={[
+                    styles["nav-item"],
+                    isMainItemActive ? styles["active"] : "",
+                    item.hasSubmenu ? styles["has-submenu"] : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  onClick={() => {
+                    if (item.hasSubmenu) {
+                      handleSubmenuToggle(item.id);
+                    } else {
+                      handleNavClick(item.path);
+                    }
+                  }}
+                >
+                  <IconComponent className={styles["nav-icon"]} size={20} />
+                  <span className={styles["nav-label"]}>{item.label}</span>
+                  {item.hasSubmenu && (
+                    <span className={styles["submenu-arrow"]}>
+                      {isAIImportOpen ? (
+                        <ChevronDown size={16} />
+                      ) : (
+                        <ChevronRight size={16} />
+                      )}
+                    </span>
+                  )}
+                </button>
+
+                {item.hasSubmenu &&
+                  item.id === "ai-import" &&
+                  isAIImportOpen && (
+                    <div className={styles["submenu"]}>
+                      {item.submenuItems.map((subItem) => {
+                        const SubIconComponent = subItem.icon;
+                        return (
+                          <button
+                            key={subItem.id}
+                            className={[
+                              styles["submenu-item"],
+                              location.pathname === subItem.path
+                                ? styles["active"]
+                                : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                            onClick={() => handleNavClick(subItem.path)}
+                          >
+                            <SubIconComponent
+                              className={styles["submenu-icon"]}
+                              size={16}
+                            />
+                            <span className={styles["submenu-label"]}>
+                              {subItem.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+              </div>
             );
           })}
         </nav>
