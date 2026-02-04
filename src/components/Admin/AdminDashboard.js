@@ -23,6 +23,7 @@ import {
   ChevronRight,
   School,
   Calendar,
+  Upload,
 } from "lucide-react";
 import AdminDashboardHome from "./Dashboard/AdminDashboardHome";
 import Countries from "./Countries/Countries";
@@ -67,6 +68,7 @@ import AIImportUniversity from "./AIImport/University/University";
 import AIImportCampus from "./AIImport/Campus/Campus";
 import AIImportCourse from "./AIImport/Course/Course";
 import AIImportIntake from "./AIImport/Intake/Intake";
+import ImportEngine from "./AIImport/ImportEngine/ImportEngine";
 import styles from "../Dashboard.module.css";
 
 const AdminDashboard = ({ onLogout }) => {
@@ -215,6 +217,12 @@ const AdminDashboard = ({ onLogout }) => {
           icon: Calendar,
           path: "/admin/ai-import/intake",
         },
+        {
+          id: "ai-import-engine",
+          label: "Import Engine",
+          icon: Upload,
+          path: "/admin/ai-import/engine",
+        },
       ],
     },
     {
@@ -235,6 +243,7 @@ const AdminDashboard = ({ onLogout }) => {
       if (currentPath === "/admin/ai-import/campus") return "AI Import - Campus";
       if (currentPath === "/admin/ai-import/course") return "AI Import - Course";
       if (currentPath === "/admin/ai-import/intake") return "AI Import - Intake";
+      if (currentPath === "/admin/ai-import/engine") return "Import Engine";
       return "AI Import";
     }
     
@@ -363,6 +372,9 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/ai-import/intake":
       case "/admin/ai-import/intake/":
         return <AIImportIntake />;
+      case "/admin/ai-import/engine":
+      case "/admin/ai-import/engine/":
+        return <ImportEngine />;
       default:
         // Handle dynamic edit routes
         if (currentPath.startsWith("/admin/universities/edit/")) {

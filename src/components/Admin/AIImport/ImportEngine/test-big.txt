@@ -1,0 +1,2201 @@
+<h1>MA Advanced Music Technology | University of West London</h1>
+ <div>
+ <a href="#main-content">
+ <div>
+ <div>
+ Skip to main content
+ </div>
+ </div>
+ </a>
+ </div>
+ <div>
+<div>
+ <main>
+ <a tabindex="-1"></a>
+ <div>
+ <div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div></div>
+<div>
+ </div>
+<div>
+<article :class="courseClassObject">
+<div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div><div>
+ </div>
+</div>
+ </div></div>
+ <div>
+ <div>
+ <div><div>
+ </div>
+</div>
+ </div></div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <ul>
+ <li>Postgraduate</li>
+ </ul>
+ </div>
+<div>
+ <h1>
+ <span>MA Advanced Music Technology</span>
+ </h1>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+<div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <template>
+ <div class="custom-select-wrapper u-relative">
+ <select id="studyOptionSelect" class="custom-select custom-select-sm" v-model.number="selectedStudyOption" @change="studyOptionSelected()">
+ <option v-for="studyOption in possibleStudyOptions" v-bind:value="studyOption.id" :selected="studyOption.id === selectedStudyOption">{{ studyOption.name }}</option>
+ </select>
+ </div>
+ </template>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <span>
+ </span>
+</div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <span>
+ </span>
+</div>
+ </div>
+ </div>
+ <div :class="{'u-hidden':!currentVariantData.field_p_cv_ucas_code}">
+ <template>
+ <div data-will-change="">
+<cti-copy-input id="ucasCode" :value="currentVariantData.field_p_cv_ucas_code" label="UCAS code" v-bind:small="true"></cti-copy-input>
+ </div>
+ </template>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <ul>
+ <li><a href="#title-bar"></a></li>
+ <li><a href="#overview">Overview</a></li>
+ <li><a href="#detail">Course details</a></li>
+ <li><a href="#students">Our students</a></li>
+ <li><a href="#entry-and-fees">Entry and fees</a></li>
+ <li><a href="#facilities">Facilities</a></li>
+ <li><a href="#progression">Careers</a></li>
+ <li>
+ <a href="#staff">Teaching staff</a>
+ </li>
+ <li>
+ <a href="#staff">Teaching staff</a>
+ </li>
+ <li>
+ <a href="#recently-viewed">Recently viewed</a>
+ </li>
+ <li>
+ <a href="#related">Related courses</a>
+ </li>
+ <li>
+ <a href="#why"></a>
+ <a href="#life"></a>
+ </li>
+ </ul>
+ </div>
+ <div>
+ <template>
+<a class="sm:u-flex-1 sm:u-whitespace-no-wrap u-text-medium xl:u-text-small lxl:u-text-medium btn btn-tertiary btn-sm" id="apply-button-desktop" aria-label="How to apply" href="#apply">
+ How to apply
+ </a>
+ </template>
+<a href="https://www.uwl.ac.uk/whats-on?category=247">
+ Register for open day
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <template>
+ <div class="custom-select-wrapper u-relative">
+ <select id="stickyStudyOptionSelect" class="custom-select custom-select-sm" v-model.number="selectedStudyOption" @change="studyOptionSelected()">
+ <option v-for="studyOption in possibleStudyOptions" v-bind:value="studyOption.id" :selected="studyOption.id === selectedStudyOption">{{ studyOption.name }}</option>
+ </select>
+ </div>
+ </template>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <template>
+<a class="sm:u-flex-1 sm:u-whitespace-no-wrap u-text-medium xl:u-text-small lxl:u-text-medium btn btn-tertiary btn-sm" id="apply-button-mobile" aria-label="How to apply" href="#apply">
+ How to apply
+ </a>
+ </template>
+<a href="https://www.uwl.ac.uk/whats-on?category=247">
+ Register for open day
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ <div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Overview
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Overview
+ </h2>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div><p>Would you like to expand the range of your music technology capabilities and explore new techniques?</p><p>This Masters in music technology will equip you with a broad range of skills – not only in music technology, but also in related media like video, electronic composition and performance, and software design. Your technical mastery of the latest hardware and software will make you attractive to a wide range of potential employers.&nbsp;</p><p>The University of West London is home to one of the largest audio complexes in Europe, enabling you to learn on some of the best equipment&nbsp;in the industry.&nbsp;&nbsp;&nbsp;</p><p>With the help of our highly experienced staff, who are actively engaged in the music industry,&nbsp;you will cover everything from digital audio interface design to multi-track recording and mixing for surround sound.</p><p>You will also create your own personal development plan and learn how to conduct Masters-level research into specific aspects of music production.</p></div>
+ </div>
+ </div>
+ <div>
+<div>
+ <div>
+ Why study this course?
+ </div>
+ <div>
+ <div>
+ <div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+<div>
+ 80% of our research is rated as world-leading (4*) or internationally excellent (3*) in the latest Government Research Excellence Framework (REF) assessment
+ </div>
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+<div>
+ Undertake a major independent research project on an agreed topic, under the supervision of an academic expert
+ </div>
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+<div>
+ Develop your network and get career-ready with our strong links in the sector and specialist, life-long careers advice
+ </div>
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+<div>
+ Draw on the research and expertise within our specialist research centres
+ </div>
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ <div>
+ <p>Select your desired study option, then pick a start date to
+ see relevant course information:</p>
+ <div>
+ <div>
+ <span>
+ Study options:
+ </span>
+ <div>
+<details>
+ <summary>
+ </summary>
+ <div>
+ <div></div>
+ We support flexible study by offering some of our courses part-time or via distance learning. To give you real world experience before you graduate, we also offer some courses with a placement or internship. All available options are listed here. Your choices may affect some details of your course, such as the duration and cost per year. Please re-check the details on this page if you change your selection.
+ </div>
+</details>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+ <div>
+ <p>Start date:</p>
+ <div>
+ </div>
+ </div>
+ <p>If your desired start date is not available,
+ try selecting a different study option.</p>
+</div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Course details
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ What you'll study
+ </h2>
+ </div>
+ <div>
+ <div>
+ <div>
+ </div>
+ <div>
+ <div><p>Gain the knowledge and technical skills that you need to work in a cutting-edge creative-audio and sound-engineering field, from music production to sound design, 3-D audio to sonic art, and software development to audio for games.&nbsp;</p><p>AI approaches are embedded into many of the modules - from tailored use of large-language models to empower research to bespoke music-creation/production tools that inspire enhanced creative practice - graduates will be equipped to embrace the rapid technological advances that will shape their future careers.</p><p>This course focuses on topics from advanced music production to the evolving arena of 3-D mixing and recording. It also encompasses software-interface programming and offers specialist pathways via game audio or advanced recording, taught by staff who are actively engaged in the music industry and conduct high-level academic research.</p><p>Our studios are meticulously designed to meet professional specifications, giving you the opportunity to work on both digital and analogue consoles. There is access to Pro Tools systems with high-end plug-ins, along with other advanced sound production technologies such as, Kyma and Ambisonics to classic 2” tape. You will also have the opportunity to conduct Dolby Atmos® immersive-audio work in our 7.1.4 studios and work with the incredible Pete Townshend synthesizer collection.</p><p>Along with diverse technical opportunities, this course is designed with career progression in mind. You will graduate with an enhanced skill set that will place you at a distinct advantage when entering this competitive industry.</p></div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+<div>
+ <ul>
+ <li>
+ <a href="#t-year-1125300551-1">
+ </a>
+ </li>
+ </ul>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+</div>
+ </div>
+ </div>
+</div>
+ </div>
+ <div>
+<div>
+ <ul>
+ <li>
+ <a href="#t-year-1504445128-1">
+ </a>
+ </li>
+ </ul>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+</div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ <div>
+<div>
+ <ul>
+ <li>
+ <a href="#t-year-590657814-1">
+ Level 7
+ </a>
+ </li>
+ </ul>
+ <div>
+ <div>
+<div>
+ <div>
+ <div><p>You must take all compulsory modules and may choose one of two optional modules:&nbsp;</p><ul><li>Game Audio OR&nbsp;Approaches to Recording.</li></ul><p>Please note, we regularly review our course content to offer relevant, impactful and career-shaping learning. Therefore, the following modules are indicative and subject to change.</p></div>
+ </div>
+ <hr>
+ <div>
+ <div>
+ <h3>Compulsory modules</h3>
+ <div>
+<ul>
+<li>
+ <a href="#module--423-159652978">
+<h3>
+ <span>Interface Design for Music</span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>This module will give you a practical introduction to the software design and programming techniques involved in designing contemporary audio applications. You will focus on the Max language and its wide variety of uses, studying the theory, design and architecture of synthesizers, samplers, effects, sequencers and composition engines. You will then develop and demonstrate your own original application.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+<li>
+ <a href="#module--3304-1361024422">
+<h3>
+ <span>Immersive Audio</span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>You will explore many of the concepts, research and techniques associated with various aspects of immersive audio in a focused and detailed framework. You will study 3-D audio, through both binaural approaches when working with 360 video – typical of contemporary virtual-reality applications, and speaker-array reproduction using Dolby Atmos as is increasingly used for cinema sound.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+<li>
+ <a href="#module--744-1598851351">
+<h3>
+ <span>Interactive Music Technology</span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>You will be schooled in concepts associated with contemporary electronic sound-art, music and sound design for multi-media-installation art, interactive music software and electronic/electroacoustic composition. You will select a particular area for a research, production and performance project of your own. This project will culminate in a performance or installation involving audio technology in a public space as part of LCM’s 'Electric Music' series.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+<li>
+ <a href="#module--3302-901064523">
+<h3>
+ <span>Advanced Hybrid Production</span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>You will learn about the evolving notion of the contemporary audio producer as a reflexive, multidisciplinary and innovative sonic artist. You will engage with parallel analogue and digital, software and hardware – hybrid – production workflows (recording, sampling, synthesis, programming, mixing and mastering). You will be able to apply advanced audio techniques, pushing the expressive boundaries of the sonic medium and contextualising current practice.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+<li>
+ <a href="#module--3449-339441106">
+<h3>
+ <span>Research Methods </span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>You will be trained in research methods and critical methodology as preparation for undertaking research that supports and advances the project work in&nbsp;your course. You will define, articulate and critically reflect upon the research concerns of your own practice, thereby underpinning and enhancing your knowledge and understanding of your chosen field of study. You will present your work at the multi-disciplinary LCM postgraduate conference.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+<li>
+ <a href="#module--933-2106421575">
+<h3>
+ <span>Masters Project</span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>For this module you will undertake an ambitious and self-managed large-scale practical project on a topic of your choice. The project will be framed by a study of contemporary research around your topic, and will be designed to expand and enhance the skills and&nbsp;knowledge around a specialised area. The project makes an excellent showcase to kickstart your future career.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+ </ul>
+ </div>
+ </div>
+ <div>
+ <h3>Optional modules</h3>
+ <div>
+<ul>
+<li>
+ <a href="#module--3301-670891223">
+<h3>
+ <span>Approaches to Recording</span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>You will analyse and study methodologies, practices and positions on recorded ‘realism’ and be introduced to more experimental approaches to recording that might subvert this. You will be given the opportunity to conduct self-directed research into both development and future use of microphone &amp; recording technology via both stereo and surround microphone techniques.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+<li>
+ <a href="#module--3303-227565594">
+<h3>
+ <span>Game Audio</span>
+ </h3>
+ <div>
+ <span>
+ </span>
+ <span>
+ </span>
+ </div>
+ </a>
+ <div>
+ <div>
+ <div>
+ <div><p>This module focuses on music composition and sound design in video games. You will gain considerable practical experience in composing music and creating sound design for games using specialist game-creation software, while&nbsp;analysing and responding to the unique challenges posed in composing nonlinear and interactive music and&nbsp;sound effects.</p></div>
+ </div>
+ </div>
+ </div>
+</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Our students
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ What our students say
+ </h2>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <span>Top London university for student satisfaction - National Student Survey 25*</span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+<div>
+ <div>
+ <div>
+<div>
+ <figure>
+<div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <blockquote>
+<div>
+ <p>The facilities were fantastic, lecturers really helpful, and the extracurricular activities were brilliant! The best part of being at LCM was&nbsp;the networking opportunities. I got to liaise with industry professionals in masterclasses, and I got job opportunities from these events. My course was fantastic.</p>
+ </div>
+ </blockquote>
+ <figcaption>
+ <p>Dr Jo Lord, former student</p>
+ </figcaption>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </figure>
+</div>
+<div>
+ <figure>
+ <blockquote>
+<div>
+ <p>The facilities were fantastic, lecturers really helpful, and the extracurricular activities were brilliant! The best part of being at LCM was&nbsp;the networking opportunities. I got to liaise with industry professionals in masterclasses, and I got job opportunities from these events. My course was fantastic.</p>
+ </div>
+ </blockquote>
+ <figcaption>
+ <p>Dr Jo Lord, former student</p>
+ </figcaption>
+ </figure>
+</div>
+</div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+<div>
+ Explore student work
+ </div>
+ <div>
+ <div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ Adriaan Kasteleijn
+ </h3>
+ <div>
+ <div><div>Adriaan Kasteleijn, MA Advanced Music Technology, says: "Parallel Tides is a unique app and music composition which allows the user to explore and interact with different versions of a song in real time while they are listening to it."</div><div>&nbsp;</div></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ </div>
+</div>
+ </div>
+ </div>
+</div>
+</div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ Madeline Ratnavale
+ </h3>
+ <div>
+ <div><div><div><div><div><div><div><div><div><div><div><div><div><div><p>"To understand to what extent timbre has an emotional effect on sound art compositions, this research utilises a practice-based approach. A preliminary study, as well as further research and development, provided a base understanding of the relationship between timbre, emotion, and sound art so that the creation of the artefact would be well-informed."</p></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ </div>
+</div>
+ </div>
+ </div>
+</div>
+</div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ Pichak Siripanich - SAD Buoy
+ </h3>
+ <div>
+ <div><p>"Sonification plays an essential role in the world of the sound art installation. However, it is often underrated if the focal point of a project revolves around the human performer. Therefore, this project combines live data mining and audio processing to autonomously emphasise the sonification."</p></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ </div>
+</div>
+ </div>
+ </div>
+</div>
+</div>
+ <div><div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ <a href="/study/schools/artsfest/artsfest-music-technology">
+ <span>ARTSFEST Music Technology</span>
+ </a>
+ </h3>
+ <div>
+<p>
+ Welcome to Music Technology. Explore a diverse and exciting range of outcomes from our students.
+ </p>
+ </div>
+ </div>
+ </div>
+ <div>
+<a href="/study/schools/artsfest/artsfest-music-technology" tabindex="-1">
+ <span>ARTSFEST Music Technology</span>
+ </a>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+ </div>
+ <div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Entry and fees
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Entry and fees
+ </h2>
+ </div>
+<div>
+ <div>
+ <div>
+<h2>
+ Entry requirements
+ </h2>
+ </div>
+ <ul>
+ <li>
+ <a href="#t-requirements-1">
+ <span>Requirements: </span>
+ UK
+ </a>
+ </li>
+ <li>
+ <a href="#t-requirements-2">
+ <span>Requirements: </span>
+ International
+ </a>
+ </li>
+ </ul>
+ <div>
+ <div>
+ <div>
+<div>
+ <div>
+ <div>
+ <div><p>You should have an honours degree (2:1 or above) in music technology or a related subject from a UK university or equivalent. We may also offer you a place based on substantial industry experience or training, normally from within the work environment. All applications are considered individually.&nbsp;</p><p><a href="https://www.uwl.ac.uk/students/undergraduate/accreditation-of-prior-learning#APEL">Find out more about our processes for recognising previous experience</a>.</p></div>
+ </div>
+ <div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div><p>On your application form, highlight the full range of your music technology endeavours, for example:</p>
+<ul>
+ <li>live recording</li>
+ <li>production</li>
+ <li>software programming</li>
+ <li>studio work.</li>
+</ul>
+<p>Give as many details as you can in relation to why you would like to study this course, as well as any other relevant activities, for instance: your compositions,&nbsp;performances or industrial experience.</p>
+<p>Mature students should highlight previous employment that may positively impact on their application, for example if you have been working in areas of the music industry or even relevant ‘hobbyist’ activities.</p>
+<p>After initial application, you will be asked to submit an audio portfolio that best represents the full range of your relevant achievements. Prepare for this in advance, and choose only the best example of each type of work that you have undertaken. Examples might be:</p>
+<ul>
+ <li>1 x studio production where your role was producer</li>
+ <li>1 x live recording when you acted as sound engineer&nbsp;</li>
+ <li>1 x video clip where you dealt with some part of the audio&nbsp;</li>
+ <li>1 x track where you acted as programmer.</li>
+</ul>
+<p>Represent your own specific profile. Work in contrasting genres is encouraged for submission. Ensure that you submit an accompanying text that explains your particular role in each project, and highlights areas of which you are particularly proud.</p>
+<p>If your application is successful and you are offered a place, accept promptly to secure the place.</p></div>
+ </div>
+</div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ <div>
+ <div>
+<div>
+ <div>
+ <div>
+<article>
+ <div>
+ <div>
+ <div>
+ <div>
+ <span>6.5</span>
+ <span>
+ <abbr title="International English Language Testing System">IELTS</abbr> or above
+ </span>
+ </div>
+ </div>
+ <div>
+ <div><p>You need to meet our English language requirement of 6.5 overall score for&nbsp;IELTS, with a minimum of 5.5 for each of the 4 individual components (Reading, Writing, Speaking and Listening). Visit our <a href="/international/your-country/english-language-requirements">English language requirements page</a> for information on other English language tests we accept.</p>
+<p>You also need academic qualifications at the same level as UK applicants. In some countries where teaching is in English, we may accept local qualifications. <a href="http://www.uwl.ac.uk/international/your-country">Check for local equivalents</a>.</p>
+<p>We offer pre-sessional English language courses if you do not meet these requirements. <a href="https://www.uwl.ac.uk/international/english-language-programmes">Find out more about our English Language courses</a>.</p></div>
+ </div>
+ </div>
+ </div>
+</article>
+ </div>
+ <div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div><p>On your application form, highlight the full range of your music technology endeavours, for example:</p>
+<ul>
+ <li>live recording</li>
+ <li>production</li>
+ <li>software programming</li>
+ <li>studio work.</li>
+</ul>
+<p>Give as many details as you can in relation to why you would like to study this course, as well as any other relevant activities, for instance: your compositions,&nbsp;performances or industrial experience.</p>
+<p>Mature students should highlight previous employment that may positively impact on their application, for example if you have been working in areas of the music industry or even relevant ‘hobbyist’ activities.</p>
+<p>After initial application, you will be asked to submit an audio portfolio that best represents the full range of your relevant achievements. Prepare for this in advance, and choose only the best example of each type of work that you have undertaken. Examples might be:</p>
+<ul>
+ <li>1 x studio production where your role was producer</li>
+ <li>1 x live recording when you acted as sound engineer&nbsp;</li>
+ <li>1 x video clip where you dealt with some part of the audio&nbsp;</li>
+ <li>1 x track where you acted as programmer.</li>
+</ul>
+<p>Represent your own specific profile. Work in contrasting genres is encouraged for submission. Ensure that you submit an accompanying text that explains your particular role in each project, and highlights areas of which you are particularly proud.</p>
+<p>If your application is successful and you are offered a place, accept promptly to secure the place.</p></div>
+ </div>
+</div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+<div>
+ <div>
+ <div>
+<h2>
+ Fees &amp; funding
+ </h2>
+ </div>
+ <ul>
+ <li>
+ <a href="#t-funding-1">
+ <span>Funding: </span>
+ UK
+ </a>
+ </li>
+ <li>
+ <a href="#t-funding-2">
+ <span>Funding: </span>
+ International
+ </a>
+ </li>
+ </ul>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <span>
+ {{ formatCurrencyValue(currentVariantData.field_p_cv_uk_eu_main_fee.name) }}
+ </span>
+ <span>per year<sup>†</sup></span>
+ </div>
+ </div>
+ <div>
+ <div><div>
+ <div><p>Please note:</p><ul><li>Fees for the 2026/27 academic year and onwards may be subject to Government regulation and change.</li><li>Tuition fees are charged for each year of your course. If your course runs for two years or more, you will need to pay the fee for each academic year at the start of that year.</li><li>If your course runs for less than two years, the cost above is for your full course and you will need to pay the full fee upfront.</li><li>If no fee is shown above then the fees for this course are not available yet. Please check again later for updates.</li></ul></div>
+</div>
+</div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+<h3>
+ Funding your studies
+ </h3>
+<div>
+ <div><p>If you are studying a Masters course you may be eligible to apply for a&nbsp;<a href="https://www.gov.uk/masters-loan/what-youll-get">Postgraduate Loan</a>, this may help contribute towards your&nbsp;course&nbsp;fees&nbsp;and living costs.</p>
+<p>Additional funding is available to some types of students, such as disabled students or those with dependants.</p>
+<p>We offer a range of <a href="/courses/postgraduate-study/fees-and-funding/scholarships-and-bursaries">scholarships and bursaries</a>, including awards for specific subjects.</p>
+<p><a href="https://www.uwl.ac.uk/courses/undergraduate-study/fees-and-funding/bursaries-and-scholarships?f%5B0%5D=scholarship_type%3APostgraduate&amp;f%5B1%5D=subject%3AActing%2C%20Music%20and%20Performing%20Arts">Awards for music students are also on offer.</a></p>
+<p>View&nbsp;full details, including conditions and eligibility.</p></div>
+</div>
+<div> <a href="https://www.uwl.ac.uk/courses/postgraduate-study/fees-and-funding">
+ <div> Help with funding
+ </div> </a>
+</div></div>
+ </div>
+ <div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <span>
+ {{ formatCurrencyValue(currentVariantData.field_p_cv_int_main_fee.name) }}
+ </span>
+ <span>per year<sup>†</sup></span>
+ </div>
+ </div>
+ <div>
+ <div><div>
+ <div><p>Please note:</p><ul><li>Fees for the 2026/27 academic year and onwards may be subject to Government regulation and change.</li><li>Tuition fees are charged for each year of your course. If your course runs for two years or more, you will need to pay the fee for each academic year at the start of that year.</li><li>If your course runs for less than two years, the cost above is for your full course and you will need to pay the full fee upfront.</li><li>If no fee is shown above then the fees for this course are not available yet. Please check again later for updates.</li></ul></div>
+</div>
+</div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+<h3>
+ International students - funding your studies
+ </h3>
+<div>
+ <div><p>We offer <a href="https://www.uwl.ac.uk/international/fees-and-funding/international-scholarships-and-bursaries">scholarships for international students</a> including International Ambassador Scholarships.&nbsp;</p><p>Further information about funding and financial support for international students is available from the <a href="https://www.ukcisa.org.uk/student-advice/find-your-fee-status/">UK Council for International Student Affairs</a>.</p><p>&nbsp;</p></div>
+</div>
+<div> <a href="https://www.uwl.ac.uk/international/fees-and-scholarships/financial-support">
+ <div> Financial support for international students
+ </div> </a>
+</div></div>
+ </div>
+ <div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Facilities
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Facilities
+ </h2>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ Music facilities
+ </h3>
+ <div>
+ <div><div><div><div><div><div><div><div><p>Explore the range of excellent facilities on offer to our students within the London College of Music, from performance spaces to the brand new Townshend Studio.</p></div></div></div></div></div></div></div></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ </div>
+</div>
+ </div>
+ </div>
+</div>
+</div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ At a glance
+ </h3>
+ <div>
+ <div><p>Our specialist music technology facilities include:</p><ul><li>18 professionally designed studios</li><li>nine live rooms</li><li>10 large format analogue consoles with extensive outboard equipment</li><li>five professional-standard performance and recording spaces</li><li>five DiGiCo Live consoles</li><li>full Dante / Rednet integration across the entire site</li><li>64 channel location recording facilities</li><li>three Mac labs with 24 hour access</li><li>comprehensive range of microphones and backline</li><li>Steinway pianos throughout the school (37 in total)</li><li>links to multiple London venues for performances and recitals.</li></ul></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ Paragon Annex Studios
+ </h3>
+ <div>
+ <div><p>Our newest facilities, the Paragon Annex Studios are useful for a wide range of tasks – from tracking live bands, to recording Foley, to mixing in Dolby Atmos.</p><p>Each studio comes with extensive outboard systems a variety of digital and analogue synths and an extensive mic stock, giving you the best tools to create your recordings.&nbsp;</p><p>All tracking rooms enjoy access to one of three shared live rooms of varying sizes, with a Steinway Baby Grand in the largest room, which is fully capable of accommodating a full band.&nbsp;</p><p>Watch <a href="https://www.youtube.com/playlist?list=PLC3s5EMBupSjxMt_DOcCjccteFNtrnSjf"><strong><u>video tours of all seven Paragon Annex Studios</u></strong></a> on our LCM YouTube page.</p></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ Vestry Hall
+ </h3>
+ <div>
+ <div><p><strong>Studio 1: </strong>This studio represents a dedication to quality signal-path and a combination of classic and contemporary recording capabilities.</p><p>Facilities include:</p><ul><li>Custom Series-75 Neve console</li><li>Otari MTR90 Mk2 24-track 2” analogue tape recorder,</li><li>Pro Tools HDX with Apogee Symphony AD/DA and monitoring by ATC and Amphion.</li></ul><p><strong>Studio 2:</strong>&nbsp;Recently rebuilt, this studio is designed around a 17-channel 3D speaker array, capable of both Dolby Atmos and Auro 3D® monitoring.</p><p>Extensive outboard and synth/sampling hardware plus flexible speaker array make this studio a collaborative and experimental-audio powerhouse.</p><p>The studio is connected to Vestry Hall, a large orchestral recording space, and a separate, fully isolated, drum and amplified-instrument live room.</p></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+ <div>
+<div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ St Mary’s Road Basement Studios
+ </h3>
+ <div>
+ <div><p>These rooms feature either a Digidesign C24 control surface or an Audient ASP 8024 analogue recording console. They are also equipped with Pro Tools HDX and Focusrite RedNet IO hardware for high-end AD/DA.</p><p>Each studio has its own Dynamic and Condenser Microphone kits of a professional standard, giving you the best tools to create your recordings.</p><p>All tracking rooms enjoy access to live rooms of varying sizes and many feature multiple isolated booths which feature acoustic pianos by Steinway.</p></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+ <div><div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ <a href="/study/study-facilities/the-townshend-studio">
+ <span>The Townshend Studio</span>
+ </a>
+ </h3>
+ <div>
+<p>
+ The Townshend Studio is a creative music lab facilitating learning, experimentation, collaboration and performance.
+ </p>
+ </div>
+ </div>
+ </div>
+ <div>
+<a href="/study/study-facilities/the-townshend-studio" tabindex="-1">
+ <span>The Townshend Studio</span>
+ </a>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+ <div><div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ <a href="/study/study-facilities/music-technology-facilities">
+ <span>Music technology facilities</span>
+ </a>
+ </h3>
+ <div>
+<p>
+ Explore one of the largest studio complexes in Europe and learn more about our fantastic range of music technology facilities at the London College of Music.<br>
+<br>
+ </p>
+ </div>
+ </div>
+ </div>
+ <div>
+<a href="/study/study-facilities/music-technology-facilities" tabindex="-1">
+ <span>Music technology facilities</span>
+ </a>
+ </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+</div>
+ </div>
+ <div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Your future career
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Your future career
+ </h2>
+ </div>
+ <div>
+ <div><p>The skills you acquire will give you a career advantage, whether you plan to enter the competitive and constantly evolving music industry in any of several specialist directions or a portfolio career, or set out on a career in academic research.&nbsp;</p><p>Several music technology graduates from our course have gone on to be nominated for and win Grammys, Emmys and an Oscar; contribute to major movie and TV soundtracks, and have joined companies such as EA Sports, BBC, MTV and CNN.&nbsp;</p><p>You may also want to explore a related area of study at postgraduate level. Please see our <a href="https://www.uwl.ac.uk/academic-schools/music/courses-subject-areas/postgraduate-courses">full list of further study options</a>.</p></div>
+ <div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ One-to-one, life-long careers support
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ Career-focused modules
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ Taught by lecturers with industry experience
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ Build your portfolio
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ Support with CV and interview skills
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ Industry connections
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ Alumni networking events
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ </div>
+ <div>
+ Guest lectures and seminars with industry experts
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ </div>
+<div>
+<section>
+ <div>
+ <div>
+ <div><h3>Job roles</h3><ul><li>producer</li><li>writer-producer</li><li>product developer</li><li>remixer</li><li>head of audio </li><li>involved in music higher education </li><li>house engineer</li><li>live sound engineer</li><li>sound designer/composer</li><li>academic researcher.</li></ul></div>
+ </div>
+ <div>
+ <div>
+ <div><h3>Graduate roles and employers</h3><ul><li>founder and CEO of 3D audio company 1.618 Digital (whose clients include Google, Comic Relief and Ford) &nbsp;</li><li>head of audio at RAW Video (who has worked with, among others, Florence and the Machine, Hot Chip, Beverley Knight and Sigur Ros, and for clients including MTV, XL Recordings and Channel 4) &nbsp;</li><li>head of higher education for Tech Music Schools &nbsp;</li><li>house engineer and producer at Pocket Studios, Toronto &nbsp;</li><li>live sound engineer for the Oscars &nbsp;</li><li>producer for Imagine Dragons, Britney Spears, Li’l Wayne, Dr Dre, Eminem and Rihanna </li><li>producer for Christina Aguilera and Tinie Tempah</li><li>producer of orchestral sessions for films, including the Harry Potter series</li><li>product developer for FXpansion </li><li>remixer for Beyoncé </li><li>sound designer/composer for EA Games, Shanghai</li><li>work with Placebo, Radiohead, Snow Patrol, Radiohead, Kendrick Lamar, Pharrell Williams and Dido</li><li>writer-producer for Bono, Nicole Scherzinger, 50 Cent, Alesha Dixon and Dr Dre.</li></ul></div>
+ </div>
+ </div>
+ </div>
+</section>
+<section>
+ <div>
+ <div>
+ <div><div><h3>MA Advanced Music Technology alumni</h3></div><p><br>The London College of Music stands at the forefront of the academic study of music technology and record production.&nbsp;</p><p>On graduation, you will join the ranks of our successful alumni, including:&nbsp;</p><ul><li><strong>Sam Wheat </strong>- music producer, songwriter and mixer. Has worked with: Pharrell Williams, Rihanna, Paloma Faith, John Legend, Amy Winehouse, Van Morrison, Ellie Goulding, Foals and The Rolling Stones. Has won a Grammy with Kendrick Lamar and an Oscar with Common and John Legend.</li><li><strong>Phelan Kane</strong> - programmer, producer and engineer. Has worked with: Placebo, Dido, Snow Patrol, Beggars Banquet and Boy George.</li><li><strong>Alex da Kid</strong> - musician, record producer, songwriter and record executive. Has worked with: Rihanna, Imagine Dragons, Christina Aguilera, Skylar Grey, Eminem, Dr Dre and Nicki Minaj. Has multiple Grammy nominations.</li><li><strong>Roland Shaw</strong> - sound design: VR, games and film. Has worked on: Half Life: Alyx, Dota 2, Team Fortress 2 and Alice: Madness Returns. Music &amp; Sound Awards 2021 finalist for Half Life: Alyx.</li><li><strong>Ryan Wilkins</strong> - CEO of Raw London. Has worked with: Florence and the Machine, Lily Allen, Beverly Knight, Babyshambles, Keane, Katy Perry, The Drums, Hot Chip, Sigur Rós and The Kooks. Has also worked with companies such as Twitter, Vodafone, Save the Children and Marie Curie.</li><li><strong>Oliver Kadel</strong> - founder and head of audio at 1.618 Digital. Clients include: Ford, HSBC, Google, PWC, FIFA, JCDecaux, O2 Academy. Won&nbsp;two Emmy Awards&nbsp;for Micro Monsters with David Attenborough.</li><li><strong>Steve Massey</strong> - audio engineer, composer and owner of Freezabox Records. Has worked with Robbie Williams, Primal Scream, Beady Eye and Jarvis Cocker. Clients include the BBC.</li><li><strong>Laura Beck</strong> - sound engineer at British Grove Studios. Has worked with Robbie Williams, Anne Dudley, and Paloma Faith, and was Grammy-nominated for the Prince of Egypt.</li><li><strong>Martin Knight</strong> –&nbsp;producer, engineer, mixer, live-sound engineer. Has worked with Bastille, New Order, Katie Melua, Gary Numan, Pixie Lott, Steve Hackett. Has won a Grammy with Snarky Puppy.</li></ul></div>
+ </div>
+ </div>
+</section>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Teaching staff
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Teaching staff
+ </h2>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Teaching staff
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Teaching staff
+ </h2>
+ </div>
+ <div>
+<div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+<h3>
+ <span>Professor Justin Paterson</span>
+ </h3>
+ <strong>Course Leader</strong>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div><p>I am a Professor of Music Production at the London College of Music. My research has an international profile and has ranged from interactive music-app design to music-production techniques in mixed reality. I have led several research project funded by the AHRC and Innovate UK, and chair the Innovation in Music conference series (http://www.musicinnovation.co.uk/), and I am also an active professional music producer.</p></div>
+ </div>
+ <div>
+ <a>View more</a>
+ </div>
+ </div>
+ <div>
+<div>
+ <div>
+ <div>
+ <div><p>I am a Professor of Music Production at the London College of Music. My research has an international profile and has ranged from interactive music-app design to music-production techniques in mixed reality. I have led several research project funded by the AHRC and Innovate UK, and chair the Innovation in Music conference series (http://www.musicinnovation.co.uk/), and I am also an active professional music producer.</p></div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ <div>
+<div> <a href="/staff/justin-paterson">
+ <div> View full profile
+ </div> </a>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+<div>
+<cti-content-expander-vue :initial-items="4" :total-items="6" wrapper-id="staff_list" offset-id="">
+ <template slot="initial">
+ <li class="u-flex col-12 col-md-6 col-lg-4 col-xl-3 u-mb-1 lg:u-mb-4">
+<div aria-label="Antonio Castells-Delgado" class="card card--profile-card group u-flex u-w-full u-h-full u-bg-white u-text-black u-overflow-hidden u-justify-end hover:u-shadow u-transition u-flex-col" data-bg-add-classes="{&quot;white,light_grey,grey_gradient&quot;:&quot;u-border u-border-grey-50&quot;}" data-card="">
+ <div class="card__text u-relative u-flex u-flex-1 u-flex-col u-h-full u-p-4" data-remove-classes-ie11="u-flex u-flex-1 u-flex-col u-h-full">
+ <div class="u-flex u-flex-row u-items-center u-flex-1">
+ <div class="u-flex u-flex-col u-self-start u-flex-1 u-w-full" data-remove-classes-ie11="u-flex u-flex-col u-self-start u-flex-1">
+<h3 class="u-text-h6 xl:u-text-h5 u-mb-2 u-font-bold">
+ <a href="/staff/antonio-castells-delgado" class="link u-no-underline u-text-black">
+ <span>Antonio Castells-Delgado</span>
+ </a>
+ </h3>
+ </div>
+ </div>
+ <div class="fancy-link-wrapper u-mt-3">
+<div class="link--fancy u-select-none u-font-extra-bold"> <a href="/staff/antonio-castells-delgado" aria-label="Antonio Castells-Delgado" class="link u-no-underline u-max-w-full" tabindex="-1" aria-hidden="true">
+ <div> View full profile
+ </div> </a>
+</div> </div>
+ </div>
+ </div>
+ </li>
+ <li class="u-flex col-12 col-md-6 col-lg-4 col-xl-3 u-mb-1 lg:u-mb-4">
+<div aria-label="Dr Bartosz Szafranski" class="card card--profile-card group u-flex u-w-full u-h-full u-bg-white u-text-black u-overflow-hidden u-justify-end hover:u-shadow u-transition u-flex-col" data-bg-add-classes="{&quot;white,light_grey,grey_gradient&quot;:&quot;u-border u-border-grey-50&quot;}" data-card="">
+ <div class="card__text u-relative u-flex u-flex-1 u-flex-col u-h-full u-p-4" data-remove-classes-ie11="u-flex u-flex-1 u-flex-col u-h-full">
+ <div class="u-flex u-flex-row u-items-center u-flex-1">
+ <div class="u-flex u-flex-col u-self-start u-flex-1 u-w-full" data-remove-classes-ie11="u-flex u-flex-col u-self-start u-flex-1">
+<h3 class="u-text-h6 xl:u-text-h5 u-mb-2 u-font-bold">
+ <a href="/staff/bartosz-szafranski" class="link u-no-underline u-text-black">
+ <span>Dr Bartosz Szafranski</span>
+ </a>
+ </h3>
+ </div>
+ </div>
+ <div class="fancy-link-wrapper u-mt-3">
+<div class="link--fancy u-select-none u-font-extra-bold"> <a href="/staff/bartosz-szafranski" aria-label="Dr Bartosz Szafranski" class="link u-no-underline u-max-w-full" tabindex="-1" aria-hidden="true">
+ <div> View full profile
+ </div> </a>
+</div> </div>
+ </div>
+ </div>
+ </li>
+ <li class="u-flex col-12 col-md-6 col-lg-4 col-xl-3 u-mb-1 lg:u-mb-4">
+<div aria-label="Dr Daniel Pratt" class="card card--profile-card group u-flex u-w-full u-h-full u-bg-white u-text-black u-overflow-hidden u-justify-end hover:u-shadow u-transition u-flex-col" data-bg-add-classes="{&quot;white,light_grey,grey_gradient&quot;:&quot;u-border u-border-grey-50&quot;}" data-card="">
+ <div class="card__text u-relative u-flex u-flex-1 u-flex-col u-h-full u-p-4" data-remove-classes-ie11="u-flex u-flex-1 u-flex-col u-h-full">
+ <div class="u-flex u-flex-row u-items-center u-flex-1">
+ <div class="u-flex u-flex-col u-self-start u-flex-1 u-w-full" data-remove-classes-ie11="u-flex u-flex-col u-self-start u-flex-1">
+<h3 class="u-text-h6 xl:u-text-h5 u-mb-2 u-font-bold">
+ <a href="/staff/daniel-pratt" class="link u-no-underline u-text-black">
+ <span>Dr Daniel Pratt</span>
+ </a>
+ </h3>
+ </div>
+ </div>
+ <div class="fancy-link-wrapper u-mt-3">
+<div class="link--fancy u-select-none u-font-extra-bold"> <a href="/staff/daniel-pratt" aria-label="Dr Daniel Pratt" class="link u-no-underline u-max-w-full" tabindex="-1" aria-hidden="true">
+ <div> View full profile
+ </div> </a>
+</div> </div>
+ </div>
+ </div>
+ </li>
+ <li class="u-flex col-12 col-md-6 col-lg-4 col-xl-3 u-mb-1 lg:u-mb-4">
+<div aria-label="Professor Simon Zagorski-Thomas" class="card card--profile-card group u-flex u-w-full u-h-full u-bg-white u-text-black u-overflow-hidden u-justify-end hover:u-shadow u-transition u-flex-col" data-bg-add-classes="{&quot;white,light_grey,grey_gradient&quot;:&quot;u-border u-border-grey-50&quot;}" data-card="">
+ <div class="card__text u-relative u-flex u-flex-1 u-flex-col u-h-full u-p-4" data-remove-classes-ie11="u-flex u-flex-1 u-flex-col u-h-full">
+ <div class="u-flex u-flex-row u-items-center u-flex-1">
+ <div class="u-flex u-flex-col u-self-start u-flex-1 u-w-full" data-remove-classes-ie11="u-flex u-flex-col u-self-start u-flex-1">
+<h3 class="u-text-h6 xl:u-text-h5 u-mb-2 u-font-bold">
+ <a href="/staff/simon-zagorski-thomas" class="link u-no-underline u-text-black">
+ <span>Professor Simon Zagorski-Thomas</span>
+ </a>
+ </h3>
+ </div>
+ </div>
+ <div class="fancy-link-wrapper u-mt-3">
+<div class="link--fancy u-select-none u-font-extra-bold"> <a href="/staff/simon-zagorski-thomas" aria-label="Professor Simon Zagorski-Thomas" class="link u-no-underline u-max-w-full" tabindex="-1" aria-hidden="true">
+ <div> View full profile
+ </div> </a>
+</div> </div>
+ </div>
+ </div>
+ </li>
+ </template>
+ <template slot="extra">
+ <li class="u-flex col-12 col-md-6 col-lg-4 col-xl-3 u-mb-1 lg:u-mb-4">
+<div aria-label="Larry Whelan" class="card card--profile-card group u-flex u-w-full u-h-full u-bg-white u-text-black u-overflow-hidden u-justify-end hover:u-shadow u-transition u-flex-col" data-bg-add-classes="{&quot;white,light_grey,grey_gradient&quot;:&quot;u-border u-border-grey-50&quot;}" data-card="">
+ <div class="card__text u-relative u-flex u-flex-1 u-flex-col u-h-full u-p-4" data-remove-classes-ie11="u-flex u-flex-1 u-flex-col u-h-full">
+ <div class="u-flex u-flex-row u-items-center u-flex-1">
+ <div class="u-flex u-flex-col u-self-start u-flex-1 u-w-full" data-remove-classes-ie11="u-flex u-flex-col u-self-start u-flex-1">
+<h3 class="u-text-h6 xl:u-text-h5 u-mb-2 u-font-bold">
+ <a href="/staff/larry-whelan" class="link u-no-underline u-text-black">
+ <span>Larry Whelan</span>
+ </a>
+ </h3>
+ </div>
+ </div>
+ <div class="fancy-link-wrapper u-mt-3">
+<div class="link--fancy u-select-none u-font-extra-bold"> <a href="/staff/larry-whelan" aria-label="Larry Whelan" class="link u-no-underline u-max-w-full" tabindex="-1" aria-hidden="true">
+ <div> View full profile
+ </div> </a>
+</div> </div>
+ </div>
+ </div>
+ </li>
+ <li class="u-flex col-12 col-md-6 col-lg-4 col-xl-3 u-mb-1 lg:u-mb-4">
+<div aria-label="Dr Paula Wolfe" class="card card--profile-card group u-flex u-w-full u-h-full u-bg-white u-text-black u-overflow-hidden u-justify-end hover:u-shadow u-transition u-flex-col" data-bg-add-classes="{&quot;white,light_grey,grey_gradient&quot;:&quot;u-border u-border-grey-50&quot;}" data-card="">
+ <div class="card__text u-relative u-flex u-flex-1 u-flex-col u-h-full u-p-4" data-remove-classes-ie11="u-flex u-flex-1 u-flex-col u-h-full">
+ <div class="u-flex u-flex-row u-items-center u-flex-1">
+ <div class="u-flex u-flex-col u-self-start u-flex-1 u-w-full" data-remove-classes-ie11="u-flex u-flex-col u-self-start u-flex-1">
+<h3 class="u-text-h6 xl:u-text-h5 u-mb-2 u-font-bold">
+ <a href="/staff/paula-wolfe" class="link u-no-underline u-text-black">
+ <span>Dr Paula Wolfe</span>
+ </a>
+ </h3>
+ </div>
+ </div>
+ <div class="fancy-link-wrapper u-mt-3">
+<div class="link--fancy u-select-none u-font-extra-bold"> <a href="/staff/paula-wolfe" aria-label="Dr Paula Wolfe" class="link u-no-underline u-max-w-full" tabindex="-1" aria-hidden="true">
+ <div> View full profile
+ </div> </a>
+</div> </div>
+ </div>
+ </div>
+ </li>
+ </template>
+</cti-content-expander-vue>
+</div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ How to apply
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ How to apply
+ </h2>
+ </div>
+ <template>
+ <ul class="tabs--inline tabs" data-responsive-accordion-tabs="accordion large-tabs" id="t-apply" data-tabs="">
+ <li v-show="currentVariantData.field_p_cv_uk_application" class="tabs-title u-z-1 u-border-b-6 u-border-l-0 u-border-r-0 u-border-solid u-border-t-0 u-transition is-active">
+ <a class="is-active u-px-3 u-text-black" href="#t-apply-1">
+ <span class="u-visually-hidden">How to apply: </span>
+ UK
+ </a>
+ </li>
+ <li v-show="currentVariantData.field_p_cv_eu_int_applicatition" class="tabs-title u-z-1 u-border-b-6 u-border-l-0 u-border-r-0 u-border-solid u-border-t-0 u-transition">
+ <a class="u-px-3 u-text-black" href="#t-apply-2">
+ <span class="u-visually-hidden">How to apply: </span>
+ International
+ </a>
+ </li>
+ </ul>
+ <div class="tabs-content" data-tabs-content="t-apply">
+ <div class="tabs-panel is-active" id="t-apply-1">
+ <div class="u-mt-2 lg:u-mt-4">
+ <div v-cloak="" data-will-change="" data-variant="" data-variant-id="108132" v-show="currentVariant == 108132">
+ <div class="field field--name-field-p-cv-uk-application field--type-entity-reference field--label-hidden field__items">
+ <div class="field__item">
+<article aria-label="PG-UK">
+ <div>
+ <div class="row u-gap-y-3 lg:u-gap-y-0">
+ <div class="col-lg-8">
+ <div class="u-o-3">
+ <div class="u-o-4 md:u-o-6 lg:u-o-6">
+ <div><div class="cti-media-banner">
+ <div>
+<img loading="lazy" src="/sites/uwl/files/styles/16_by_9_960_x_540/public/2025-11/how-to-apply-pg.jpg?h=5482203a&amp;itok=v41zBOG_" width="960" height="540" alt="A woman making an application on her laptop" class="img u-w-full lazyload">
+ </div>
+</div>
+</div>
+ </div>
+ <div class="u-bg-white u-px-4 u-py-3">
+ <div class="text-long--headings-h5 text-long u-max-w-measure-lg u-leading-normal">
+ <p>You can apply online at any time by following the 'Apply now' link.</p><p>Our application form will ask you for some information about:</p><ul><li>what you want to study</li><li>your previous qualifications or experience</li><li>your references</li><li>how we can contact you.</li></ul><p>Want to ask us a question first? We would love to hear from you.&nbsp;</p><ul><li>Call us free on <a href="tel:08000368888"><u>0800 036 8888</u></a><br>&nbsp;</li><li>Email us at <a href="mailto:courses@uwl.ac.uk"><u>courses@uwl.ac.uk</u></a></li></ul>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="col-lg-4">
+ <div class="u-o-3">
+<div class="application-cta-column u-bg-primary has-dark-bg u-flex u-flex-col u-p-4 u-h-full u-text-white" data-remove-classes-ie11="u-flex u-flex-col">
+ <div class="text-long u-leading-normal">
+ <h3>We're here to help</h3>
+ <p>Any questions about a course or studying at UWL?</p><p>We're here to help - call us on&nbsp;<br><span class="u-text-large"><strong>+44 (0)20 8231 2468</strong></span><br>(Monday - Friday, 10am - 4pm GMT)</p><p>Or email us anytime:</p>
+ <div>
+ <a href="mailto:courses@uwl.ac.uk" class="u-font-bold u-text-large link">
+ courses@uwl.ac.uk
+ </a>
+ </div>
+ </div>
+</div>
+<div aria-label="PG-UK">
+ <div class="lg:u-mb-3 ">
+ <div class="u-mb-2">
+ <div class="apply-course-box u-bg-grey-400 has-dark-bg u-text-white u-p-3 u-h-full u-justify-center u-text-center u-flex u-flex-col" data-remove-classes-ie11="u-flex u-flex-col">
+ <h3 class="u-font-bold u-mb-3 u-text-h5">Apply for this course:</h3>
+ <div class="row">
+ <div class="col">
+<a class="u-border-white btn btn-tertiary" data-track-click="" data-track-click-category="Course" data-track-click-action="Apply CTA UK" data-track-click-label="Apply now" v-bind:href="currentVariantUwlAppUrl">
+<svg class="icon u-mr-1">
+ <use xlink:href="/themes/custom/rutherford/dist/img/sprite/sprite.svg?v=0#cti--arrow-button-right"></use>
+</svg>
+ Apply now
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</article>
+</div>
+ </div>
+ </div>
+ <div v-cloak="" data-will-change="" data-variant="" data-variant-id="108133" v-show="currentVariant == 108133">
+ <div class="field field--name-field-p-cv-uk-application field--type-entity-reference field--label-hidden field__items">
+ <div class="field__item">
+<article aria-label="PG-UK">
+ <div>
+ <div class="row u-gap-y-3 lg:u-gap-y-0">
+ <div class="col-lg-8">
+ <div class="u-o-3">
+ <div class="u-o-4 md:u-o-6 lg:u-o-6">
+ <div><div class="cti-media-banner">
+ <div>
+<img loading="lazy" src="/sites/uwl/files/styles/16_by_9_960_x_540/public/2025-11/how-to-apply-pg.jpg?h=5482203a&amp;itok=v41zBOG_" width="960" height="540" alt="A woman making an application on her laptop" class="img u-w-full lazyload">
+ </div>
+</div>
+</div>
+ </div>
+ <div class="u-bg-white u-px-4 u-py-3">
+ <div class="text-long--headings-h5 text-long u-max-w-measure-lg u-leading-normal">
+ <p>You can apply online at any time by following the 'Apply now' link.</p><p>Our application form will ask you for some information about:</p><ul><li>what you want to study</li><li>your previous qualifications or experience</li><li>your references</li><li>how we can contact you.</li></ul><p>Want to ask us a question first? We would love to hear from you.&nbsp;</p><ul><li>Call us free on <a href="tel:08000368888"><u>0800 036 8888</u></a><br>&nbsp;</li><li>Email us at <a href="mailto:courses@uwl.ac.uk"><u>courses@uwl.ac.uk</u></a></li></ul>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="col-lg-4">
+ <div class="u-o-3">
+<div class="application-cta-column u-bg-primary has-dark-bg u-flex u-flex-col u-p-4 u-h-full u-text-white" data-remove-classes-ie11="u-flex u-flex-col">
+ <div class="text-long u-leading-normal">
+ <h3>We're here to help</h3>
+ <p>Any questions about a course or studying at UWL?</p><p>We're here to help - call us on&nbsp;<br><span class="u-text-large"><strong>+44 (0)20 8231 2468</strong></span><br>(Monday - Friday, 10am - 4pm GMT)</p><p>Or email us anytime:</p>
+ <div>
+ <a href="mailto:courses@uwl.ac.uk" class="u-font-bold u-text-large link">
+ courses@uwl.ac.uk
+ </a>
+ </div>
+ </div>
+</div>
+<div aria-label="PG-UK">
+ <div class="lg:u-mb-3 ">
+ <div class="u-mb-2">
+ <div class="apply-course-box u-bg-grey-400 has-dark-bg u-text-white u-p-3 u-h-full u-justify-center u-text-center u-flex u-flex-col" data-remove-classes-ie11="u-flex u-flex-col">
+ <h3 class="u-font-bold u-mb-3 u-text-h5">Apply for this course:</h3>
+ <div class="row">
+ <div class="col">
+<a class="u-border-white btn btn-tertiary" data-track-click="" data-track-click-category="Course" data-track-click-action="Apply CTA UK" data-track-click-label="Apply now" v-bind:href="currentVariantUwlAppUrl">
+<svg class="icon u-mr-1">
+ <use xlink:href="/themes/custom/rutherford/dist/img/sprite/sprite.svg?v=0#cti--arrow-button-right"></use>
+</svg>
+ Apply now
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</article>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="tabs-panel " id="t-apply-2">
+ <div class="u-mt-2 lg:u-mt-4">
+ <div v-cloak="" data-will-change="" data-variant="" data-variant-id="108132" v-show="currentVariant == 108132">
+ <div class="field field--name-field-p-cv-eu-int-applicatition field--type-entity-reference field--label-hidden field__items">
+ <div class="field__item">
+<article aria-label="PG-International">
+ <div>
+ <div class="row u-gap-y-3 lg:u-gap-y-0">
+ <div class="col-lg-8">
+ <div class="u-o-3">
+ <div class="u-o-4 md:u-o-6 lg:u-o-6">
+ <div><div class="cti-media-banner">
+ <div>
+<img loading="lazy" src="/sites/uwl/files/styles/16_by_9_960_x_540/public/2025-11/how-to-apply-pg.jpg?h=5482203a&amp;itok=v41zBOG_" width="960" height="540" alt="A woman making an application on her laptop" class="img u-w-full lazyload">
+ </div>
+</div>
+</div>
+ </div>
+ <div class="u-bg-white u-px-4 u-py-3">
+ <div class="text-long--headings-h5 text-long u-max-w-measure-lg u-leading-normal">
+ <p>You can apply online at any time by following the link below.</p>
+<p>Our application form will ask you for some information about:</p>
+<ul>
+ <li>what you want to study</li>
+ <li>your previous qualifications or experience</li>
+ <li>your references</li>
+ <li>your visa (if required)</li>
+ <li>how we can contact you.</li>
+</ul>
+<p>Want to ask us a question first? Our dedicated international students’ team would love to hear from you.</p>
+<ul>
+ <li>email <a href="https://www.uwl.ac.uk/ask-our-international-office-question">international@uwl.ac.uk</a>&nbsp;to submit a question</li>
+</ul>
+<p><a href="https://www.uwl.ac.uk/international/how-apply">More information about international student applications</a><br>
+&nbsp;</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="col-lg-4">
+ <div class="u-o-3">
+<div class="application-cta-column u-bg-primary has-dark-bg u-flex u-flex-col u-p-4 u-h-full u-text-white" data-remove-classes-ie11="u-flex u-flex-col">
+ <div class="text-long u-leading-normal">
+ <h3>We're here to help</h3>
+ <p>Any questions about a course or studying at UWL?</p><p>We're here to help - call us on&nbsp;<br><span class="u-text-large"><strong>+44 (0)20 8231 2468</strong></span><br>(Monday - Friday, 10am - 4pm GMT)</p><p>Or email us anytime:</p>
+ <div>
+ <a href="mailto:courses@uwl.ac.uk" class="u-font-bold u-text-large link">
+ courses@uwl.ac.uk
+ </a>
+ </div>
+ </div>
+</div>
+<div aria-label="PG-International">
+ <div class="lg:u-mb-3 ">
+ <div class="u-mb-2">
+ <div class="apply-course-box u-bg-grey-400 has-dark-bg u-text-white u-p-3 u-h-full u-justify-center u-text-center u-flex u-flex-col" data-remove-classes-ie11="u-flex u-flex-col">
+ <h3 class="u-font-bold u-mb-3 u-text-h5">Apply for this course:</h3>
+ <div class="row">
+ <div class="col">
+<a class="u-border-white btn btn-tertiary" data-track-click="" data-track-click-category="Course" data-track-click-action="Apply CTA International" data-track-click-label="Apply now" v-bind:href="currentVariantUwlAppUrl">
+<svg class="icon u-mr-1">
+ <use xlink:href="/themes/custom/rutherford/dist/img/sprite/sprite.svg?v=0#cti--arrow-button-right"></use>
+</svg>
+ Apply now
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</article>
+</div>
+ </div>
+ </div>
+ <div v-cloak="" data-will-change="" data-variant="" data-variant-id="108133" v-show="currentVariant == 108133">
+ <div class="field field--name-field-p-cv-eu-int-applicatition field--type-entity-reference field--label-hidden field__items">
+ <div class="field__item">
+<article aria-label="PG-International">
+ <div>
+ <div class="row u-gap-y-3 lg:u-gap-y-0">
+ <div class="col-lg-8">
+ <div class="u-o-3">
+ <div class="u-o-4 md:u-o-6 lg:u-o-6">
+ <div><div class="cti-media-banner">
+ <div>
+<img loading="lazy" src="/sites/uwl/files/styles/16_by_9_960_x_540/public/2025-11/how-to-apply-pg.jpg?h=5482203a&amp;itok=v41zBOG_" width="960" height="540" alt="A woman making an application on her laptop" class="img u-w-full lazyload">
+ </div>
+</div>
+</div>
+ </div>
+ <div class="u-bg-white u-px-4 u-py-3">
+ <div class="text-long--headings-h5 text-long u-max-w-measure-lg u-leading-normal">
+ <p>You can apply online at any time by following the link below.</p>
+<p>Our application form will ask you for some information about:</p>
+<ul>
+ <li>what you want to study</li>
+ <li>your previous qualifications or experience</li>
+ <li>your references</li>
+ <li>your visa (if required)</li>
+ <li>how we can contact you.</li>
+</ul>
+<p>Want to ask us a question first? Our dedicated international students’ team would love to hear from you.</p>
+<ul>
+ <li>email <a href="https://www.uwl.ac.uk/ask-our-international-office-question">international@uwl.ac.uk</a>&nbsp;to submit a question</li>
+</ul>
+<p><a href="https://www.uwl.ac.uk/international/how-apply">More information about international student applications</a><br>
+&nbsp;</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="col-lg-4">
+ <div class="u-o-3">
+<div class="application-cta-column u-bg-primary has-dark-bg u-flex u-flex-col u-p-4 u-h-full u-text-white" data-remove-classes-ie11="u-flex u-flex-col">
+ <div class="text-long u-leading-normal">
+ <h3>We're here to help</h3>
+ <p>Any questions about a course or studying at UWL?</p><p>We're here to help - call us on&nbsp;<br><span class="u-text-large"><strong>+44 (0)20 8231 2468</strong></span><br>(Monday - Friday, 10am - 4pm GMT)</p><p>Or email us anytime:</p>
+ <div>
+ <a href="mailto:courses@uwl.ac.uk" class="u-font-bold u-text-large link">
+ courses@uwl.ac.uk
+ </a>
+ </div>
+ </div>
+</div>
+<div aria-label="PG-International">
+ <div class="lg:u-mb-3 ">
+ <div class="u-mb-2">
+ <div class="apply-course-box u-bg-grey-400 has-dark-bg u-text-white u-p-3 u-h-full u-justify-center u-text-center u-flex u-flex-col" data-remove-classes-ie11="u-flex u-flex-col">
+ <h3 class="u-font-bold u-mb-3 u-text-h5">Apply for this course:</h3>
+ <div class="row">
+ <div class="col">
+<a class="u-border-white btn btn-tertiary" data-track-click="" data-track-click-category="Course" data-track-click-action="Apply CTA International" data-track-click-label="Apply now" v-bind:href="currentVariantUwlAppUrl">
+<svg class="icon u-mr-1">
+ <use xlink:href="/themes/custom/rutherford/dist/img/sprite/sprite.svg?v=0#cti--arrow-button-right"></use>
+</svg>
+ Apply now
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</article>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </template>
+ <div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Related courses
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Related courses
+ </h2>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div>
+<div>
+ <div>
+ <div>
+ <div>
+<h3>
+ <a href="/study/subject-areas/music-and-performance/music-technology-and-audio-production">
+ <span>Music technology and audio production</span>
+ </a>
+ </h3>
+ <div>
+<p>
+ Develop the theoretical knowledge, technical skills and creative abilities you need for a career in music technology, sound engineering or audio production.
+ </p>
+ </div>
+ </div>
+ </div>
+ <div>
+<div> <a href="/study/subject-areas/music-and-performance/music-technology-and-audio-production" tabindex="-1">
+ <div> Music technology and audio production courses
+ </div> </a>
+</div> </div>
+ </div>
+ <div>
+ </div>
+ </div>
+</div>
+ </div>
+ </div>
+ <div>
+<div>
+<a href="/course/postgraduate/music-industry-management-and-artist-development">
+ <div>
+ MA Music Industry Management and Artist Development
+ </div>
+</a>
+<a href="/course/postgraduate/record-production">
+ <div>
+ MA Record Production
+ </div>
+</a>
+<a href="/course/postgraduate/electronic-music-composition">
+ <div>
+ MMus Electronic Music Composition
+ </div>
+</a>
+<a href="/course/postgraduate/digital-audio-engineering">
+ <div>
+ MSc Digital Audio Engineering
+ </div>
+</a>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Recently viewed
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Recently viewed
+ </h2>
+ </div>
+ <div></div>
+ </div>
+</div>
+ </div>
+</div>
+<div>
+ <div>
+ <div>
+ <div>
+<h2>
+ Search for courses
+ </h2>
+ </div>
+ <div>
+ <div>
+<div>
+ </div>
+<div>
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+<div>
+ <a href="#">
+ <div>
+ <div>
+ Student life at UWL
+ </div>
+ <div>
+ </div>
+ </div>
+ </a>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Student life at UWL
+ </h2>
+ </div>
+ <div><div>
+<div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ <div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div>
+ <div>
+ <div><ul><li><a href="/study/why-study-us">Seven reasons to study with us</a><br>&nbsp;</li><li><a href="/student-life/accommodation">Accommodation</a><br>&nbsp;</li><li><a href="https://www.uwl.ac.uk/current-students/support-students">Student support</a><br>&nbsp;</li><li><a href="/student-life/our-campus-and-sites">Our campus and sites</a></li></ul></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+</div>
+</div>
+ </div>
+</div>
+ </div>
+</div>
+ <div>
+ <div><div>
+ <div>
+ <div>
+<div>
+ <div>
+ <div>
+<h2>
+ Chat to our students
+ </h2>
+ </div>
+ <div>
+ <div>
+ <div><div>
+ <div></div>
+</div>
+</div>
+ </div>
+</div>
+ </div>
+</div>
+</div>
+ </div>
+</div>
+</div>
+ </div>
+<div>
+ <div>
+ <div>
+<h2>
+ Important notes for applicants
+ </h2>
+ </div>
+ <div>
+ <h5>Disclaimer</h5><p><sup>†</sup><strong>Fees</strong> - the published fee is an annual fee, payable each year, for the duration of the course. Fees are subject to change. Home tuition fees may be subject to annual increases but will not increase by more than the fee caps as prescribed by the Office for Students or such other replacing body. Full-time taught international fees are subject to an annual increase.&nbsp;</p><p><sup>*</sup><strong>The National Student Survey 2025 </strong>result is based on the average of all answers by the registered student populations.</p><p><sup>**</sup><strong>Modern universities</strong>&nbsp;- defined as higher education institutions that were granted university status in, and subsequent to, 1992.</p><p><sup>***</sup><strong>PRES </strong>- Rank out of 53 institutions.</p><p><strong>Testimonials </strong>- our students or former students provided all of our testimonials - often a student from the course but sometimes another student. For example, the testimonial often comes from another UWL student when the course is new.</p><p><strong>Optional modules</strong> - where optional modules are offered they will run subject to staff availability and viable student numbers opting to take the module.</p><p><strong>Videos</strong> - all videos on our course pages were accurate at the time of filming. In some cases a new Course Leader has joined the University since the video was filmed.</p><p><strong>Availability of placements </strong>- if you choose a course with placement/internship route we would like to advise you that if a placement/internship opportunity does not arise when you are expected to undertake the placement then the University will automatically transfer you to the non-internship route, this is to ensure you are still successful in being awarded a degree.</p>
+ </div>
+ </div>
+</div>
+ </div>
+</article>
+ </div>
+ </div>
+ </div>
+ </main>
+ </div>
+ </div>
