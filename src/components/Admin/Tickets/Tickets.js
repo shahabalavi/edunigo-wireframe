@@ -17,7 +17,6 @@ import {
   Folder,
   Activity,
   GitBranch,
-  Star,
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Tickets.module.css";
@@ -39,6 +38,7 @@ const Tickets = () => {
     const fetchTickets = async () => {
       // Simulate API call delay
       setTimeout(() => {
+        const currentAdmin = "Admin User";
         const sampleTickets = [
           {
             id: 1,
@@ -48,7 +48,7 @@ const Tickets = () => {
             assignedAdmin: { id: 4, name: "Admin User" },
             organization: "Edunigo Global",
             project: "Computer Science - Fall 2026",
-            topic: { id: 2, title: "Application Status" },
+            topic: null,
             status: { id: 1, name: "open", title: "Open" },
             priority: { id: 2, name: "medium", title: "Medium" },
             description:
@@ -59,6 +59,9 @@ const Tickets = () => {
               at: "2026-02-03T14:12:00Z",
               type: "admin",
             },
+            userRating: null,
+            createdByType: "user",
+            createdByAdmin: null,
             createdAt: "2026-02-01T10:18:00Z",
             updatedAt: "2026-02-03T14:12:00Z",
           },
@@ -81,6 +84,9 @@ const Tickets = () => {
               at: "2026-02-04T09:05:00Z",
               type: "user",
             },
+            userRating: { score: 4, comment: "Resolved after follow-up." },
+            createdByType: "user",
+            createdByAdmin: null,
             createdAt: "2026-02-02T08:40:00Z",
             updatedAt: "2026-02-04T09:05:00Z",
           },
@@ -103,6 +109,9 @@ const Tickets = () => {
               at: "2026-02-02T16:40:00Z",
               type: "internal",
             },
+            userRating: { score: 5, comment: "Very helpful." },
+            createdByType: "user",
+            createdByAdmin: null,
             createdAt: "2026-02-02T13:05:00Z",
             updatedAt: "2026-02-02T16:40:00Z",
           },
@@ -114,7 +123,7 @@ const Tickets = () => {
             assignedAdmin: { id: 9, name: "Ethan Blake" },
             organization: "Edunigo Global",
             project: "Enrollment Services",
-            topic: { id: 9, title: "Course Enrollment" },
+            topic: null,
             status: { id: 3, name: "closed", title: "Closed" },
             priority: { id: 2, name: "medium", title: "Medium" },
             description:
@@ -125,6 +134,9 @@ const Tickets = () => {
               at: "2026-01-28T11:22:00Z",
               type: "admin",
             },
+            userRating: { score: 3, comment: "Took a while." },
+            createdByType: "admin",
+            createdByAdmin: "Ethan Blake",
             createdAt: "2026-01-25T09:30:00Z",
             updatedAt: "2026-01-28T11:22:00Z",
           },
@@ -147,13 +159,23 @@ const Tickets = () => {
               at: "2026-02-05T10:02:00Z",
               type: "user",
             },
+            userRating: null,
+            createdByType: "admin",
+            createdByAdmin: "Admin User",
             createdAt: "2026-02-04T15:10:00Z",
             updatedAt: "2026-02-05T10:02:00Z",
           },
         ];
 
-        setTickets(sampleTickets);
-        setFilteredTickets(sampleTickets);
+        const taggedTickets = sampleTickets.map((ticket) => ({
+          ...ticket,
+          isEditable:
+            ticket.createdByType === "admin" &&
+            ticket.createdByAdmin === currentAdmin,
+        }));
+
+        setTickets(taggedTickets);
+        setFilteredTickets(taggedTickets);
         setLoading(false);
       }, 1000);
     };
@@ -379,18 +401,6 @@ const Tickets = () => {
                 </div>
               </div>
             </button>
-            <button
-              className={styles["nav-btn"]}
-              onClick={() => navigate("/admin/tickets/ratings")}
-            >
-              <Star size={18} />
-              <div>
-                <div className={styles["nav-btn-title"]}>Ratings</div>
-                <div className={styles["nav-btn-desc"]}>
-                  Support feedback insights
-                </div>
-              </div>
-            </button>
           </div>
         </div>
       </div>
@@ -469,6 +479,7 @@ const Tickets = () => {
                 <th>Topic</th>
                 <th>Status</th>
                 <th>Priority</th>
+                <th>User Rating</th>
                 <th>Created</th>
                 <th>Actions</th>
               </tr>
@@ -525,11 +536,20 @@ const Tickets = () => {
                   </td>
                   <td>
                     <div className={styles["topic-pill"]}>
-                      {ticket.topic.title}
+                      {ticket.topic?.title || "General"}
                     </div>
                   </td>
                   <td>{getStatusBadge(ticket.status)}</td>
                   <td>{getPriorityBadge(ticket.priority)}</td>
+                  <td>
+                    {ticket.userRating ? (
+                      <span className={styles["rating-pill"]}>
+                        {ticket.userRating.score} / 5
+                      </span>
+                    ) : (
+                      <span className={styles["rating-empty"]}>—</span>
+                    )}
+                  </td>
                   <td>
                     <div className={styles["created-date"]}>
                       {formatDate(ticket.createdAt)}
@@ -547,11 +567,20 @@ const Tickets = () => {
                         <Eye size={16} />
                       </button>
                       <button
-                        className={styles["edit-btn"]}
+                        className={`${styles["edit-btn"]} ${
+                          ticket.isEditable ? "" : styles["disabled"]
+                        }`}
                         onClick={() =>
-                          navigate(`/admin/tickets/edit/${ticket.id}`)
+                          ticket.isEditable
+                            ? navigate(`/admin/tickets/edit/${ticket.id}`)
+                            : null
                         }
-                        title="Edit Ticket"
+                        title={
+                          ticket.isEditable
+                            ? "Edit Ticket"
+                            : "User-submitted tickets cannot be edited"
+                        }
+                        disabled={!ticket.isEditable}
                       >
                         <Edit2 size={16} />
                       </button>

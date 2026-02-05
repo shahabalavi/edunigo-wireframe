@@ -30,6 +30,9 @@ const ViewTicket = () => {
   const [editedMessage, setEditedMessage] = useState("");
   const [mentionQuery, setMentionQuery] = useState("");
   const [showMentions, setShowMentions] = useState(false);
+  const [statusValue, setStatusValue] = useState("");
+  const [priorityValue, setPriorityValue] = useState("");
+  const [savingManagement, setSavingManagement] = useState(false);
 
   const currentUser = { id: 4, name: "Admin User" };
   const internalTargets = [
@@ -75,15 +78,17 @@ const ViewTicket = () => {
     const fetchTicketData = async () => {
       // Simulate API call
       setTimeout(() => {
+        const parsedId = Number.parseInt(id, 10);
+        const safeId = Number.isNaN(parsedId) ? 1042 : parsedId;
         const sampleTicket = {
-          id: parseInt(id),
+          id: safeId,
           code: "TCK-2026-1042",
           subject: "Application Status Inquiry",
           user: { id: 12, name: "John Doe" },
           assignedAdmin: { id: 4, name: "Admin User" },
           organization: "Edunigo Global",
           project: "Computer Science - Fall 2026",
-          topic: { id: 2, title: "Application Status" },
+          topic: null,
           status: { id: 4, name: "resolved", title: "Resolved" },
           priority: { id: 2, name: "medium", title: "Medium" },
           description:
@@ -93,6 +98,9 @@ const ViewTicket = () => {
             at: "2026-02-03T14:12:00Z",
             type: "admin",
           },
+          createdByType: "user",
+          createdByAdmin: null,
+          userRating: { score: 5, comment: "Very helpful and clear." },
           createdAt: "2026-02-01T10:30:00Z",
           updatedAt: "2026-02-03T14:45:00Z",
         };
@@ -155,6 +163,8 @@ const ViewTicket = () => {
         ];
 
         setTicket(sampleTicket);
+        setStatusValue(sampleTicket.status.name);
+        setPriorityValue(sampleTicket.priority.name);
         setMessages(sampleMessages);
         setLoading(false);
       }, 1000);
@@ -334,6 +344,28 @@ const ViewTicket = () => {
     return new Date(dateString).toLocaleString();
   };
 
+  const formatStatus = (value) =>
+    value
+      .split("_")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+
+  const handleSaveManagement = async () => {
+    if (!ticket) return;
+    setSavingManagement(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      setTicket((prev) => ({
+        ...prev,
+        status: { ...prev.status, name: statusValue, title: formatStatus(statusValue) },
+        priority: { ...prev.priority, name: priorityValue, title: formatStatus(priorityValue) },
+        updatedAt: new Date().toISOString(),
+      }));
+    } finally {
+      setSavingManagement(false);
+    }
+  };
+
   const getMessageTypeLabel = (type) => {
     if (type === "internal") return "Internal";
     if (type === "admin") return "Support";
@@ -452,6 +484,12 @@ const ViewTicket = () => {
         <div className={styles["ticket-info"]}>
           <div className={styles["info-section"]}>
             <h3>Ticket Information</h3>
+            {ticket.createdByType === "user" && (
+              <div className={styles["lock-note"]}>
+                User-submitted content is read-only. Manage status and priority
+                below.
+              </div>
+            )}
             <div className={styles["info-item"]}>
               <span className={styles["info-label"]}>User:</span>
               <div className={styles["user-info"]}>
@@ -485,9 +523,29 @@ const ViewTicket = () => {
               <span className={styles["info-label"]}>Topic:</span>
               <span className={styles["info-value"]}>
                 <Folder size={16} />
-                {ticket.topic.title}
+                {ticket.topic?.title || "General"}
               </span>
             </div>
+            <div className={styles["info-item"]}>
+              <span className={styles["info-label"]}>User Rating:</span>
+              <span className={styles["info-value"]}>
+                {ticket.userRating ? (
+                  <span className={styles["rating-pill"]}>
+                    {ticket.userRating.score} / 5
+                  </span>
+                ) : (
+                  <span className={styles["rating-empty"]}>No rating yet</span>
+                )}
+              </span>
+            </div>
+            {ticket.userRating?.comment && (
+              <div className={styles["info-item"]}>
+                <span className={styles["info-label"]}>Rating Comment:</span>
+                <span className={styles["info-value"]}>
+                  {ticket.userRating.comment}
+                </span>
+              </div>
+            )}
             <div className={styles["info-item"]}>
               <span className={styles["info-label"]}>Created:</span>
               <span className={styles["info-value"]}>
@@ -507,6 +565,47 @@ const ViewTicket = () => {
           <div className={styles["info-section"]}>
             <h3>Description</h3>
             <p className={styles["ticket-description"]}>{ticket.description}</p>
+          </div>
+
+          <div className={styles["info-section"]}>
+            <h3>Management Actions</h3>
+            <div className={styles["form-row"]}>
+              <div className={styles["form-group"]}>
+                <label className={styles["form-label"]}>Status</label>
+                <select
+                  value={statusValue}
+                  onChange={(e) => setStatusValue(e.target.value)}
+                  className={styles["form-select"]}
+                >
+                  <option value="open">Open</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="waiting_for_response">Waiting for Response</option>
+                  <option value="resolved">Resolved</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+              <div className={styles["form-group"]}>
+                <label className={styles["form-label"]}>Priority</label>
+                <select
+                  value={priorityValue}
+                  onChange={(e) => setPriorityValue(e.target.value)}
+                  className={styles["form-select"]}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="critical">Critical</option>
+                </select>
+              </div>
+            </div>
+            <button
+              type="button"
+              className={styles["save-btn"]}
+              onClick={handleSaveManagement}
+              disabled={savingManagement}
+            >
+              {savingManagement ? "Saving..." : "Save Changes"}
+            </button>
           </div>
         </div>
 

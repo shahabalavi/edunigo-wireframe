@@ -15,6 +15,7 @@ const EditUser = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userTickets, setUserTickets] = useState([]);
 
   // Load user data
   useEffect(() => {
@@ -37,6 +38,30 @@ const EditUser = () => {
         email: sampleUser.email,
         status: sampleUser.status,
       });
+      setUserTickets([
+        {
+          id: 1,
+          code: "TCK-2026-1042",
+          subject: "Application Status Inquiry",
+          status: "Open",
+          priority: "Medium",
+          topic: "Application Status",
+          target: "Computer Science - Fall 2026",
+          assignedAdmin: "Admin User",
+          createdAt: "2026-02-01T10:18:00Z",
+        },
+        {
+          id: 2,
+          code: "TCK-2026-1065",
+          subject: "Document Upload Issue",
+          status: "In Progress",
+          priority: "High",
+          topic: "Document Uploads",
+          target: "MBA Admission Review",
+          assignedAdmin: "Olivia Grant",
+          createdAt: "2026-02-02T08:40:00Z",
+        },
+      ]);
       setLoading(false);
     }, 1000);
   }, [id]);
@@ -279,6 +304,54 @@ const EditUser = () => {
             </button>
           </div>
         </form>
+      </div>
+
+      <div className={styles["tickets-section"]}>
+        <div className={styles["section-header"]}>
+          <h3>User Tickets</h3>
+          <p>Tickets linked to this user and assigned support admin</p>
+        </div>
+        {userTickets.length === 0 ? (
+          <div className={styles["empty-state"]}>
+            No tickets found for this user.
+          </div>
+        ) : (
+          <div className={styles["table-container"]}>
+            <table className={styles["tickets-table"]}>
+              <thead>
+                <tr>
+                  <th>Ticket</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Topic</th>
+                  <th>Target</th>
+                  <th>Support Admin</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userTickets.map((ticket) => (
+                  <tr key={ticket.id}>
+                    <td>
+                      <div className={styles["ticket-code"]}>
+                        {ticket.code}
+                      </div>
+                      <div className={styles["ticket-subject"]}>
+                        {ticket.subject}
+                      </div>
+                    </td>
+                    <td>{ticket.status}</td>
+                    <td>{ticket.priority}</td>
+                    <td>{ticket.topic}</td>
+                    <td>{ticket.target}</td>
+                    <td>{ticket.assignedAdmin}</td>
+                    <td>{new Date(ticket.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import {
   CreditCard,
   Gift,
   HelpCircle,
+  Ticket,
   ChevronDown,
   ChevronRight,
   Building,
@@ -34,7 +35,9 @@ import SimCard from "./StudentServices/SimCard";
 import BankAccount from "./StudentServices/BankAccount";
 import MoneyExchange from "./StudentServices/MoneyExchange";
 import GoXRewards from "./GoXRewards/GoXRewards";
-import StudentSupport from "./StudentSupport/StudentSupport";
+import UserTickets from "./Tickets/Tickets";
+import CreateUserTicket from "./Tickets/CreateTicket";
+import ViewUserTicket from "./Tickets/ViewTicket";
 import styles from "../Dashboard.module.css";
 import {
   getCurrentSessionId,
@@ -169,10 +172,10 @@ const UserDashboard = ({ onLogout }) => {
       isNew: true,
     },
     {
-      id: "student-support",
-      label: "Student Support",
-      icon: HelpCircle,
-      path: "/user/student-support",
+      id: "tickets",
+      label: "Tickets",
+      icon: Ticket,
+      path: "/user/tickets",
       isNew: true,
     },
     {
@@ -257,7 +260,9 @@ const UserDashboard = ({ onLogout }) => {
           element={<MoneyExchange />}
         />
         <Route path="gox-rewards" element={<GoXRewards />} />
-        <Route path="student-support" element={<StudentSupport />} />
+        <Route path="tickets" element={<UserTickets />} />
+        <Route path="tickets/create" element={<CreateUserTicket />} />
+        <Route path="tickets/:id" element={<ViewUserTicket />} />
         <Route path="*" element={<UserDashboardHome />} />
       </Routes>
     );

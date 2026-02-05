@@ -76,6 +76,82 @@
   margin: 0 24px 24px;
 }
 
+.tickets-section {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin: 0 24px 24px;
+  padding: 24px;
+}
+
+.section-header h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.section-header p {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.table-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tickets-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tickets-table thead {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tickets-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.tickets-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+  color: #374151;
+}
+
+.tickets-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ticket-code {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.ticket-subject {
+  font-weight: 500;
+  color: #1a202c;
+}
+
+.empty-state {
+  padding: 20px;
+  font-size: 13px;
+  color: #94a3b8;
+  border: 1px dashed #e2e8f0;
+  border-radius: 10px;
+  text-align: center;
+}
+
 .user-form {
   padding: 32px;
 }
@@ -288,6 +364,11 @@
     margin: 0 20px 20px;
   }
 
+  .tickets-section {
+    margin: 0 20px 20px;
+    padding: 20px;
+  }
+
   .user-form {
     padding: 24px;
   }
@@ -316,6 +397,11 @@
 
   .form-section {
     margin: 0 16px 16px;
+  }
+
+  .tickets-section {
+    margin: 0 16px 16px;
+    padding: 16px;
   }
 
   .user-form {
