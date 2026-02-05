@@ -13,10 +13,6 @@ import {
   Clock,
   AlertCircle,
   CheckCircle,
-  AlertTriangle,
-  Folder,
-  Activity,
-  GitBranch,
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Tickets.module.css";
@@ -333,75 +329,6 @@ const Tickets = () => {
           >
             Create Ticket
           </button>
-        </div>
-      </div>
-
-      {/* Sub-modules Navigation */}
-      <div className={styles["sub-modules-nav"]}>
-        <div className={styles["nav-section"]}>
-          <h3>Ticket Configuration</h3>
-          <div className={styles["nav-buttons"]}>
-            <button
-              className={styles["nav-btn"]}
-              onClick={() => navigate("/admin/tickets/statuses")}
-            >
-              <AlertCircle size={18} />
-              <div>
-                <div className={styles["nav-btn-title"]}>Statuses</div>
-                <div className={styles["nav-btn-desc"]}>
-                  Manage ticket statuses
-                </div>
-              </div>
-            </button>
-            <button
-              className={styles["nav-btn"]}
-              onClick={() => navigate("/admin/tickets/topics")}
-            >
-              <Folder size={18} />
-              <div>
-                <div className={styles["nav-btn-title"]}>Topics</div>
-                <div className={styles["nav-btn-desc"]}>
-                  Manage ticket topics
-                </div>
-              </div>
-            </button>
-            <button
-              className={styles["nav-btn"]}
-              onClick={() => navigate("/admin/tickets/priorities")}
-            >
-              <AlertTriangle size={18} />
-              <div>
-                <div className={styles["nav-btn-title"]}>Priorities</div>
-                <div className={styles["nav-btn-desc"]}>
-                  Manage priority levels
-                </div>
-              </div>
-            </button>
-            <button
-              className={styles["nav-btn"]}
-              onClick={() => navigate("/admin/tickets/events")}
-            >
-              <Activity size={18} />
-              <div>
-                <div className={styles["nav-btn-title"]}>Events</div>
-                <div className={styles["nav-btn-desc"]}>
-                  View system-defined events
-                </div>
-              </div>
-            </button>
-            <button
-              className={styles["nav-btn"]}
-              onClick={() => navigate("/admin/tickets/transitions")}
-            >
-              <GitBranch size={18} />
-              <div>
-                <div className={styles["nav-btn-title"]}>Transitions</div>
-                <div className={styles["nav-btn-desc"]}>
-                  Automate status changes
-                </div>
-              </div>
-            </button>
-          </div>
         </div>
       </div>
 

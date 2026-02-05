@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Send, Paperclip } from "lucide-react";
+import { ArrowLeft, Send, Paperclip, Search, X } from "lucide-react";
 import styles from "./UserTicketForm.module.css";
 
 const TOPICS = [
@@ -60,6 +60,34 @@ const TARGETS = [
   "Student Profile",
 ];
 
+const GUIDANCE_LIBRARY = [
+  {
+    id: "guide-application-status",
+    title: "Track your application status",
+    summary:
+      "Understand each stage and what to do if your status changes.",
+    category: "Application status",
+  },
+  {
+    id: "guide-document-uploads",
+    title: "Upload documents correctly",
+    summary: "PDF requirements, file size limits, and naming tips.",
+    category: "Documents",
+  },
+  {
+    id: "guide-payments",
+    title: "Pay your tuition deposit",
+    summary: "Payment channels, fees, and receipt timelines.",
+    category: "Payments",
+  },
+  {
+    id: "guide-visa",
+    title: "Visa interview checklist",
+    summary: "What to bring and how to prepare for your appointment.",
+    category: "Visa",
+  },
+];
+
 const CreateUserTicket = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -74,6 +102,9 @@ const CreateUserTicket = () => {
   const [topicLevel3, setTopicLevel3] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [guidanceQuery, setGuidanceQuery] = useState("");
+  const [showGuidanceDropdown, setShowGuidanceDropdown] = useState(false);
+  const [selectedGuidance, setSelectedGuidance] = useState(null);
 
   const topics = TOPICS;
   const targets = TARGETS;
@@ -81,6 +112,10 @@ const CreateUserTicket = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "subject") {
+      setGuidanceQuery(value);
+      setShowGuidanceDropdown(Boolean(value.trim()));
+    }
   };
 
   React.useEffect(() => {
@@ -203,6 +238,26 @@ const CreateUserTicket = () => {
     }
   };
 
+  const guidanceResults = useMemo(() => {
+    const term = guidanceQuery.trim().toLowerCase();
+    if (!term || term.length < 2) return [];
+    return GUIDANCE_LIBRARY.filter(
+      (item) =>
+        item.title.toLowerCase().includes(term) ||
+        item.summary.toLowerCase().includes(term) ||
+        item.category.toLowerCase().includes(term)
+    );
+  }, [guidanceQuery]);
+
+  const handleGuidanceSelect = (item) => {
+    setSelectedGuidance(item);
+    setShowGuidanceDropdown(false);
+  };
+
+  const closeGuidanceModal = () => {
+    setSelectedGuidance(null);
+  };
+
   return (
     <div className={styles["form-container"]}>
       <div className={styles["page-header"]}>
@@ -224,15 +279,53 @@ const CreateUserTicket = () => {
         <form onSubmit={handleSubmit} className={styles["ticket-form"]}>
           <div className={styles["form-group"]}>
             <label className={styles["form-label"]}>Title *</label>
-            <input
-              type="text"
-              name="subject"
-              value={formData.subject}
-              onChange={handleInputChange}
-              className={styles["form-input"]}
-              placeholder="Short summary of your request"
-              required
-            />
+            <div className={styles["guidance-search-wrapper"]}>
+              <Search size={16} className={styles["guidance-search-icon"]} />
+              <input
+                type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                onFocus={() => setShowGuidanceDropdown(Boolean(guidanceQuery))}
+                onBlur={() => {
+                  setTimeout(() => setShowGuidanceDropdown(false), 150);
+                }}
+                className={styles["form-input"]}
+                placeholder="Short summary of your request"
+                required
+              />
+              <span className={styles["guidance-search-hint"]}>
+                Smart search
+              </span>
+            </div>
+            {showGuidanceDropdown && guidanceResults.length > 0 && (
+              <div className={styles["guidance-dropdown"]}>
+                <div className={styles["guidance-dropdown-title"]}>
+                  Guidance suggestions
+                </div>
+                {guidanceResults.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={styles["guidance-option"]}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => handleGuidanceSelect(item)}
+                  >
+                    <div>
+                      <div className={styles["guidance-option-title"]}>
+                        {item.title}
+                      </div>
+                      <div className={styles["guidance-option-summary"]}>
+                        {item.summary}
+                      </div>
+                    </div>
+                    <span className={styles["guidance-option-pill"]}>
+                      {item.category}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className={styles["form-group"]}>
@@ -364,6 +457,55 @@ const CreateUserTicket = () => {
           </div>
         </form>
       </div>
+
+      {selectedGuidance && (
+        <div
+          className={styles["guidance-modal-overlay"]}
+          onClick={closeGuidanceModal}
+        >
+          <div
+            className={styles["guidance-modal"]}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className={styles["guidance-modal-header"]}>
+              <div>
+                <div className={styles["guidance-modal-title"]}>
+                  {selectedGuidance.title}
+                </div>
+                <div className={styles["guidance-modal-subtitle"]}>
+                  {selectedGuidance.category}
+                </div>
+              </div>
+              <button
+                type="button"
+                className={styles["guidance-modal-close"]}
+                onClick={closeGuidanceModal}
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <p className={styles["guidance-modal-body"]}>
+              {selectedGuidance.summary}
+            </p>
+            <div className={styles["guidance-modal-actions"]}>
+              <button
+                type="button"
+                className={styles["guidance-modal-secondary"]}
+                onClick={closeGuidanceModal}
+              >
+                Continue ticket
+              </button>
+              <button
+                type="button"
+                className={styles["guidance-modal-primary"]}
+                onClick={() => navigate("/user/tickets")}
+              >
+                Open guidance library
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

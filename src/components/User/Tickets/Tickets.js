@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Ticket,
   Search,
@@ -9,6 +9,10 @@ import {
   Laptop,
   User,
   Shield,
+  BookOpen,
+  Image,
+  ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Tickets.module.css";
@@ -19,6 +23,10 @@ const UserTickets = () => {
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [guidanceSearch, setGuidanceSearch] = useState("");
+  const [guidanceCategory, setGuidanceCategory] = useState("application");
+  const [expandedGuidance, setExpandedGuidance] = useState({});
+  const [guidanceAttachment, setGuidanceAttachment] = useState(null);
 
   const departments = [
     {
@@ -55,6 +63,61 @@ const UserTickets = () => {
       description: "Policy or process questions",
       icon: Shield,
       presetTopic: "general",
+    },
+  ];
+
+  const guidanceCategories = [
+    { id: "application", title: "Application status" },
+    { id: "documents", title: "Documents" },
+    { id: "general", title: "General" },
+    { id: "offer", title: "Offer and decision" },
+    { id: "payments", title: "Payments" },
+    { id: "safety", title: "Safety" },
+    { id: "visa", title: "Visa" },
+  ];
+
+  const guidanceItems = [
+    {
+      id: 1,
+      categoryId: "application",
+      title: "Track your application status",
+      summary:
+        "How to read status updates and what each stage means in your portal.",
+      ctaText: "Get Help",
+      ctaUrl: "/user/student-support",
+    },
+    {
+      id: 2,
+      categoryId: "application",
+      title: "University requests more documents",
+      summary:
+        "If additional documents are requested, upload them within 14 days to avoid delays.",
+      ctaText: "Get Help",
+      ctaUrl: "/user/student-support",
+    },
+    {
+      id: 3,
+      categoryId: "documents",
+      title: "Upload documents correctly",
+      summary: "Checklist for PDF scans, naming, and file size limits.",
+      ctaText: "Get Help",
+      ctaUrl: "/user/student-support",
+    },
+    {
+      id: 4,
+      categoryId: "payments",
+      title: "Pay your tuition deposit",
+      summary: "Available channels, fees, and receipt timelines.",
+      ctaText: "Get Help",
+      ctaUrl: "/user/student-support",
+    },
+    {
+      id: 5,
+      categoryId: "visa",
+      title: "Visa interview checklist",
+      summary: "Items to bring and how to prepare for your appointment.",
+      ctaText: "Get Help",
+      ctaUrl: "/user/student-support",
     },
   ];
 
@@ -120,6 +183,29 @@ const UserTickets = () => {
     }
     setFilteredTickets(filtered);
   }, [searchTerm, tickets]);
+
+  const filteredGuidance = useMemo(() => {
+    const term = guidanceSearch.toLowerCase();
+    return guidanceItems.filter((item) => {
+      const matchesCategory = guidanceCategory === item.categoryId;
+      const matchesSearch =
+        !term ||
+        item.title.toLowerCase().includes(term) ||
+        item.summary.toLowerCase().includes(term);
+      return matchesCategory && matchesSearch;
+    });
+  }, [guidanceItems, guidanceCategory, guidanceSearch]);
+
+  const handleGuidanceAttach = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setGuidanceAttachment(file);
+    event.target.value = "";
+  };
+
+  const toggleGuidanceItem = (id) => {
+    setExpandedGuidance((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const formatDate = (dateString) => new Date(dateString).toLocaleString();
 
@@ -256,6 +342,99 @@ const UserTickets = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className={styles["guidance-widget"]}>
+        <div className={styles["guidance-top"]}>
+          <div>
+            <div className={styles["guidance-title"]}>Guidance Library</div>
+            <div className={styles["guidance-subtitle"]}>
+              Find quick answers before opening a ticket.
+            </div>
+          </div>
+          <span className={styles["guidance-pill"]}>Self-service</span>
+        </div>
+
+        <div className={styles["guidance-search"]}>
+          <div className={styles["guidance-search-input"]}>
+            <Search size={18} className={styles["search-icon"]} />
+            <input
+              type="text"
+              placeholder="Describe your issue or search the library..."
+              value={guidanceSearch}
+              onChange={(e) => setGuidanceSearch(e.target.value)}
+            />
+            <span className={styles["search-hint"]}>Press Enter</span>
+          </div>
+          <label className={styles["attach-btn"]}>
+            <Image size={16} />
+            Attach image
+            <input type="file" accept="image/*" onChange={handleGuidanceAttach} />
+          </label>
+        </div>
+
+        <div className={styles["guidance-body"]}>
+          <div className={styles["guidance-sidebar"]}>
+            <div className={styles["sidebar-title"]}>Categories</div>
+            <div className={styles["sidebar-list"]}>
+              {guidanceCategories.map((category) => (
+                <button
+                  key={category.id}
+                  className={`${styles["sidebar-item"]} ${
+                    guidanceCategory === category.id ? styles["active"] : ""
+                  }`}
+                  onClick={() => setGuidanceCategory(category.id)}
+                >
+                  {category.title}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles["guidance-content"]}>
+            {filteredGuidance.map((item) => (
+              <div key={item.id} className={styles["guidance-card"]}>
+                <button
+                  className={styles["guidance-toggle"]}
+                  onClick={() => toggleGuidanceItem(item.id)}
+                >
+                  {expandedGuidance[item.id] ? (
+                    <ChevronDown size={16} />
+                  ) : (
+                    <ChevronRight size={16} />
+                  )}
+                  <span>{item.title}</span>
+                </button>
+                <div
+                  className={`${styles["guidance-details"]} ${
+                    expandedGuidance[item.id] ? styles["expanded"] : ""
+                  }`}
+                >
+                  <p>{item.summary}</p>
+                </div>
+                <button
+                  className={styles["guidance-cta"]}
+                  onClick={() => navigate(item.ctaUrl)}
+                >
+                  {item.ctaText}
+                </button>
+              </div>
+            ))}
+
+            {filteredGuidance.length === 0 && (
+              <div className={styles["guidance-empty"]}>
+                No guidance found. Try a different search or category.
+              </div>
+            )}
+
+            {guidanceAttachment && (
+              <div className={styles["attachment-preview"]}>
+                Attached: {guidanceAttachment.name}
+                <button onClick={() => setGuidanceAttachment(null)}>Remove</button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

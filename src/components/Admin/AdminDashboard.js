@@ -16,6 +16,12 @@ import {
   UserCircle,
   MapPin,
   Ticket,
+  AlertCircle,
+  AlertTriangle,
+  Folder,
+  Activity,
+  GitBranch,
+  Star,
   FileText,
   FileCheck,
   Sparkles,
@@ -24,6 +30,7 @@ import {
   School,
   Calendar,
   Upload,
+  Layers,
 } from "lucide-react";
 import AdminDashboardHome from "./Dashboard/AdminDashboardHome";
 import Countries from "./Countries/Countries";
@@ -66,6 +73,9 @@ import CreateDocument from "./Documents/CreateDocument";
 import EditDocument from "./Documents/EditDocument";
 import DocumentSubmissions from "./DocumentSubmissions/DocumentSubmissions";
 import DocumentSubmissionDetail from "./DocumentSubmissions/DocumentSubmissionDetail";
+import GuidanceCategories from "./Guidance/GuidanceCategories";
+import GuidanceArticles from "./Guidance/GuidanceArticles";
+import GuidanceEditor from "./Guidance/GuidanceEditor";
 import AIImportCities from "./AIImport/Cities/Cities";
 import AIImportUniversity from "./AIImport/University/University";
 import AIImportCampus from "./AIImport/Campus/Campus";
@@ -79,6 +89,12 @@ const AdminDashboard = ({ onLogout }) => {
   const navigate = useNavigate();
   const [isAIImportOpen, setIsAIImportOpen] = useState(
     location.pathname.startsWith("/admin/ai-import")
+  );
+  const [isGuidanceOpen, setIsGuidanceOpen] = useState(
+    location.pathname.startsWith("/admin/guidance")
+  );
+  const [isTicketsOpen, setIsTicketsOpen] = useState(
+    location.pathname.startsWith("/admin/tickets")
   );
 
   const handleLogout = () => {
@@ -148,6 +164,27 @@ const AdminDashboard = ({ onLogout }) => {
       path: "/admin/document-submissions",
     },
     {
+      id: "guidance",
+      label: "Guidance",
+      icon: Layers,
+      path: "/admin/guidance",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "guidance-categories",
+          label: "Categories",
+          icon: Layers,
+          path: "/admin/guidance/categories",
+        },
+        {
+          id: "guidance-articles",
+          label: "Articles",
+          icon: BookOpen,
+          path: "/admin/guidance/articles",
+        },
+      ],
+    },
+    {
       id: "admins",
       label: "Admins",
       icon: User,
@@ -170,6 +207,51 @@ const AdminDashboard = ({ onLogout }) => {
       label: "Tickets",
       icon: Ticket,
       path: "/admin/tickets",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "tickets-index",
+          label: "All Tickets",
+          icon: Ticket,
+          path: "/admin/tickets",
+        },
+        {
+          id: "tickets-statuses",
+          label: "Statuses",
+          icon: AlertCircle,
+          path: "/admin/tickets/statuses",
+        },
+        {
+          id: "tickets-priorities",
+          label: "Priorities",
+          icon: AlertTriangle,
+          path: "/admin/tickets/priorities",
+        },
+        {
+          id: "tickets-topics",
+          label: "Topics",
+          icon: Folder,
+          path: "/admin/tickets/topics",
+        },
+        {
+          id: "tickets-events",
+          label: "Events",
+          icon: Activity,
+          path: "/admin/tickets/events",
+        },
+        {
+          id: "tickets-transitions",
+          label: "Transitions",
+          icon: GitBranch,
+          path: "/admin/tickets/transitions",
+        },
+        {
+          id: "tickets-ratings",
+          label: "Ratings",
+          icon: Star,
+          path: "/admin/tickets/ratings",
+        },
+      ],
     },
     {
       id: "permissions",
@@ -249,6 +331,37 @@ const AdminDashboard = ({ onLogout }) => {
       if (currentPath === "/admin/ai-import/engine") return "Import Engine";
       return "AI Import";
     }
+
+    if (currentPath.startsWith("/admin/guidance/editor")) {
+      return "Guidance Editor";
+    }
+    if (currentPath === "/admin/guidance/categories") {
+      return "Guidance Categories";
+    }
+    if (currentPath === "/admin/guidance/articles") {
+      return "Guidance Articles";
+    }
+    if (currentPath === "/admin/tickets") {
+      return "Tickets";
+    }
+    if (currentPath === "/admin/tickets/statuses") {
+      return "Ticket Statuses";
+    }
+    if (currentPath === "/admin/tickets/priorities") {
+      return "Ticket Priorities";
+    }
+    if (currentPath === "/admin/tickets/topics") {
+      return "Ticket Topics";
+    }
+    if (currentPath === "/admin/tickets/events") {
+      return "Ticket Events";
+    }
+    if (currentPath === "/admin/tickets/transitions") {
+      return "Ticket Transitions";
+    }
+    if (currentPath === "/admin/tickets/ratings") {
+      return "Ticket Ratings";
+    }
     
     const currentItem = menuItems.find((item) => currentPath === item.path);
     return currentItem ? currentItem.label : "Dashboard";
@@ -262,12 +375,24 @@ const AdminDashboard = ({ onLogout }) => {
     if (itemId === "ai-import") {
       setIsAIImportOpen(!isAIImportOpen);
     }
+    if (itemId === "guidance") {
+      setIsGuidanceOpen(!isGuidanceOpen);
+    }
+    if (itemId === "tickets") {
+      setIsTicketsOpen(!isTicketsOpen);
+    }
   };
 
   const isActiveRoute = (path) => {
     // Handle AI Import submenu
     if (path === "/admin/ai-import") {
       return location.pathname.startsWith("/admin/ai-import");
+    }
+    if (path === "/admin/guidance") {
+      return location.pathname.startsWith("/admin/guidance");
+    }
+    if (path === "/admin/tickets") {
+      return location.pathname.startsWith("/admin/tickets");
     }
     return location.pathname === path;
   };
@@ -319,6 +444,15 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/document-submissions":
       case "/admin/document-submissions/":
         return <DocumentSubmissions />;
+      case "/admin/guidance/categories":
+      case "/admin/guidance/categories/":
+        return <GuidanceCategories />;
+      case "/admin/guidance/articles":
+      case "/admin/guidance/articles/":
+        return <GuidanceArticles />;
+      case "/admin/guidance/editor":
+      case "/admin/guidance/editor/":
+        return <GuidanceEditor />;
       case "/admin/admins":
       case "/admin/admins/":
         return <Admins />;
@@ -404,6 +538,9 @@ const AdminDashboard = ({ onLogout }) => {
         if (currentPath.startsWith("/admin/document-submissions/")) {
           return <DocumentSubmissionDetail />;
         }
+        if (currentPath.startsWith("/admin/guidance/editor/")) {
+          return <GuidanceEditor />;
+        }
         if (currentPath.startsWith("/admin/admins/edit/")) {
           return <EditAdmin />;
         }
@@ -478,6 +615,68 @@ const AdminDashboard = ({ onLogout }) => {
                 {item.hasSubmenu &&
                   item.id === "ai-import" &&
                   isAIImportOpen && (
+                    <div className={styles["submenu"]}>
+                      {item.submenuItems.map((subItem) => {
+                        const SubIconComponent = subItem.icon;
+                        return (
+                          <button
+                            key={subItem.id}
+                            className={[
+                              styles["submenu-item"],
+                              location.pathname === subItem.path
+                                ? styles["active"]
+                                : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                            onClick={() => handleNavClick(subItem.path)}
+                          >
+                            <SubIconComponent
+                              className={styles["submenu-icon"]}
+                              size={16}
+                            />
+                            <span className={styles["submenu-label"]}>
+                              {subItem.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                {item.hasSubmenu &&
+                  item.id === "guidance" &&
+                  isGuidanceOpen && (
+                    <div className={styles["submenu"]}>
+                      {item.submenuItems.map((subItem) => {
+                        const SubIconComponent = subItem.icon;
+                        return (
+                          <button
+                            key={subItem.id}
+                            className={[
+                              styles["submenu-item"],
+                              location.pathname === subItem.path
+                                ? styles["active"]
+                                : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                            onClick={() => handleNavClick(subItem.path)}
+                          >
+                            <SubIconComponent
+                              className={styles["submenu-icon"]}
+                              size={16}
+                            />
+                            <span className={styles["submenu-label"]}>
+                              {subItem.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                {item.hasSubmenu &&
+                  item.id === "tickets" &&
+                  isTicketsOpen && (
                     <div className={styles["submenu"]}>
                       {item.submenuItems.map((subItem) => {
                         const SubIconComponent = subItem.icon;
