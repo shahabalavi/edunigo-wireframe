@@ -14,8 +14,8 @@ import {
   Clock,
   AlertCircle,
   CheckCircle,
-  Building2,
   AlertTriangle,
+  Folder,
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Tickets.module.css";
@@ -296,12 +296,14 @@ const Tickets = () => {
             </button>
             <button
               className={styles["nav-btn"]}
-              onClick={() => navigate("/admin/tickets/departments")}
+              onClick={() => navigate("/admin/tickets/topics")}
             >
-              <Building2 size={18} />
+              <Folder size={18} />
               <div>
-                <div className={styles["nav-btn-title"]}>Departments</div>
-                <div className={styles["nav-btn-desc"]}>Manage departments</div>
+                <div className={styles["nav-btn-title"]}>Topics</div>
+                <div className={styles["nav-btn-desc"]}>
+                  Manage ticket topics
+                </div>
               </div>
             </button>
             <button

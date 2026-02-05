@@ -49,8 +49,8 @@ import {
   EditTicket,
   ViewTicket,
   Statuses,
-  Departments,
   Priorities,
+  Topics,
 } from "./Tickets";
 import Permissions from "./Permissions/Permissions";
 import CreatePermission from "./Permissions/CreatePermission";
@@ -340,10 +340,10 @@ const AdminDashboard = ({ onLogout }) => {
         return <ViewTicket />;
       case "/admin/tickets/statuses":
         return <Statuses />;
-      case "/admin/tickets/departments":
-        return <Departments />;
       case "/admin/tickets/priorities":
         return <Priorities />;
+      case "/admin/tickets/topics":
+        return <Topics />;
       case "/admin/permissions":
       case "/admin/permissions/":
         return <Permissions />;

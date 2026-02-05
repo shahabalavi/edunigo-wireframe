@@ -8,3 +8,4 @@ export { default as ViewTicket } from "./ViewTicket";
 export { default as Statuses } from "./Statuses/Statuses";
 export { default as Departments } from "./Departments/Departments";
 export { default as Priorities } from "./Priorities/Priorities";
+export { default as Topics } from "./Topics/Topics";
