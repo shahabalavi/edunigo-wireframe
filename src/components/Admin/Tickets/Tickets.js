@@ -17,6 +17,7 @@ import {
   Folder,
   Activity,
   GitBranch,
+  Star,
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Tickets.module.css";
@@ -375,6 +376,18 @@ const Tickets = () => {
                 <div className={styles["nav-btn-title"]}>Transitions</div>
                 <div className={styles["nav-btn-desc"]}>
                   Automate status changes
+                </div>
+              </div>
+            </button>
+            <button
+              className={styles["nav-btn"]}
+              onClick={() => navigate("/admin/tickets/ratings")}
+            >
+              <Star size={18} />
+              <div>
+                <div className={styles["nav-btn-title"]}>Ratings</div>
+                <div className={styles["nav-btn-desc"]}>
+                  Support feedback insights
                 </div>
               </div>
             </button>

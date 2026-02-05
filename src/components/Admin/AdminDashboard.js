@@ -53,6 +53,7 @@ import {
   Topics,
   Events,
   Transitions,
+  Ratings,
 } from "./Tickets";
 import Permissions from "./Permissions/Permissions";
 import CreatePermission from "./Permissions/CreatePermission";
@@ -350,6 +351,8 @@ const AdminDashboard = ({ onLogout }) => {
         return <Events />;
       case "/admin/tickets/transitions":
         return <Transitions />;
+      case "/admin/tickets/ratings":
+        return <Ratings />;
       case "/admin/permissions":
       case "/admin/permissions/":
         return <Permissions />;

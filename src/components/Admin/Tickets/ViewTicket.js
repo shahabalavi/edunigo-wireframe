@@ -84,7 +84,7 @@ const ViewTicket = () => {
           organization: "Edunigo Global",
           project: "Computer Science - Fall 2026",
           topic: { id: 2, title: "Application Status" },
-          status: { id: 2, name: "in_progress", title: "In Progress" },
+          status: { id: 4, name: "resolved", title: "Resolved" },
           priority: { id: 2, name: "medium", title: "Medium" },
           description:
             "I would like to know the current status of my application for the Computer Science program. I submitted my application last month and haven't received any updates yet.",
@@ -151,24 +151,6 @@ const ViewTicket = () => {
             attachments: [{ name: "application_timeline.pdf", size: "245KB" }],
             createdAt: "2026-02-02T11:30:00Z",
             authorId: 4,
-          },
-          {
-            id: 6,
-            ticketId: parseInt(id),
-            sender: "Admin User",
-            senderType: "admin",
-            message:
-              "Replying to your earlier update — I've flagged your application for priority review.",
-            attachments: [],
-            createdAt: "2026-02-02T12:10:00Z",
-            authorId: 4,
-            replyTo: {
-              id: 4,
-              sender: "John Doe",
-              createdAt: "2026-02-02T09:15:00Z",
-              preview:
-                "Thank you for the update. I appreciate the quick response.",
-            },
           },
         ];
 
@@ -291,6 +273,11 @@ const ViewTicket = () => {
         label: "In Progress",
         className: styles["status-in-progress"],
         icon: Clock,
+      },
+      resolved: {
+        label: "Resolved",
+        className: styles["status-resolved"],
+        icon: CheckCircle,
       },
       closed: {
         label: "Closed",
@@ -640,15 +627,17 @@ const ViewTicket = () => {
                     </div>
                   )}
                 </div>
-                {isOwnMessage(message) && editingMessageId !== message.id && (
+                {editingMessageId !== message.id && (
                   <div className={styles["message-actions"]}>
-                    <button
-                      type="button"
-                      className={styles["message-action-btn"]}
-                      onClick={() => handleStartEdit(message)}
-                    >
-                      Edit
-                    </button>
+                    {isOwnMessage(message) && (
+                      <button
+                        type="button"
+                        className={styles["message-action-btn"]}
+                        onClick={() => handleStartEdit(message)}
+                      >
+                        Edit
+                      </button>
+                    )}
                     <button
                       type="button"
                       className={styles["message-action-btn"]}
@@ -656,13 +645,15 @@ const ViewTicket = () => {
                     >
                       Reply
                     </button>
-                    <button
-                      type="button"
-                      className={styles["message-action-btn"]}
-                      onClick={() => handleDeleteMessage(message.id)}
-                    >
-                      Delete
-                    </button>
+                    {isOwnMessage(message) && (
+                      <button
+                        type="button"
+                        className={styles["message-action-btn"]}
+                        onClick={() => handleDeleteMessage(message.id)}
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
