@@ -53,6 +53,35 @@
   gap: 12px;
 }
 
+/* Info Panel */
+.info-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 24px 16px;
+}
+
+.info-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 16px 18px;
+}
+
+.info-card h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: #1a202c;
+  font-weight: 600;
+}
+
+.info-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
 .action-btn {
   display: flex;
   align-items: center;
@@ -284,6 +313,14 @@
   line-height: 1.4;
 }
 
+.ticket-code {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
 .ticket-description {
   font-size: 13px;
   color: #64748b;
@@ -300,13 +337,20 @@
 }
 
 /* Department Badge */
-.department-badge {
+.user-pill,
+.topic-pill {
   display: inline-block;
   padding: 4px 8px;
   background: #f1f5f9;
   color: #475569;
   border-radius: 6px;
   font-size: 12px;
+  font-weight: 500;
+}
+
+.project-text {
+  font-size: 13px;
+  color: #374151;
   font-weight: 500;
 }
 
@@ -400,6 +444,7 @@
   color: #64748b;
   font-size: 13px;
 }
+
 
 /* Action Buttons */
 .action-buttons {
@@ -626,7 +671,7 @@
   }
 
   .tickets-table {
-    min-width: 800px;
+    min-width: 1000px;
   }
 
   .tickets-table th,
@@ -662,6 +707,11 @@
 
   .sub-modules-nav {
     padding: 0 20px;
+  }
+
+  .info-panel {
+    padding: 0 20px 16px;
+    grid-template-columns: 1fr;
   }
 
   .nav-buttons {
@@ -725,6 +775,10 @@
 
   .sub-modules-nav {
     padding: 0 16px;
+  }
+
+  .info-panel {
+    padding: 0 16px 16px;
   }
 
   .nav-section {

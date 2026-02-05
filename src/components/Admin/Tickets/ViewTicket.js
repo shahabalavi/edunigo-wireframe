@@ -10,6 +10,7 @@ import {
   CheckCircle,
   XCircle,
   Building2,
+  Folder,
 } from "lucide-react";
 import styles from "./ViewTicket.module.css";
 
@@ -19,9 +20,56 @@ const ViewTicket = () => {
   const [ticket, setTicket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [messageType, setMessageType] = useState("public");
+  const [internalTarget, setInternalTarget] = useState("Finance Support");
   const [attachments, setAttachments] = useState([]);
+  const [replyToMessage, setReplyToMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [editingMessageId, setEditingMessageId] = useState(null);
+  const [editedMessage, setEditedMessage] = useState("");
+  const [mentionQuery, setMentionQuery] = useState("");
+  const [showMentions, setShowMentions] = useState(false);
+
+  const currentUser = { id: 4, name: "Admin User" };
+  const internalTargets = [
+    "Finance Support",
+    "Technical Support",
+    "Applications Team",
+    "Operations Team",
+  ];
+  const mentionEntities = [
+    {
+      id: 124,
+      type: "Application",
+      label: "Canada Application",
+    },
+    {
+      id: 219,
+      type: "Application",
+      label: "UK Transfer Request",
+    },
+    {
+      id: 567,
+      type: "Payment",
+      label: "Visa Fee",
+    },
+    {
+      id: 642,
+      type: "Payment",
+      label: "Deposit Invoice",
+    },
+    {
+      id: 88,
+      type: "Service",
+      label: "Priority Review",
+    },
+    {
+      id: 302,
+      type: "Subscription",
+      label: "Premium Support",
+    },
+  ];
 
   useEffect(() => {
     const fetchTicketData = async () => {
@@ -29,20 +77,24 @@ const ViewTicket = () => {
       setTimeout(() => {
         const sampleTicket = {
           id: parseInt(id),
+          code: "TCK-2026-1042",
           subject: "Application Status Inquiry",
-          department: {
-            id: 1,
-            name: "Admissions",
-            title: "Admissions Department",
-          },
+          user: { id: 12, name: "John Doe" },
+          assignedAdmin: { id: 4, name: "Admin User" },
+          organization: "Edunigo Global",
+          project: "Computer Science - Fall 2026",
+          topic: { id: 2, title: "Application Status" },
           status: { id: 2, name: "in_progress", title: "In Progress" },
           priority: { id: 2, name: "medium", title: "Medium" },
           description:
             "I would like to know the current status of my application for the Computer Science program. I submitted my application last month and haven't received any updates yet.",
-          createdBy: "John Doe",
-          assignedTo: "Admin User",
-          createdAt: "2024-01-15T10:30:00Z",
-          updatedAt: "2024-01-20T14:45:00Z",
+          lastResponse: {
+            by: "Admin User",
+            at: "2026-02-03T14:12:00Z",
+            type: "admin",
+          },
+          createdAt: "2026-02-01T10:30:00Z",
+          updatedAt: "2026-02-03T14:45:00Z",
         };
 
         const sampleMessages = [
@@ -50,11 +102,11 @@ const ViewTicket = () => {
             id: 1,
             ticketId: parseInt(id),
             sender: "John Doe",
-            senderType: "customer",
+            senderType: "user",
             message:
               "I submitted my application last month and haven't received any updates yet. Could you please check the status?",
             attachments: [],
-            createdAt: "2024-01-15T10:30:00Z",
+            createdAt: "2026-02-01T10:30:00Z",
           },
           {
             id: 2,
@@ -64,27 +116,59 @@ const ViewTicket = () => {
             message:
               "Thank you for contacting us. I've checked your application and it's currently under review. Our admissions team is working on it and you should receive an update within the next 5-7 business days.",
             attachments: [],
-            createdAt: "2024-01-15T14:20:00Z",
+            createdAt: "2026-02-01T14:20:00Z",
+            authorId: 4,
           },
           {
             id: 3,
             ticketId: parseInt(id),
-            sender: "John Doe",
-            senderType: "customer",
+            sender: "Finance Support",
+            senderType: "internal",
+            internalTarget: "Finance Support",
             message:
-              "Thank you for the update. I appreciate the quick response. I'll wait for the update from the admissions team.",
+              "Finance review complete. No outstanding balance found for this application.",
             attachments: [],
-            createdAt: "2024-01-16T09:15:00Z",
+            createdAt: "2026-02-01T16:10:00Z",
+            authorId: 7,
           },
           {
             id: 4,
+            ticketId: parseInt(id),
+            sender: "John Doe",
+            senderType: "user",
+            message:
+              "Thank you for the update. I appreciate the quick response. I'll wait for the update from the admissions team.",
+            attachments: [],
+            createdAt: "2026-02-02T09:15:00Z",
+          },
+          {
+            id: 5,
             ticketId: parseInt(id),
             sender: "Admin User",
             senderType: "admin",
             message:
               "You're welcome! I've also attached your application timeline document for your reference. If you have any other questions, feel free to ask.",
             attachments: [{ name: "application_timeline.pdf", size: "245KB" }],
-            createdAt: "2024-01-16T11:30:00Z",
+            createdAt: "2026-02-02T11:30:00Z",
+            authorId: 4,
+          },
+          {
+            id: 6,
+            ticketId: parseInt(id),
+            sender: "Admin User",
+            senderType: "admin",
+            message:
+              "Replying to your earlier update — I've flagged your application for priority review.",
+            attachments: [],
+            createdAt: "2026-02-02T12:10:00Z",
+            authorId: 4,
+            replyTo: {
+              id: 4,
+              sender: "John Doe",
+              createdAt: "2026-02-02T09:15:00Z",
+              preview:
+                "Thank you for the update. I appreciate the quick response.",
+            },
           },
         ];
 
@@ -111,21 +195,80 @@ const ViewTicket = () => {
       const message = {
         id: messages.length + 1,
         ticketId: parseInt(id),
-        sender: "Admin User",
-        senderType: "admin",
+        sender: currentUser.name,
+        senderType: messageType === "internal" ? "internal" : "admin",
+        internalTarget: messageType === "internal" ? internalTarget : null,
         message: newMessage,
         attachments: attachments,
         createdAt: new Date().toISOString(),
+        authorId: currentUser.id,
+        replyTo: replyToMessage
+          ? {
+              id: replyToMessage.id,
+              sender: replyToMessage.sender,
+              createdAt: replyToMessage.createdAt,
+              preview: replyToMessage.message.slice(0, 80),
+            }
+          : null,
       };
 
       setMessages([...messages, message]);
       setNewMessage("");
+      setMentionQuery("");
+      setShowMentions(false);
       setAttachments([]);
+      setReplyToMessage(null);
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
       setSendingMessage(false);
     }
+  };
+
+  const handleStartEdit = (message) => {
+    setEditingMessageId(message.id);
+    setEditedMessage(message.message);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMessageId(null);
+    setEditedMessage("");
+  };
+
+  const handleSaveEdit = (messageId) => {
+    if (!editedMessage.trim()) return;
+    setMessages((prev) =>
+      prev.map((message) =>
+        message.id === messageId
+          ? { ...message, message: editedMessage }
+          : message
+      )
+    );
+    handleCancelEdit();
+  };
+
+  const handleDeleteMessage = (messageId) => {
+    setMessages((prev) => prev.filter((message) => message.id !== messageId));
+  };
+
+  const isOwnMessage = (message) => message.authorId === currentUser.id;
+
+  const handleReplySelect = (message) => {
+    const replyContext = {
+      id: message.id,
+      sender: message.sender,
+      createdAt: message.createdAt,
+      message: message.message,
+      senderType: message.senderType,
+    };
+    setReplyToMessage(replyContext);
+    if (message.senderType === "internal") {
+      setMessageType("internal");
+    }
+  };
+
+  const handleReplyCancel = () => {
+    setReplyToMessage(null);
   };
 
   const handleFileUpload = (e) => {
@@ -204,6 +347,70 @@ const ViewTicket = () => {
     return new Date(dateString).toLocaleString();
   };
 
+  const getMessageTypeLabel = (type) => {
+    if (type === "internal") return "Internal";
+    if (type === "admin") return "Support";
+    return "User";
+  };
+
+  const handleMessageInputChange = (value) => {
+    setNewMessage(value);
+    const atIndex = value.lastIndexOf("@");
+    if (atIndex !== -1) {
+      const query = value.slice(atIndex + 1).trimStart();
+      if (query.length <= 30) {
+        setMentionQuery(query.toLowerCase());
+        setShowMentions(true);
+        return;
+      }
+    }
+    setShowMentions(false);
+    setMentionQuery("");
+  };
+
+  const handleMentionSelect = (entity) => {
+    const atIndex = newMessage.lastIndexOf("@");
+    if (atIndex === -1) return;
+    const before = newMessage.slice(0, atIndex);
+    const after = newMessage.slice(atIndex + 1);
+    const trimmedAfter = after.replace(/^\S*/, "");
+    const structured = `@${entity.type} #${entity.id} – ${entity.label}`;
+    const nextValue = `${before}${structured} ${trimmedAfter}`.replace(
+      /\s+/g,
+      " "
+    );
+    setNewMessage(nextValue);
+    setShowMentions(false);
+    setMentionQuery("");
+  };
+
+  const filteredMentions = mentionEntities.filter((entity) => {
+    const searchable = `${entity.type} #${entity.id} ${entity.label}`.toLowerCase();
+    return searchable.includes(mentionQuery);
+  });
+
+  const renderMentions = (text) => {
+    const pattern = /@([A-Za-z]+)\s#(\d+)\s–\s([^@]+)/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+    while ((match = pattern.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(text.slice(lastIndex, match.index));
+      }
+      parts.push(
+        <span key={`${match.index}-${match[2]}`} className={styles["mention-pill"]}>
+          @{match[1]} #{match[2]} – {match[3].trim()}
+        </span>
+      );
+      lastIndex = pattern.lastIndex;
+    }
+    if (lastIndex < text.length) {
+      parts.push(text.slice(lastIndex));
+    }
+    return parts;
+  };
+
   if (loading) {
     return (
       <div className={styles["loading-container"]}>
@@ -241,8 +448,10 @@ const ViewTicket = () => {
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1>Ticket #{ticket.id}</h1>
-            <p className={styles["ticket-subject"]}>{ticket.subject}</p>
+            <h1>{ticket.code}</h1>
+            <p className={styles["ticket-subject"]}>
+              {ticket.subject} • ID #{ticket.id}
+            </p>
           </div>
         </div>
         <div className={styles["header-right"]}>
@@ -257,29 +466,40 @@ const ViewTicket = () => {
           <div className={styles["info-section"]}>
             <h3>Ticket Information</h3>
             <div className={styles["info-item"]}>
-              <span className={styles["info-label"]}>Department:</span>
+              <span className={styles["info-label"]}>User:</span>
+              <div className={styles["user-info"]}>
+                <div className={styles["user-avatar"]}>
+                  <span>{getInitials(ticket.user.name)}</span>
+                </div>
+                <span className={styles["user-name"]}>{ticket.user.name}</span>
+              </div>
+            </div>
+            <div className={styles["info-item"]}>
+              <span className={styles["info-label"]}>
+                Assigned Support Admin:
+              </span>
+              <div className={styles["user-info"]}>
+                <div className={styles["user-avatar"]}>
+                  <span>{getInitials(ticket.assignedAdmin.name)}</span>
+                </div>
+                <span className={styles["user-name"]}>
+                  {ticket.assignedAdmin.name}
+                </span>
+              </div>
+            </div>
+            <div className={styles["info-item"]}>
+              <span className={styles["info-label"]}>Target:</span>
               <span className={styles["info-value"]}>
-                <Building2 size={16} />
-                {ticket.department.title}
+                <Folder size={16} />
+                {ticket.project}
               </span>
             </div>
             <div className={styles["info-item"]}>
-              <span className={styles["info-label"]}>Created By:</span>
-              <div className={styles["user-info"]}>
-                <div className={styles["user-avatar"]}>
-                  <span>{getInitials(ticket.createdBy)}</span>
-                </div>
-                <span className={styles["user-name"]}>{ticket.createdBy}</span>
-              </div>
-            </div>
-            <div className={styles["info-item"]}>
-              <span className={styles["info-label"]}>Assigned To:</span>
-              <div className={styles["user-info"]}>
-                <div className={styles["user-avatar"]}>
-                  <span>{getInitials(ticket.assignedTo)}</span>
-                </div>
-                <span className={styles["user-name"]}>{ticket.assignedTo}</span>
-              </div>
+              <span className={styles["info-label"]}>Topic:</span>
+              <span className={styles["info-value"]}>
+                <Folder size={16} />
+                {ticket.topic.title}
+              </span>
             </div>
             <div className={styles["info-item"]}>
               <span className={styles["info-label"]}>Created:</span>
@@ -319,7 +539,9 @@ const ViewTicket = () => {
                 className={`${styles["message"]} ${
                   message.senderType === "admin"
                     ? styles["admin-message"]
-                    : styles["customer-message"]
+                    : message.senderType === "internal"
+                      ? styles["internal-message"]
+                      : styles["customer-message"]
                 }`}
               >
                 <div className={styles["message-header"]}>
@@ -336,9 +558,74 @@ const ViewTicket = () => {
                       </div>
                     </div>
                   </div>
+                  <span
+                    className={`${styles["message-badge"]} ${
+                      styles[`message-${message.senderType}`]
+                    }`}
+                  >
+                    {getMessageTypeLabel(message.senderType)}
+                  </span>
                 </div>
-                <div className={styles["message-content"]}>
-                  <p>{message.message}</p>
+                <div
+                  className={styles["message-content"]}
+                  id={`message-${message.id}`}
+                >
+                  {message.replyTo && (
+                    <button
+                      type="button"
+                      className={styles["reply-context"]}
+                      onClick={() => {
+                        const target = document.getElementById(
+                          `message-${message.replyTo.id}`
+                        );
+                        if (target) {
+                          target.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                      }}
+                    >
+                      <span className={styles["reply-context-meta"]}>
+                        Replying to {message.replyTo.sender} •{" "}
+                        {formatDate(message.replyTo.createdAt)}
+                      </span>
+                      <span className={styles["reply-context-preview"]}>
+                        {message.replyTo.preview}
+                      </span>
+                    </button>
+                  )}
+                  {message.senderType === "internal" &&
+                    message.internalTarget && (
+                      <div className={styles["internal-target"]}>
+                        Target: {message.internalTarget}
+                      </div>
+                    )}
+                  {editingMessageId === message.id ? (
+                    <div className={styles["message-edit"]}>
+                      <textarea
+                        value={editedMessage}
+                        onChange={(e) => setEditedMessage(e.target.value)}
+                        className={styles["message-edit-input"]}
+                        rows={3}
+                      />
+                      <div className={styles["message-edit-actions"]}>
+                        <button
+                          type="button"
+                          className={styles["edit-save-btn"]}
+                          onClick={() => handleSaveEdit(message.id)}
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          className={styles["edit-cancel-btn"]}
+                          onClick={handleCancelEdit}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p>{renderMentions(message.message)}</p>
+                  )}
                   {message.attachments && message.attachments.length > 0 && (
                     <div className={styles["message-attachments"]}>
                       {message.attachments.map((attachment, index) => (
@@ -353,20 +640,123 @@ const ViewTicket = () => {
                     </div>
                   )}
                 </div>
+                {isOwnMessage(message) && editingMessageId !== message.id && (
+                  <div className={styles["message-actions"]}>
+                    <button
+                      type="button"
+                      className={styles["message-action-btn"]}
+                      onClick={() => handleStartEdit(message)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className={styles["message-action-btn"]}
+                      onClick={() => handleReplySelect(message)}
+                    >
+                      Reply
+                    </button>
+                    <button
+                      type="button"
+                      className={styles["message-action-btn"]}
+                      onClick={() => handleDeleteMessage(message.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
 
           {/* Reply Form */}
           <form onSubmit={handleSendMessage} className={styles["reply-form"]}>
+            <div className={styles["reply-options"]}>
+              <span className={styles["reply-label"]}>Message Type</span>
+              <div className={styles["reply-toggle"]}>
+                <button
+                  type="button"
+                  className={`${styles["toggle-btn"]} ${
+                    messageType === "public" ? styles["active"] : ""
+                  }`}
+                  onClick={() => setMessageType("public")}
+                  disabled={replyToMessage?.senderType === "internal"}
+                >
+                  Public Reply
+                </button>
+                <button
+                  type="button"
+                  className={`${styles["toggle-btn"]} ${
+                    messageType === "internal" ? styles["active"] : ""
+                  }`}
+                  onClick={() => setMessageType("internal")}
+                >
+                  Internal Message
+                </button>
+              </div>
+              <p className={styles["reply-hint"]}>
+                Internal messages are only visible to admins and departments.
+              </p>
+              {replyToMessage && (
+                <div className={styles["replying-banner"]}>
+                  <div>
+                    Replying to {replyToMessage.sender} •{" "}
+                    {formatDate(replyToMessage.createdAt)}
+                  </div>
+                  <button
+                    type="button"
+                    className={styles["reply-cancel-btn"]}
+                    onClick={handleReplyCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+              {messageType === "internal" && (
+                <div className={styles["internal-target-row"]}>
+                  <label className={styles["internal-target-label"]}>
+                    Target Department
+                  </label>
+                  <select
+                    value={internalTarget}
+                    onChange={(e) => setInternalTarget(e.target.value)}
+                    className={styles["internal-target-select"]}
+                  >
+                    {internalTargets.map((target) => (
+                      <option key={target} value={target}>
+                        {target}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
             <div className={styles["reply-input-container"]}>
               <textarea
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your reply..."
+                onChange={(e) => handleMessageInputChange(e.target.value)}
+                placeholder={
+                  messageType === "internal"
+                    ? "Write an internal note..."
+                    : "Type your reply..."
+                }
                 className={styles["reply-input"]}
                 rows={3}
               />
+              {showMentions && filteredMentions.length > 0 && (
+                <div className={styles["mentions-panel"]}>
+                  {filteredMentions.map((entity) => (
+                    <button
+                      key={`${entity.type}-${entity.id}`}
+                      type="button"
+                      className={styles["mention-item"]}
+                      onClick={() => handleMentionSelect(entity)}
+                    >
+                      @{entity.type} #{entity.id} – {entity.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {attachments.length > 0 && (
@@ -417,7 +807,9 @@ const ViewTicket = () => {
                 ) : (
                   <>
                     <Send size={16} />
-                    Send Reply
+                    {messageType === "internal"
+                      ? "Send Internal"
+                      : "Send Reply"}
                   </>
                 )}
               </button>
