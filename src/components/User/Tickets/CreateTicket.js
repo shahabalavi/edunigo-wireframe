@@ -1,10 +1,68 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Send, Paperclip } from "lucide-react";
 import styles from "./UserTicketForm.module.css";
 
+const TOPICS = [
+  {
+    id: "applications",
+    title: "Applications",
+    children: [
+      {
+        id: "application-status",
+        title: "Application Status",
+        children: [
+          { id: "review-timeline", title: "Review Timeline" },
+          { id: "decision-update", title: "Decision Update" },
+        ],
+      },
+      {
+        id: "document-uploads",
+        title: "Document Uploads",
+        children: [
+          { id: "file-errors", title: "File Errors" },
+          { id: "missing-docs", title: "Missing Documents" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "payments",
+    title: "Payments",
+    children: [
+      { id: "invoice", title: "Invoice & Billing" },
+      { id: "refund", title: "Refund Request" },
+    ],
+  },
+  {
+    id: "enrollment",
+    title: "Enrollment",
+    children: [
+      { id: "course-enroll", title: "Course Enrollment" },
+      { id: "schedule", title: "Schedule Changes" },
+    ],
+  },
+  {
+    id: "profile",
+    title: "Profile & Account",
+    children: [
+      { id: "profile-update", title: "Profile Updates" },
+      { id: "account-access", title: "Account Access" },
+    ],
+  },
+];
+
+const TARGETS = [
+  "Computer Science - Fall 2026",
+  "MBA Admission Review",
+  "Fee Payment Portal",
+  "Enrollment Services",
+  "Student Profile",
+];
+
 const CreateUserTicket = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     subject: "",
     topic: "",
@@ -17,67 +75,86 @@ const CreateUserTicket = () => {
   const [attachments, setAttachments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
-  const topics = [
-    {
-      id: "applications",
-      title: "Applications",
-      children: [
-        {
-          id: "application-status",
-          title: "Application Status",
-          children: [
-            { id: "review-timeline", title: "Review Timeline" },
-            { id: "decision-update", title: "Decision Update" },
-          ],
-        },
-        {
-          id: "document-uploads",
-          title: "Document Uploads",
-          children: [
-            { id: "file-errors", title: "File Errors" },
-            { id: "missing-docs", title: "Missing Documents" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "payments",
-      title: "Payments",
-      children: [
-        { id: "invoice", title: "Invoice & Billing" },
-        { id: "refund", title: "Refund Request" },
-      ],
-    },
-    {
-      id: "enrollment",
-      title: "Enrollment",
-      children: [
-        { id: "course-enroll", title: "Course Enrollment" },
-        { id: "schedule", title: "Schedule Changes" },
-      ],
-    },
-    {
-      id: "profile",
-      title: "Profile & Account",
-      children: [
-        { id: "profile-update", title: "Profile Updates" },
-        { id: "account-access", title: "Account Access" },
-      ],
-    },
-  ];
-
-  const targets = [
-    "Computer Science - Fall 2026",
-    "MBA Admission Review",
-    "Fee Payment Portal",
-    "Enrollment Services",
-    "Student Profile",
-  ];
+  const topics = TOPICS;
+  const targets = TARGETS;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const presetRaw = params.get("topic");
+    if (!presetRaw) return;
+
+    const preset = presetRaw.toLowerCase();
+    if (preset === "general") {
+      setTopicLevel1("");
+      setTopicLevel2("");
+      setTopicLevel3("");
+      setFormData((prev) => ({ ...prev, topic: "" }));
+      return;
+    }
+
+    const matchLevel1 = topics.find(
+      (topic) =>
+        topic.id.toLowerCase() === preset ||
+        topic.title.toLowerCase() === preset
+    );
+    if (matchLevel1) {
+      setTopicLevel1(matchLevel1.id);
+      setTopicLevel2("");
+      setTopicLevel3("");
+      setFormData((prev) => ({ ...prev, topic: matchLevel1.id }));
+      return;
+    }
+
+    let matchLevel2 = null;
+    let matchLevel2Parent = null;
+    topics.forEach((topic) => {
+      topic.children?.forEach((child) => {
+        if (
+          child.id.toLowerCase() === preset ||
+          child.title.toLowerCase() === preset
+        ) {
+          matchLevel2 = child;
+          matchLevel2Parent = topic;
+        }
+      });
+    });
+    if (matchLevel2 && matchLevel2Parent) {
+      setTopicLevel1(matchLevel2Parent.id);
+      setTopicLevel2(matchLevel2.id);
+      setTopicLevel3("");
+      setFormData((prev) => ({ ...prev, topic: matchLevel2.id }));
+      return;
+    }
+
+    let matchLevel3 = null;
+    let matchLevel3Parent = null;
+    let matchLevel3Root = null;
+    topics.forEach((topic) => {
+      topic.children?.forEach((child) => {
+        child.children?.forEach((grandchild) => {
+          if (
+            grandchild.id.toLowerCase() === preset ||
+            grandchild.title.toLowerCase() === preset
+          ) {
+            matchLevel3 = grandchild;
+            matchLevel3Parent = child;
+            matchLevel3Root = topic;
+          }
+        });
+      });
+    });
+    if (matchLevel3 && matchLevel3Parent && matchLevel3Root) {
+      setTopicLevel1(matchLevel3Root.id);
+      setTopicLevel2(matchLevel3Parent.id);
+      setTopicLevel3(matchLevel3.id);
+      setFormData((prev) => ({ ...prev, topic: matchLevel3.id }));
+    }
+  }, [location.search]);
 
   const handleTopicLevel1Change = (value) => {
     setTopicLevel1(value);

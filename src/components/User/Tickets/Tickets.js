@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Ticket, Search, Plus, Eye } from "lucide-react";
+import {
+  Ticket,
+  Search,
+  Plus,
+  Eye,
+  Building2,
+  CreditCard,
+  Laptop,
+  User,
+  Shield,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Tickets.module.css";
 
@@ -9,6 +19,44 @@ const UserTickets = () => {
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const departments = [
+    {
+      id: "admissions",
+      title: "Admissions",
+      description: "Applications and enrollment guidance",
+      icon: Building2,
+      presetTopic: "application-status",
+    },
+    {
+      id: "finance",
+      title: "Finance",
+      description: "Invoices, payments, and refunds",
+      icon: CreditCard,
+      presetTopic: "payments",
+    },
+    {
+      id: "technical",
+      title: "Technical",
+      description: "Platform issues and access problems",
+      icon: Laptop,
+      presetTopic: "account-access",
+    },
+    {
+      id: "profile",
+      title: "Profile Support",
+      description: "Account and profile updates",
+      icon: User,
+      presetTopic: "profile-update",
+    },
+    {
+      id: "operations",
+      title: "Operations",
+      description: "Policy or process questions",
+      icon: Shield,
+      presetTopic: "general",
+    },
+  ];
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -103,6 +151,42 @@ const UserTickets = () => {
           <Plus size={16} />
           Create Ticket
         </button>
+      </div>
+
+      <div className={styles["department-section"]}>
+        <div className={styles["section-header"]}>
+          <h3>Open a New Ticket</h3>
+          <p>Select a department to get started quickly</p>
+        </div>
+        <div className={styles["department-grid"]}>
+          {departments.map((dept) => {
+            const Icon = dept.icon;
+            return (
+              <button
+                key={dept.id}
+                className={styles["department-card"]}
+                onClick={() => {
+                  const query = dept.presetTopic
+                    ? `?topic=${dept.presetTopic}`
+                    : "";
+                  navigate(`/user/tickets/create${query}`);
+                }}
+              >
+                <div className={styles["department-icon"]}>
+                  <Icon size={22} />
+                </div>
+                <div className={styles["department-info"]}>
+                  <div className={styles["department-title"]}>
+                    {dept.title}
+                  </div>
+                  <div className={styles["department-desc"]}>
+                    {dept.description}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className={styles["controls-section"]}>
