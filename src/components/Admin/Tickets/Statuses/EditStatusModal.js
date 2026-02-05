@@ -6,6 +6,10 @@ const EditStatusModal = ({ status, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
     name: "",
     title: "",
+    description: "",
+    color: "#3b82f6",
+    display_order: 1,
+    is_protected: false,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -15,6 +19,10 @@ const EditStatusModal = ({ status, onClose, onUpdate }) => {
       setFormData({
         name: status.name,
         title: status.title,
+        description: status.description || "",
+        color: status.color || "#3b82f6",
+        display_order: status.display_order ?? 1,
+        is_protected: Boolean(status.is_protected),
       });
     }
   }, [status]);
@@ -23,7 +31,10 @@ const EditStatusModal = ({ status, onClose, onUpdate }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]:
+        name === "display_order" ? Number(value) : name === "is_protected"
+          ? e.target.checked
+          : value,
     }));
 
     // Clear error when user starts typing
@@ -47,6 +58,10 @@ const EditStatusModal = ({ status, onClose, onUpdate }) => {
 
     if (!formData.title.trim()) {
       newErrors.title = "Title is required";
+    }
+
+    if (!formData.display_order || formData.display_order < 1) {
+      newErrors.display_order = "Display order must be 1 or higher";
     }
 
     setErrors(newErrors);
@@ -91,6 +106,12 @@ const EditStatusModal = ({ status, onClose, onUpdate }) => {
         </div>
 
         <form onSubmit={handleSubmit} className={styles["modal-form"]}>
+          {status?.is_protected && (
+            <div className={styles["notice"]}>
+              This is a protected system status. Deletion is disabled and some
+              edits may be restricted by system rules.
+            </div>
+          )}
           <div className={styles["form-group"]}>
             <label className={styles["form-label"]}>
               Name <span className={styles["required"]}>*</span>
@@ -136,6 +157,82 @@ const EditStatusModal = ({ status, onClose, onUpdate }) => {
                 {errors.title}
               </div>
             )}
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              className={styles["form-textarea"]}
+              placeholder="Explain when this status should be used"
+              rows={3}
+            />
+            <div className={styles["field-hint"]}>
+              Optional guidance for agents and admins
+            </div>
+          </div>
+
+          <div className={styles["form-row"]}>
+            <div className={styles["form-group"]}>
+              <label className={styles["form-label"]}>Color</label>
+              <div className={styles["color-input-group"]}>
+                <input
+                  type="color"
+                  name="color"
+                  value={formData.color}
+                  onChange={handleInputChange}
+                  className={styles["color-picker"]}
+                />
+                <input
+                  type="text"
+                  name="color"
+                  value={formData.color}
+                  onChange={handleInputChange}
+                  className={styles["form-input"]}
+                />
+              </div>
+            </div>
+
+            <div className={styles["form-group"]}>
+              <label className={styles["form-label"]}>
+                Display Order <span className={styles["required"]}>*</span>
+              </label>
+              <input
+                type="number"
+                name="display_order"
+                min="1"
+                value={formData.display_order}
+                onChange={handleInputChange}
+                className={`${styles["form-input"]} ${
+                  errors.display_order ? styles["error"] : ""
+                }`}
+              />
+              {errors.display_order && (
+                <div className={styles["error-message"]}>
+                  <AlertCircle size={16} />
+                  {errors.display_order}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["toggle-row"]}>
+              <input
+                type="checkbox"
+                name="is_protected"
+                checked={formData.is_protected}
+                onChange={handleInputChange}
+              />
+              <span className={styles["toggle-label"]}>
+                Protected system status
+              </span>
+            </label>
+            <div className={styles["field-hint"]}>
+              Protected statuses cannot be deleted.
+            </div>
           </div>
 
           <div className={styles["modal-actions"]}>
