@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   Folder,
   Activity,
+  GitBranch,
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Tickets.module.css";
@@ -328,6 +329,18 @@ const Tickets = () => {
                 <div className={styles["nav-btn-title"]}>Events</div>
                 <div className={styles["nav-btn-desc"]}>
                   View system-defined events
+                </div>
+              </div>
+            </button>
+            <button
+              className={styles["nav-btn"]}
+              onClick={() => navigate("/admin/tickets/transitions")}
+            >
+              <GitBranch size={18} />
+              <div>
+                <div className={styles["nav-btn-title"]}>Transitions</div>
+                <div className={styles["nav-btn-desc"]}>
+                  Automate status changes
                 </div>
               </div>
             </button>
