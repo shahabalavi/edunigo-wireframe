@@ -16,6 +16,7 @@ import {
   CheckCircle,
   AlertTriangle,
   Folder,
+  Activity,
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Tickets.module.css";
@@ -315,6 +316,18 @@ const Tickets = () => {
                 <div className={styles["nav-btn-title"]}>Priorities</div>
                 <div className={styles["nav-btn-desc"]}>
                   Manage priority levels
+                </div>
+              </div>
+            </button>
+            <button
+              className={styles["nav-btn"]}
+              onClick={() => navigate("/admin/tickets/events")}
+            >
+              <Activity size={18} />
+              <div>
+                <div className={styles["nav-btn-title"]}>Events</div>
+                <div className={styles["nav-btn-desc"]}>
+                  View system-defined events
                 </div>
               </div>
             </button>

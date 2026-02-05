@@ -9,3 +9,4 @@ export { default as Statuses } from "./Statuses/Statuses";
 export { default as Departments } from "./Departments/Departments";
 export { default as Priorities } from "./Priorities/Priorities";
 export { default as Topics } from "./Topics/Topics";
+export { default as Events } from "./Events/Events";
