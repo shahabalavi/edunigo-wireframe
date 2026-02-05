@@ -6,6 +6,9 @@ const CreatePriorityModal = ({ onClose, onCreate }) => {
   const [formData, setFormData] = useState({
     name: "",
     title: "",
+    description: "",
+    color: "#f59e0b",
+    priority_level: 1,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -14,7 +17,7 @@ const CreatePriorityModal = ({ onClose, onCreate }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "priority_level" ? Number(value) : value,
     }));
 
     // Clear error when user starts typing
@@ -38,6 +41,10 @@ const CreatePriorityModal = ({ onClose, onCreate }) => {
 
     if (!formData.title.trim()) {
       newErrors.title = "Title is required";
+    }
+
+    if (!formData.priority_level || formData.priority_level < 1) {
+      newErrors.priority_level = "Priority level must be 1 or higher";
     }
 
     setErrors(newErrors);
@@ -127,6 +134,68 @@ const CreatePriorityModal = ({ onClose, onCreate }) => {
                 {errors.title}
               </div>
             )}
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              className={styles["form-textarea"]}
+              placeholder="Explain when this priority should be used"
+              rows={3}
+            />
+            <div className={styles["field-hint"]}>
+              Optional guidance for agents and admins
+            </div>
+          </div>
+
+          <div className={styles["form-row"]}>
+            <div className={styles["form-group"]}>
+              <label className={styles["form-label"]}>Color</label>
+              <div className={styles["color-input-group"]}>
+                <input
+                  type="color"
+                  name="color"
+                  value={formData.color}
+                  onChange={handleInputChange}
+                  className={styles["color-picker"]}
+                />
+                <input
+                  type="text"
+                  name="color"
+                  value={formData.color}
+                  onChange={handleInputChange}
+                  className={styles["form-input"]}
+                />
+              </div>
+            </div>
+
+            <div className={styles["form-group"]}>
+              <label className={styles["form-label"]}>
+                Priority Level <span className={styles["required"]}>*</span>
+              </label>
+              <input
+                type="number"
+                name="priority_level"
+                min="1"
+                value={formData.priority_level}
+                onChange={handleInputChange}
+                className={`${styles["form-input"]} ${
+                  errors.priority_level ? styles["error"] : ""
+                }`}
+              />
+              {errors.priority_level && (
+                <div className={styles["error-message"]}>
+                  <AlertCircle size={16} />
+                  {errors.priority_level}
+                </div>
+              )}
+              <div className={styles["field-hint"]}>
+                Lower values typically represent higher priority
+              </div>
+            </div>
           </div>
 
           <div className={styles["modal-actions"]}>

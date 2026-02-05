@@ -95,6 +95,34 @@
   padding: 0 24px;
 }
 
+.info-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 24px 16px;
+}
+
+.info-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 16px 18px;
+}
+
+.info-card h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: #1a202c;
+  font-weight: 600;
+}
+
+.info-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
 .search-container {
   position: relative;
   flex: 1;
@@ -190,11 +218,64 @@
   padding: 4px 8px;
   border-radius: 4px;
   display: inline-block;
+  font-size: 12px;
 }
 
 .priority-title {
   font-weight: 500;
   color: #374151;
+}
+
+.priority-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.priority-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.color-value {
+  font-size: 12px;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.priority-description {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.4;
+  max-width: 280px;
+}
+
+.priority-level {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+
+.priority-timestamps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.priority-timestamps strong {
+  font-weight: 600;
+  color: #475569;
 }
 
 /* Action Buttons */
@@ -385,6 +466,11 @@
     padding: 0 20px;
   }
 
+  .info-panel {
+    padding: 0 20px 16px;
+    grid-template-columns: 1fr;
+  }
+
   .search-container {
     max-width: none;
   }
@@ -399,7 +485,7 @@
   }
 
   .priorities-table {
-    min-width: 400px;
+    min-width: 900px;
   }
 
   .priorities-table th,
@@ -424,6 +510,10 @@
 
   .controls-section {
     padding: 0 16px;
+  }
+
+  .info-panel {
+    padding: 0 16px 16px;
   }
 
   .results-info {

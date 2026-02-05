@@ -33,11 +33,56 @@ const Priorities = () => {
     const fetchPriorities = async () => {
       setTimeout(() => {
         const samplePriorities = [
-          { id: 1, name: "low", title: "Low" },
-          { id: 2, name: "medium", title: "Medium" },
-          { id: 3, name: "high", title: "High" },
-          { id: 4, name: "urgent", title: "Urgent" },
-          { id: 5, name: "critical", title: "Critical" },
+          {
+            id: 1,
+            name: "critical",
+            title: "Critical",
+            color: "#ef4444",
+            description: "Immediate attention required for outages or blockers.",
+            priority_level: 1,
+            created_at: "2025-11-12T09:18:00Z",
+            updated_at: "2026-01-22T14:31:00Z",
+          },
+          {
+            id: 2,
+            name: "high",
+            title: "High",
+            color: "#f97316",
+            description: "High-impact issues affecting multiple users.",
+            priority_level: 2,
+            created_at: "2025-11-12T09:18:00Z",
+            updated_at: "2026-01-22T14:31:00Z",
+          },
+          {
+            id: 3,
+            name: "medium",
+            title: "Medium",
+            color: "#f59e0b",
+            description: "Standard requests that should be addressed soon.",
+            priority_level: 3,
+            created_at: "2025-11-12T09:18:00Z",
+            updated_at: "2026-01-22T14:31:00Z",
+          },
+          {
+            id: 4,
+            name: "low",
+            title: "Low",
+            color: "#22c55e",
+            description: "Minor issues with flexible response times.",
+            priority_level: 4,
+            created_at: "2025-11-12T09:18:00Z",
+            updated_at: "2026-01-22T14:31:00Z",
+          },
+          {
+            id: 5,
+            name: "planned",
+            title: "Planned",
+            color: "#6366f1",
+            description: "Scheduled work that can be tracked separately.",
+            priority_level: 5,
+            created_at: "2025-12-01T11:10:00Z",
+            updated_at: "2026-01-10T08:45:00Z",
+          },
         ];
 
         setPriorities(samplePriorities);
@@ -57,9 +102,19 @@ const Priorities = () => {
       filtered = filtered.filter(
         (priority) =>
           priority.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          priority.title.toLowerCase().includes(searchTerm.toLowerCase())
+          priority.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (priority.description || "")
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
       );
     }
+
+    filtered = [...filtered].sort((a, b) => {
+      const levelA = a.priority_level ?? Number.MAX_SAFE_INTEGER;
+      const levelB = b.priority_level ?? Number.MAX_SAFE_INTEGER;
+      if (levelA !== levelB) return levelA - levelB;
+      return a.id - b.id;
+    });
 
     setFilteredPriorities(filtered);
     setCurrentPage(1);
@@ -75,16 +130,27 @@ const Priorities = () => {
   const totalPages = Math.ceil(filteredPriorities.length / itemsPerPage);
 
   const handleCreatePriority = (newPriority) => {
-    const id = Math.max(...priorities.map((p) => p.id)) + 1;
-    const priorityWithId = { ...newPriority, id };
+    const id = priorities.length
+      ? Math.max(...priorities.map((p) => p.id)) + 1
+      : 1;
+    const now = new Date().toISOString();
+    const priorityWithId = {
+      ...newPriority,
+      id,
+      created_at: now,
+      updated_at: now,
+    };
     setPriorities([...priorities, priorityWithId]);
     setShowCreateModal(false);
   };
 
   const handleEditPriority = (updatedPriority) => {
+    const now = new Date().toISOString();
     setPriorities(
       priorities.map((priority) =>
-        priority.id === updatedPriority.id ? updatedPriority : priority
+        priority.id === updatedPriority.id
+          ? { ...updatedPriority, updated_at: now }
+          : priority
       )
     );
     setShowEditModal(false);
@@ -113,6 +179,11 @@ const Priorities = () => {
     setCurrentPage(pageNumber);
   };
 
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return "—";
+    return new Date(timestamp).toLocaleString();
+  };
+
   if (loading) {
     return (
       <div className={styles["loading-container"]}>
@@ -138,7 +209,7 @@ const Priorities = () => {
           </div>
           <div>
             <h1>Priorities</h1>
-            <p>Manage ticket priority levels</p>
+            <p>Classify urgency without enforcing automation</p>
           </div>
         </div>
         <button
@@ -148,6 +219,24 @@ const Priorities = () => {
           <Plus size={20} />
           Create Priority
         </button>
+      </div>
+
+      <div className={styles["info-panel"]}>
+        <div className={styles["info-card"]}>
+          <h3>Module Purpose</h3>
+          <p>
+            Priorities provide visual guidance and manual ordering for ticket
+            urgency. They support flexible workflows without enforcing strict
+            automation.
+          </p>
+        </div>
+        <div className={styles["info-card"]}>
+          <h3>Manual Ordering</h3>
+          <p>
+            Lower levels typically indicate higher urgency (for example, 1 =
+            Critical). Adjust ordering to match your team's process.
+          </p>
+        </div>
       </div>
 
       {/* Controls Section */}
@@ -188,8 +277,11 @@ const Priorities = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Title</th>
+                <th>Priority</th>
+                <th>Color</th>
+                <th>Description</th>
+                <th>Level</th>
+                <th>Timestamps</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -200,13 +292,47 @@ const Priorities = () => {
                     <div className={styles["priority-id"]}>#{priority.id}</div>
                   </td>
                   <td>
-                    <div className={styles["priority-name"]}>
-                      {priority.name}
+                    <div className={styles["priority-main"]}>
+                      <div className={styles["priority-title"]}>
+                        {priority.title}
+                      </div>
+                      <div className={styles["priority-name"]}>
+                        {priority.name}
+                      </div>
                     </div>
                   </td>
                   <td>
-                    <div className={styles["priority-title"]}>
-                      {priority.title}
+                    <div className={styles["priority-color"]}>
+                      <span
+                        className={styles["color-swatch"]}
+                        style={{ backgroundColor: priority.color }}
+                        aria-label={`Color ${priority.color}`}
+                      />
+                      <span className={styles["color-value"]}>
+                        {priority.color}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className={styles["priority-description"]}>
+                      {priority.description || "—"}
+                    </div>
+                  </td>
+                  <td>
+                    <div className={styles["priority-level"]}>
+                      {priority.priority_level ?? "—"}
+                    </div>
+                  </td>
+                  <td>
+                    <div className={styles["priority-timestamps"]}>
+                      <span>
+                        <strong>Created:</strong>{" "}
+                        {formatTimestamp(priority.created_at)}
+                      </span>
+                      <span>
+                        <strong>Updated:</strong>{" "}
+                        {formatTimestamp(priority.updated_at)}
+                      </span>
                     </div>
                   </td>
                   <td>
