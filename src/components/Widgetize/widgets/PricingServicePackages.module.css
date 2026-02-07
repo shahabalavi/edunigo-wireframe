@@ -1,0 +1,142 @@
+.section {
+  padding: 4rem 1.5rem;
+  background: #fff;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.5rem;
+}
+
+.subtitle {
+  color: #64748b;
+  margin: 0 0 2.5rem;
+  font-size: 1.05rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  padding: 1.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.card.featured {
+  background: #0f172a;
+  border-color: #1e293b;
+  color: #fff;
+}
+
+.card.featured .planName,
+.card.featured .description,
+.card.featured .price { color: #fff; }
+.card.featured .features { color: rgba(255,255,255,0.9); }
+.card.featured .features li svg { color: #0ea5e9; }
+
+.badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0ea5e9;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.planName {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.5rem;
+}
+
+.description {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0 0 1rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0ea5e9;
+  margin: 0 0 1.25rem;
+}
+
+.cta {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 1.25rem;
+  background: #0ea5e9;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.cta:hover {
+  background: #0284c7;
+}
+
+.card.featured .cta {
+  background: #fff;
+  color: #0f172a;
+}
+
+.card.featured .cta:hover {
+  background: #f1f5f9;
+}
+
+.features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.features li svg {
+  flex-shrink: 0;
+  color: #0ea5e9;
+}
+
+.rtl .features { text-align: right; }
+.rtl .container { direction: rtl; }

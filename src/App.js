@@ -5,7 +5,9 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { VisaPagesProvider } from "./context/VisaPagesContext";
 import LandingPage from "./components/Home/LandingPage";
+import WidgetizedLandingPage from "./components/Widgetize/WidgetizedLandingPage";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import ForgotPassword from "./components/Auth/ForgotPassword";
@@ -32,9 +34,11 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/gocheck" element={<GoCheck />} />
+        <VisaPagesProvider>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/visa/:slug" element={<WidgetizedLandingPage />} />
+            <Route path="/gocheck" element={<GoCheck />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot" element={<ForgotPassword />} />
@@ -66,7 +70,8 @@ function App() {
 
           {/* Redirect any unknown routes to landing page */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+          </Routes>
+        </VisaPagesProvider>
       </Router>
     </div>
   );

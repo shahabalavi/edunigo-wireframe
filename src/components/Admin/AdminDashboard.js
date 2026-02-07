@@ -84,6 +84,8 @@ import AIImportCampus from "./AIImport/Campus/Campus";
 import AIImportCourse from "./AIImport/Course/Course";
 import AIImportIntake from "./AIImport/Intake/Intake";
 import ImportEngine from "./AIImport/ImportEngine/ImportEngine";
+import VisaPagesList from "./Widgetize/VisaPagesList";
+import VisaPageBuilder from "./Widgetize/VisaPageBuilder";
 import styles from "../Dashboard.module.css";
 
 const AdminDashboard = ({ onLogout }) => {
@@ -94,6 +96,9 @@ const AdminDashboard = ({ onLogout }) => {
   );
   const [isGuidanceOpen, setIsGuidanceOpen] = useState(
     location.pathname.startsWith("/admin/guidance")
+  );
+  const [isWidgetizeOpen, setIsWidgetizeOpen] = useState(
+    location.pathname.startsWith("/admin/widgetize")
   );
   const [isTicketsOpen, setIsTicketsOpen] = useState(
     location.pathname.startsWith("/admin/tickets")
@@ -337,6 +342,21 @@ const AdminDashboard = ({ onLogout }) => {
       ],
     },
     {
+      id: "widgetize",
+      label: "Widgetize",
+      icon: Layers,
+      path: "/admin/widgetize",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "visa-pages",
+          label: "Visa Pages",
+          icon: Globe,
+          path: "/admin/widgetize/visa-pages",
+        },
+      ],
+    },
+    {
       id: "ai-import",
       label: "AI Import",
       icon: Sparkles,
@@ -454,6 +474,11 @@ const AdminDashboard = ({ onLogout }) => {
     if (currentPath === "/admin/guidance/articles") {
       return "Guidance Articles";
     }
+    if (currentPath.startsWith("/admin/widgetize")) {
+      if (currentPath === "/admin/widgetize/visa-pages") return "Visa Pages";
+      if (currentPath.match(/^\/admin\/widgetize\/visa-pages\/builder\//)) return "Page Builder";
+      return "Widgetize";
+    }
     if (currentPath === "/admin/tickets") {
       return "Tickets";
     }
@@ -494,6 +519,9 @@ const AdminDashboard = ({ onLogout }) => {
     if (itemId === "guidance") {
       setIsGuidanceOpen(!isGuidanceOpen);
     }
+    if (itemId === "widgetize") {
+      setIsWidgetizeOpen(!isWidgetizeOpen);
+    }
     if (itemId === "tickets") {
       setIsTicketsOpen(!isTicketsOpen);
     }
@@ -518,6 +546,9 @@ const AdminDashboard = ({ onLogout }) => {
     }
     if (path === "/admin/guidance") {
       return location.pathname.startsWith("/admin/guidance");
+    }
+    if (path === "/admin/widgetize") {
+      return location.pathname.startsWith("/admin/widgetize");
     }
     if (path === "/admin/tickets") {
       return location.pathname.startsWith("/admin/tickets");
@@ -560,6 +591,7 @@ const AdminDashboard = ({ onLogout }) => {
   const isSubmenuOpen = (itemId) => {
     if (itemId === "ai-import") return isAIImportOpen;
     if (itemId === "guidance") return isGuidanceOpen;
+    if (itemId === "widgetize") return isWidgetizeOpen;
     if (itemId === "tickets") return isTicketsOpen;
     if (itemId === "people") return isPeopleOpen;
     if (itemId === "access") return isAccessOpen;
@@ -695,6 +727,9 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/ai-import/engine":
       case "/admin/ai-import/engine/":
         return <ImportEngine />;
+      case "/admin/widgetize/visa-pages":
+      case "/admin/widgetize/visa-pages/":
+        return <VisaPagesList />;
       default:
         // Handle dynamic edit routes
         if (currentPath.startsWith("/admin/universities/edit/")) {
@@ -735,6 +770,9 @@ const AdminDashboard = ({ onLogout }) => {
         }
         if (currentPath.startsWith("/admin/roles/edit/")) {
           return <EditRole />;
+        }
+        if (currentPath.match(/^\/admin\/widgetize\/visa-pages\/builder\/.+/)) {
+          return <VisaPageBuilder />;
         }
         return <AdminDashboardHome />;
     }
