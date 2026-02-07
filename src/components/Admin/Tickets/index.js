@@ -12,3 +12,4 @@ export { default as Topics } from "./Topics/Topics";
 export { default as Events } from "./Events/Events";
 export { default as Transitions } from "./Transitions/Transitions";
 export { default as Ratings } from "./Ratings/Ratings";
+export { default as SupportRolesReport } from "./SupportRolesReport";

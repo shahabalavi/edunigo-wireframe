@@ -62,6 +62,7 @@ import {
   Events,
   Transitions,
   Ratings,
+  SupportRolesReport,
 } from "./Tickets";
 import Permissions from "./Permissions/Permissions";
 import CreatePermission from "./Permissions/CreatePermission";
@@ -203,6 +204,12 @@ const AdminDashboard = ({ onLogout }) => {
           label: "All Tickets",
           icon: Ticket,
           path: "/admin/tickets",
+        },
+        {
+          id: "tickets-support-roles",
+          label: "Support Roles",
+          icon: BarChart3,
+          path: "/admin/tickets/support-roles",
         },
         {
           id: "tickets-statuses",
@@ -450,6 +457,9 @@ const AdminDashboard = ({ onLogout }) => {
     if (currentPath === "/admin/tickets") {
       return "Tickets";
     }
+    if (currentPath === "/admin/tickets/support-roles") {
+      return "Support Roles Report";
+    }
     if (currentPath === "/admin/tickets/statuses") {
       return "Ticket Statuses";
     }
@@ -633,6 +643,9 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/tickets":
       case "/admin/tickets/":
         return <Tickets />;
+      case "/admin/tickets/support-roles":
+      case "/admin/tickets/support-roles/":
+        return <SupportRolesReport />;
       case "/admin/tickets/create":
         return <CreateTicket />;
       case "/admin/tickets/edit":
