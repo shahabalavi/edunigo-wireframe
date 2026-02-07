@@ -15,6 +15,11 @@ import {
   X,
 } from "lucide-react";
 import styles from "./AdminForm.module.css";
+import {
+  getAdminDirectory,
+  getAdminDisplayName,
+  saveAdminDirectory,
+} from "../../../config/adminHierarchy";
 
 const CreateAdmin = () => {
   const navigate = useNavigate();
@@ -27,6 +32,7 @@ const CreateAdmin = () => {
     isSuperAdmin: false,
     status: "active",
     roles: [],
+    managerId: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,6 +40,7 @@ const CreateAdmin = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [availableRoles, setAvailableRoles] = useState([]);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
+  const [availableManagers, setAvailableManagers] = useState([]);
 
   // Load available roles
   useEffect(() => {
@@ -43,29 +50,29 @@ const CreateAdmin = () => {
         const sampleRoles = [
           {
             id: 1,
-            name: "Super Admin",
+            name: "Admin",
             description: "Full system access with all permissions",
           },
           {
             id: 2,
+            name: "Support Supervisor",
+            description: "Oversee support team workload and ticket quality",
+          },
+          {
+            id: 3,
+            name: "Support Agent",
+            description: "Handle assigned ticket queue and responses",
+          },
+          {
+            id: 4,
             name: "Content Manager",
             description:
               "Manage content including universities, courses, and countries",
           },
           {
-            id: 3,
-            name: "User Manager",
-            description: "Manage user accounts and profiles",
-          },
-          {
-            id: 4,
+            id: 5,
             name: "Analytics Viewer",
             description: "View system analytics and reports",
-          },
-          {
-            id: 5,
-            name: "Read Only",
-            description: "View-only access to most system features",
           },
         ];
         setAvailableRoles(sampleRoles);
@@ -73,6 +80,10 @@ const CreateAdmin = () => {
     };
 
     fetchRoles();
+  }, []);
+
+  useEffect(() => {
+    setAvailableManagers(getAdminDirectory());
   }, []);
 
   // Close dropdown when clicking outside
@@ -166,6 +177,10 @@ const CreateAdmin = () => {
       newErrors.email = "Please enter a valid email address";
     }
 
+    if (formData.managerId && !availableManagers.length) {
+      newErrors.managerId = "Manager selection is not available";
+    }
+
     // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
@@ -210,8 +225,23 @@ const CreateAdmin = () => {
         roles: formData.roles,
       };
 
-      // Here you would make the actual API call
-      console.log("Creating admin:", submitData);
+      const existingAdmins = getAdminDirectory();
+      const nextId =
+        existingAdmins.length > 0
+          ? Math.max(...existingAdmins.map((admin) => admin.id)) + 1
+          : 1;
+      const newAdmin = {
+        id: nextId,
+        firstName: submitData.firstName,
+        lastName: submitData.lastName,
+        email: submitData.email,
+        isSuperAdmin: submitData.isSuperAdmin,
+        status: submitData.status,
+        roles: submitData.roles,
+        createdAt: new Date().toISOString().split("T")[0],
+        managerId: formData.managerId ? Number(formData.managerId) : null,
+      };
+      saveAdminDirectory([...existingAdmins, newAdmin]);
 
       // Navigate back to admins list
       navigate("/admin/admins");
@@ -323,6 +353,34 @@ const CreateAdmin = () => {
             />
             {errors.email && (
               <span className={styles["error-message"]}>{errors.email}</span>
+            )}
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>
+              <Users size={16} />
+              Manager / Reports To
+            </label>
+            <select
+              name="managerId"
+              value={formData.managerId}
+              onChange={handleInputChange}
+              className={`${styles["form-select"]} ${
+                errors.managerId ? styles["error"] : ""
+              }`}
+              disabled={isSubmitting}
+            >
+              <option value="">No manager (Top-level)</option>
+              {availableManagers.map((admin) => (
+                <option key={admin.id} value={admin.id}>
+                  {getAdminDisplayName(admin)} ({admin.email})
+                </option>
+              ))}
+            </select>
+            {errors.managerId && (
+              <span className={styles["error-message"]}>
+                {errors.managerId}
+              </span>
             )}
           </div>
 

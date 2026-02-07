@@ -15,6 +15,12 @@ import {
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Users.module.css";
+import {
+  applyScopeFilter,
+  getCurrentUser,
+  getScopeLabel,
+} from "../../../utils/scopeFilter";
+import { entityOwnership } from "../../../config/entityOwnership";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -27,6 +33,8 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const currentUser = getCurrentUser();
+  const scopeLabel = getScopeLabel(currentUser, "users");
 
   // Sample data - replace with actual API call
   useEffect(() => {
@@ -42,6 +50,7 @@ const Users = () => {
             status: "active",
             createdAt: "2024-01-15",
             updatedAt: "2024-01-20",
+            assignedAdminId: 4,
           },
           {
             id: 2,
@@ -51,6 +60,7 @@ const Users = () => {
             status: "active",
             createdAt: "2024-01-20",
             updatedAt: "2024-02-01",
+            assignedAdminId: 7,
           },
           {
             id: 3,
@@ -60,6 +70,7 @@ const Users = () => {
             status: "blocked",
             createdAt: "2024-02-01",
             updatedAt: "2024-02-10",
+            assignedAdminId: 9,
           },
           {
             id: 4,
@@ -69,6 +80,7 @@ const Users = () => {
             status: "active",
             createdAt: "2024-02-10",
             updatedAt: "2024-02-15",
+            assignedAdminId: 4,
           },
           {
             id: 5,
@@ -78,6 +90,7 @@ const Users = () => {
             status: "blocked",
             createdAt: "2024-02-15",
             updatedAt: "2024-02-20",
+            assignedAdminId: 7,
           },
           {
             id: 6,
@@ -87,6 +100,7 @@ const Users = () => {
             status: "active",
             createdAt: "2024-02-20",
             updatedAt: "2024-02-25",
+            assignedAdminId: 4,
           },
           {
             id: 7,
@@ -96,6 +110,7 @@ const Users = () => {
             status: "active",
             createdAt: "2024-02-25",
             updatedAt: "2024-03-01",
+            assignedAdminId: 9,
           },
           {
             id: 8,
@@ -105,11 +120,19 @@ const Users = () => {
             status: "blocked",
             createdAt: "2024-03-01",
             updatedAt: "2024-03-05",
+            assignedAdminId: 7,
           },
         ];
 
-        setUsers(sampleUsers);
-        setFilteredUsers(sampleUsers);
+        const scopedUsers = applyScopeFilter(
+          sampleUsers,
+          currentUser,
+          "users",
+          entityOwnership.users
+        );
+
+        setUsers(scopedUsers);
+        setFilteredUsers(scopedUsers);
         setLoading(false);
       }, 1000);
     };
@@ -223,7 +246,7 @@ const Users = () => {
           </div>
           <div>
             <h1>User Management</h1>
-            <p>Manage system users and their account status</p>
+            <p>Manage users · Scope: {scopeLabel}</p>
           </div>
         </div>
       </div>

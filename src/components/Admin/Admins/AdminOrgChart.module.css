@@ -1,0 +1,93 @@
+.org-chart-container {
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4338ca;
+}
+
+.tree-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tree-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.node-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  min-width: 260px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.node-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+}
+
+.node-name {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.node-meta {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.node-roles {
+  font-size: 12px;
+  color: #475569;
+  margin-top: 4px;
+}
+
+.node-children {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .node-children {
+    flex-direction: column;
+    align-items: center;
+  }
+}

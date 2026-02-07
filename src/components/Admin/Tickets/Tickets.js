@@ -16,6 +16,12 @@ import {
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Tickets.module.css";
+import {
+  applyScopeFilter,
+  getCurrentUser,
+  getScopeLabel,
+} from "../../../utils/scopeFilter";
+import { entityOwnership } from "../../../config/entityOwnership";
 
 const Tickets = () => {
   const navigate = useNavigate();
@@ -28,6 +34,8 @@ const Tickets = () => {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const currentUser = getCurrentUser();
+  const scopeLabel = getScopeLabel(currentUser, "tickets");
 
   // Sample data - replace with actual API call
   useEffect(() => {
@@ -60,6 +68,7 @@ const Tickets = () => {
             createdByAdmin: null,
             createdAt: "2026-02-01T10:18:00Z",
             updatedAt: "2026-02-03T14:12:00Z",
+            assignedAdminId: 4,
           },
           {
             id: 2,
@@ -85,6 +94,7 @@ const Tickets = () => {
             createdByAdmin: null,
             createdAt: "2026-02-02T08:40:00Z",
             updatedAt: "2026-02-04T09:05:00Z",
+            assignedAdminId: 7,
           },
           {
             id: 3,
@@ -110,6 +120,7 @@ const Tickets = () => {
             createdByAdmin: null,
             createdAt: "2026-02-02T13:05:00Z",
             updatedAt: "2026-02-02T16:40:00Z",
+            assignedAdminId: 4,
           },
           {
             id: 4,
@@ -135,6 +146,7 @@ const Tickets = () => {
             createdByAdmin: "Ethan Blake",
             createdAt: "2026-01-25T09:30:00Z",
             updatedAt: "2026-01-28T11:22:00Z",
+            assignedAdminId: 9,
           },
           {
             id: 5,
@@ -160,6 +172,7 @@ const Tickets = () => {
             createdByAdmin: "Admin User",
             createdAt: "2026-02-04T15:10:00Z",
             updatedAt: "2026-02-05T10:02:00Z",
+            assignedAdminId: 7,
           },
         ];
 
@@ -170,8 +183,15 @@ const Tickets = () => {
             ticket.createdByAdmin === currentAdmin,
         }));
 
-        setTickets(taggedTickets);
-        setFilteredTickets(taggedTickets);
+        const scopedTickets = applyScopeFilter(
+          taggedTickets,
+          currentUser,
+          "tickets",
+          entityOwnership.tickets
+        );
+
+        setTickets(scopedTickets);
+        setFilteredTickets(scopedTickets);
         setLoading(false);
       }, 1000);
     };
@@ -196,7 +216,9 @@ const Tickets = () => {
             .includes(searchTerm.toLowerCase()) ||
           ticket.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
           ticket.project.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          ticket.topic.title.toLowerCase().includes(searchTerm.toLowerCase())
+          (ticket.topic?.title || "")
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
       );
     }
 
@@ -319,7 +341,7 @@ const Tickets = () => {
           </div>
           <div>
             <h1>Ticket Management</h1>
-            <p>Relationship-based support with automatic admin assignment</p>
+            <p>Relationship-based support · Scope: {scopeLabel}</p>
           </div>
         </div>
         <div className={styles["header-actions"]}>

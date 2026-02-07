@@ -13,6 +13,9 @@ import {
   Folder,
 } from "lucide-react";
 import styles from "./ViewTicket.module.css";
+import AccessDenied from "../../Shared/AccessDenied";
+import { canAccessRecord, getCurrentUser } from "../../../utils/scopeFilter";
+import { entityOwnership } from "../../../config/entityOwnership";
 
 const ViewTicket = () => {
   const { id } = useParams();
@@ -33,8 +36,9 @@ const ViewTicket = () => {
   const [statusValue, setStatusValue] = useState("");
   const [priorityValue, setPriorityValue] = useState("");
   const [savingManagement, setSavingManagement] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
 
-  const currentUser = { id: 4, name: "Admin User" };
+  const currentUser = getCurrentUser();
   const internalTargets = [
     "Finance Support",
     "Technical Support",
@@ -103,7 +107,21 @@ const ViewTicket = () => {
           userRating: { score: 5, comment: "Very helpful and clear." },
           createdAt: "2026-02-01T10:30:00Z",
           updatedAt: "2026-02-03T14:45:00Z",
+          assignedAdminId: 4,
         };
+
+        if (
+          !canAccessRecord(
+            sampleTicket,
+            currentUser,
+            "tickets",
+            entityOwnership.tickets
+          )
+        ) {
+          setAccessDenied(true);
+          setLoading(false);
+          return;
+        }
 
         const sampleMessages = [
           {
@@ -435,6 +453,14 @@ const ViewTicket = () => {
       <div className={styles["loading-container"]}>
         <div className={styles["loading-spinner"]}></div>
         <p>Loading ticket...</p>
+      </div>
+    );
+  }
+
+  if (accessDenied) {
+    return (
+      <div className={styles["view-ticket-container"]}>
+        <AccessDenied onBack={() => navigate("/admin/tickets")} />
       </div>
     );
   }

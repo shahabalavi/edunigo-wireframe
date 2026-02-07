@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Save, User, Mail } from "lucide-react";
 import styles from "./UserForm.module.css";
+import AccessDenied from "../../Shared/AccessDenied";
+import { canAccessRecord, getCurrentUser } from "../../../utils/scopeFilter";
+import { entityOwnership } from "../../../config/entityOwnership";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -16,6 +19,8 @@ const EditUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userTickets, setUserTickets] = useState([]);
+  const [accessDenied, setAccessDenied] = useState(false);
+  const currentUser = getCurrentUser();
 
   // Load user data
   useEffect(() => {
@@ -30,7 +35,21 @@ const EditUser = () => {
         status: "active",
         createdAt: "2024-01-15",
         updatedAt: "2024-01-20",
+        assignedAdminId: 4,
       };
+
+      if (
+        !canAccessRecord(
+          sampleUser,
+          currentUser,
+          "users",
+          entityOwnership.users
+        )
+      ) {
+        setAccessDenied(true);
+        setLoading(false);
+        return;
+      }
 
       setFormData({
         firstName: sampleUser.firstName,
@@ -159,6 +178,14 @@ const EditUser = () => {
       <div className={styles["loading-container"]}>
         <div className={styles["loading-spinner"]}></div>
         <p>Loading user data...</p>
+      </div>
+    );
+  }
+
+  if (accessDenied) {
+    return (
+      <div className={styles["form-container"]}>
+        <AccessDenied onBack={() => navigate("/admin/users")} />
       </div>
     );
   }

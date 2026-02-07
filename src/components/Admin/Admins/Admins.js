@@ -16,6 +16,10 @@ import {
 } from "lucide-react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import styles from "./Admins.module.css";
+import {
+  getAdminDirectory,
+  getAdminDisplayName,
+} from "../../../config/adminHierarchy";
 
 const Admins = () => {
   const navigate = useNavigate();
@@ -34,72 +38,9 @@ const Admins = () => {
     const fetchAdmins = async () => {
       // Simulate API call delay
       setTimeout(() => {
-        const sampleAdmins = [
-          {
-            id: 1,
-            firstName: "John",
-            lastName: "Doe",
-            email: "john.doe@edunigo.com",
-            isSuperAdmin: true,
-            status: "active",
-            avatar: null,
-            roles: [
-              { id: 1, name: "Super Admin" },
-              { id: 2, name: "Content Manager" },
-            ],
-            createdAt: "2024-01-15",
-          },
-          {
-            id: 2,
-            firstName: "Jane",
-            lastName: "Smith",
-            email: "jane.smith@edunigo.com",
-            isSuperAdmin: false,
-            status: "active",
-            avatar: null,
-            roles: [
-              { id: 3, name: "User Manager" },
-              { id: 4, name: "Analytics Viewer" },
-            ],
-            createdAt: "2024-01-20",
-          },
-          {
-            id: 3,
-            firstName: "Mike",
-            lastName: "Johnson",
-            email: "mike.johnson@edunigo.com",
-            isSuperAdmin: false,
-            status: "inactive",
-            avatar: null,
-            roles: [{ id: 2, name: "Content Manager" }],
-            createdAt: "2024-02-01",
-          },
-          {
-            id: 4,
-            firstName: "Sarah",
-            lastName: "Wilson",
-            email: "sarah.wilson@edunigo.com",
-            isSuperAdmin: false,
-            status: "active",
-            avatar: null,
-            roles: [{ id: 4, name: "Analytics Viewer" }],
-            createdAt: "2024-02-10",
-          },
-          {
-            id: 5,
-            firstName: "David",
-            lastName: "Brown",
-            email: "david.brown@edunigo.com",
-            isSuperAdmin: true,
-            status: "active",
-            avatar: null,
-            roles: [{ id: 1, name: "Super Admin" }],
-            createdAt: "2024-02-15",
-          },
-        ];
-
-        setAdmins(sampleAdmins);
-        setFilteredAdmins(sampleAdmins);
+        const directory = getAdminDirectory();
+        setAdmins(directory);
+        setFilteredAdmins(directory);
         setLoading(false);
       }, 1000);
     };
@@ -209,6 +150,12 @@ const Admins = () => {
     );
   };
 
+  const getManagerName = (admin) => {
+    if (!admin.managerId) return "—";
+    const manager = admins.find((item) => item.id === admin.managerId);
+    return manager ? getAdminDisplayName(manager) : "—";
+  };
+
   const getInitials = (firstName, lastName) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
@@ -297,6 +244,7 @@ const Admins = () => {
                 <th>Email</th>
                 <th>Type</th>
                 <th>Roles</th>
+                <th>Manager</th>
                 <th>Status</th>
                 <th>Created</th>
                 <th>Actions</th>
@@ -332,6 +280,7 @@ const Admins = () => {
                   </td>
                   <td>{getAdminRole(admin.isSuperAdmin)}</td>
                   <td>{getAdminRoles(admin.roles)}</td>
+                  <td>{getManagerName(admin)}</td>
                   <td>{getStatusBadge(admin.status)}</td>
                   <td>
                     <div className={styles["created-date"]}>

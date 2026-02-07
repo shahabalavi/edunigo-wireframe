@@ -48,6 +48,7 @@ import EditCourse from "./Courses/EditCourse";
 import Admins from "./Admins/Admins";
 import CreateAdmin from "./Admins/CreateAdmin";
 import EditAdmin from "./Admins/EditAdmin";
+import AdminOrgChart from "./Admins/AdminOrgChart";
 import { Agents, CreateAgent, EditAgent } from "./Agents";
 import { Users as UsersModule, EditUser } from "./Users";
 import {
@@ -96,6 +97,27 @@ const AdminDashboard = ({ onLogout }) => {
   const [isTicketsOpen, setIsTicketsOpen] = useState(
     location.pathname.startsWith("/admin/tickets")
   );
+  const [isPeopleOpen, setIsPeopleOpen] = useState(
+    location.pathname.startsWith("/admin/admins") ||
+      location.pathname.startsWith("/admin/agents") ||
+      location.pathname.startsWith("/admin/users")
+  );
+  const [isAccessOpen, setIsAccessOpen] = useState(
+    location.pathname.startsWith("/admin/roles") ||
+      location.pathname.startsWith("/admin/permissions")
+  );
+  const [isContentOpen, setIsContentOpen] = useState(
+    location.pathname.startsWith("/admin/countries") ||
+      location.pathname.startsWith("/admin/cities") ||
+      location.pathname.startsWith("/admin/documents") ||
+      location.pathname.startsWith("/admin/document-submissions")
+  );
+  const [isEducationOpen, setIsEducationOpen] = useState(
+    location.pathname.startsWith("/admin/education-levels") ||
+      location.pathname.startsWith("/admin/universities") ||
+      location.pathname.startsWith("/admin/majors") ||
+      location.pathname.startsWith("/admin/courses")
+  );
 
   const handleLogout = () => {
     if (onLogout) {
@@ -116,91 +138,58 @@ const AdminDashboard = ({ onLogout }) => {
       path: "/admin/dashboard",
     },
     {
-      id: "countries",
-      label: "Countries",
-      icon: Globe,
-      path: "/admin/countries",
-    },
-    {
-      id: "cities",
-      label: "Cities",
-      icon: MapPin,
-      path: "/admin/cities",
-    },
-    {
-      id: "education-levels",
-      label: "Education Levels",
-      icon: BookOpen,
-      path: "/admin/education-levels",
-    },
-    {
-      id: "universities",
-      label: "Universities",
-      icon: Building2,
-      path: "/admin/universities",
-    },
-    {
-      id: "majors",
-      label: "Majors/Fields",
-      icon: MajorIcon,
-      path: "/admin/majors",
-    },
-    {
-      id: "courses",
-      label: "Courses",
-      icon: CourseIcon,
-      path: "/admin/courses",
-    },
-    {
-      id: "document-templates",
-      label: "Document Templates",
-      icon: FileText,
-      path: "/admin/documents",
-    },
-    {
-      id: "document-submissions",
-      label: "Document Submissions",
-      icon: FileCheck,
-      path: "/admin/document-submissions",
-    },
-    {
-      id: "guidance",
-      label: "Guidance",
-      icon: Layers,
-      path: "/admin/guidance",
+      id: "people",
+      label: "People",
+      icon: Users,
+      path: "/admin/people",
       hasSubmenu: true,
       submenuItems: [
         {
-          id: "guidance-categories",
-          label: "Categories",
-          icon: Layers,
-          path: "/admin/guidance/categories",
+          id: "admins",
+          label: "Admins",
+          icon: User,
+          path: "/admin/admins",
         },
         {
-          id: "guidance-articles",
-          label: "Articles",
-          icon: BookOpen,
-          path: "/admin/guidance/articles",
+          id: "admin-org-chart",
+          label: "Org Chart",
+          icon: GitBranch,
+          path: "/admin/admins/org-chart",
+        },
+        {
+          id: "agents",
+          label: "Agents",
+          icon: UserCircle,
+          path: "/admin/agents",
+        },
+        {
+          id: "users",
+          label: "Users",
+          icon: Users,
+          path: "/admin/users",
         },
       ],
     },
     {
-      id: "admins",
-      label: "Admins",
-      icon: User,
-      path: "/admin/admins",
-    },
-    {
-      id: "agents",
-      label: "Agents",
-      icon: UserCircle,
-      path: "/admin/agents",
-    },
-    {
-      id: "users",
-      label: "Users",
-      icon: Users,
-      path: "/admin/users",
+      id: "access",
+      label: "Access Control",
+      icon: Shield,
+      path: "/admin/access",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "roles",
+          label: "Roles",
+          icon: Users,
+          path: "/admin/roles",
+        },
+        {
+          id: "permissions",
+          label: "Permissions",
+          icon: Shield,
+          path: "/admin/permissions",
+        },
+      ],
     },
     {
       id: "tickets",
@@ -254,16 +243,91 @@ const AdminDashboard = ({ onLogout }) => {
       ],
     },
     {
-      id: "permissions",
-      label: "Permissions",
-      icon: Shield,
-      path: "/admin/permissions",
+      id: "content",
+      label: "Content",
+      icon: FileText,
+      path: "/admin/content",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "countries",
+          label: "Countries",
+          icon: Globe,
+          path: "/admin/countries",
+        },
+        {
+          id: "cities",
+          label: "Cities",
+          icon: MapPin,
+          path: "/admin/cities",
+        },
+        {
+          id: "document-templates",
+          label: "Document Templates",
+          icon: FileText,
+          path: "/admin/documents",
+        },
+        {
+          id: "document-submissions",
+          label: "Document Submissions",
+          icon: FileCheck,
+          path: "/admin/document-submissions",
+        },
+      ],
     },
     {
-      id: "roles",
-      label: "Roles",
-      icon: Users,
-      path: "/admin/roles",
+      id: "education",
+      label: "Education",
+      icon: GraduationCap,
+      path: "/admin/education",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "education-levels",
+          label: "Education Levels",
+          icon: BookOpen,
+          path: "/admin/education-levels",
+        },
+        {
+          id: "universities",
+          label: "Universities",
+          icon: Building2,
+          path: "/admin/universities",
+        },
+        {
+          id: "majors",
+          label: "Majors/Fields",
+          icon: MajorIcon,
+          path: "/admin/majors",
+        },
+        {
+          id: "courses",
+          label: "Courses",
+          icon: CourseIcon,
+          path: "/admin/courses",
+        },
+      ],
+    },
+    {
+      id: "guidance",
+      label: "Guidance",
+      icon: Layers,
+      path: "/admin/guidance",
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "guidance-categories",
+          label: "Categories",
+          icon: Layers,
+          path: "/admin/guidance/categories",
+        },
+        {
+          id: "guidance-articles",
+          label: "Articles",
+          icon: BookOpen,
+          path: "/admin/guidance/articles",
+        },
+      ],
     },
     {
       id: "ai-import",
@@ -332,6 +396,48 @@ const AdminDashboard = ({ onLogout }) => {
       return "AI Import";
     }
 
+    if (currentPath.startsWith("/admin/admins/org-chart")) {
+      return "Admin Org Chart";
+    }
+    if (currentPath.startsWith("/admin/admins")) {
+      return "Admins";
+    }
+    if (currentPath.startsWith("/admin/agents")) {
+      return "Agents";
+    }
+    if (currentPath.startsWith("/admin/users")) {
+      return "Users";
+    }
+    if (currentPath.startsWith("/admin/roles")) {
+      return "Roles";
+    }
+    if (currentPath.startsWith("/admin/permissions")) {
+      return "Permissions";
+    }
+    if (currentPath.startsWith("/admin/countries")) {
+      return "Countries";
+    }
+    if (currentPath.startsWith("/admin/cities")) {
+      return "Cities";
+    }
+    if (currentPath.startsWith("/admin/education-levels")) {
+      return "Education Levels";
+    }
+    if (currentPath.startsWith("/admin/universities")) {
+      return "Universities";
+    }
+    if (currentPath.startsWith("/admin/majors")) {
+      return "Majors/Fields";
+    }
+    if (currentPath.startsWith("/admin/courses")) {
+      return "Courses";
+    }
+    if (currentPath.startsWith("/admin/documents")) {
+      return "Document Templates";
+    }
+    if (currentPath.startsWith("/admin/document-submissions")) {
+      return "Document Submissions";
+    }
     if (currentPath.startsWith("/admin/guidance/editor")) {
       return "Guidance Editor";
     }
@@ -381,6 +487,18 @@ const AdminDashboard = ({ onLogout }) => {
     if (itemId === "tickets") {
       setIsTicketsOpen(!isTicketsOpen);
     }
+    if (itemId === "people") {
+      setIsPeopleOpen(!isPeopleOpen);
+    }
+    if (itemId === "access") {
+      setIsAccessOpen(!isAccessOpen);
+    }
+    if (itemId === "content") {
+      setIsContentOpen(!isContentOpen);
+    }
+    if (itemId === "education") {
+      setIsEducationOpen(!isEducationOpen);
+    }
   };
 
   const isActiveRoute = (path) => {
@@ -394,7 +512,50 @@ const AdminDashboard = ({ onLogout }) => {
     if (path === "/admin/tickets") {
       return location.pathname.startsWith("/admin/tickets");
     }
+    if (path === "/admin/people") {
+      return (
+        location.pathname.startsWith("/admin/admins") ||
+        location.pathname.startsWith("/admin/agents") ||
+        location.pathname.startsWith("/admin/users")
+      );
+    }
+    if (path === "/admin/access") {
+      return (
+        location.pathname.startsWith("/admin/roles") ||
+        location.pathname.startsWith("/admin/permissions")
+      );
+    }
+    if (path === "/admin/content") {
+      return (
+        location.pathname.startsWith("/admin/countries") ||
+        location.pathname.startsWith("/admin/cities") ||
+        location.pathname.startsWith("/admin/documents") ||
+        location.pathname.startsWith("/admin/document-submissions")
+      );
+    }
+    if (path === "/admin/education") {
+      return (
+        location.pathname.startsWith("/admin/education-levels") ||
+        location.pathname.startsWith("/admin/universities") ||
+        location.pathname.startsWith("/admin/majors") ||
+        location.pathname.startsWith("/admin/courses")
+      );
+    }
+    if (path === "/admin/admins") {
+      return location.pathname.startsWith("/admin/admins");
+    }
     return location.pathname === path;
+  };
+
+  const isSubmenuOpen = (itemId) => {
+    if (itemId === "ai-import") return isAIImportOpen;
+    if (itemId === "guidance") return isGuidanceOpen;
+    if (itemId === "tickets") return isTicketsOpen;
+    if (itemId === "people") return isPeopleOpen;
+    if (itemId === "access") return isAccessOpen;
+    if (itemId === "content") return isContentOpen;
+    if (itemId === "education") return isEducationOpen;
+    return false;
   };
 
   const isSubmenuActive = (submenuItems) => {
@@ -456,6 +617,9 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/admins":
       case "/admin/admins/":
         return <Admins />;
+      case "/admin/admins/org-chart":
+      case "/admin/admins/org-chart/":
+        return <AdminOrgChart />;
       case "/admin/admins/create":
         return <CreateAdmin />;
       case "/admin/agents":
@@ -603,7 +767,7 @@ const AdminDashboard = ({ onLogout }) => {
                   <span className={styles["nav-label"]}>{item.label}</span>
                   {item.hasSubmenu && (
                     <span className={styles["submenu-arrow"]}>
-                      {isAIImportOpen ? (
+                      {isSubmenuOpen(item.id) ? (
                         <ChevronDown size={16} />
                       ) : (
                         <ChevronRight size={16} />
@@ -612,99 +776,35 @@ const AdminDashboard = ({ onLogout }) => {
                   )}
                 </button>
 
-                {item.hasSubmenu &&
-                  item.id === "ai-import" &&
-                  isAIImportOpen && (
-                    <div className={styles["submenu"]}>
-                      {item.submenuItems.map((subItem) => {
-                        const SubIconComponent = subItem.icon;
-                        return (
-                          <button
-                            key={subItem.id}
-                            className={[
-                              styles["submenu-item"],
-                              location.pathname === subItem.path
-                                ? styles["active"]
-                                : "",
-                            ]
-                              .filter(Boolean)
-                              .join(" ")}
-                            onClick={() => handleNavClick(subItem.path)}
-                          >
-                            <SubIconComponent
-                              className={styles["submenu-icon"]}
-                              size={16}
-                            />
-                            <span className={styles["submenu-label"]}>
-                              {subItem.label}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                {item.hasSubmenu &&
-                  item.id === "guidance" &&
-                  isGuidanceOpen && (
-                    <div className={styles["submenu"]}>
-                      {item.submenuItems.map((subItem) => {
-                        const SubIconComponent = subItem.icon;
-                        return (
-                          <button
-                            key={subItem.id}
-                            className={[
-                              styles["submenu-item"],
-                              location.pathname === subItem.path
-                                ? styles["active"]
-                                : "",
-                            ]
-                              .filter(Boolean)
-                              .join(" ")}
-                            onClick={() => handleNavClick(subItem.path)}
-                          >
-                            <SubIconComponent
-                              className={styles["submenu-icon"]}
-                              size={16}
-                            />
-                            <span className={styles["submenu-label"]}>
-                              {subItem.label}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                {item.hasSubmenu &&
-                  item.id === "tickets" &&
-                  isTicketsOpen && (
-                    <div className={styles["submenu"]}>
-                      {item.submenuItems.map((subItem) => {
-                        const SubIconComponent = subItem.icon;
-                        return (
-                          <button
-                            key={subItem.id}
-                            className={[
-                              styles["submenu-item"],
-                              location.pathname === subItem.path
-                                ? styles["active"]
-                                : "",
-                            ]
-                              .filter(Boolean)
-                              .join(" ")}
-                            onClick={() => handleNavClick(subItem.path)}
-                          >
-                            <SubIconComponent
-                              className={styles["submenu-icon"]}
-                              size={16}
-                            />
-                            <span className={styles["submenu-label"]}>
-                              {subItem.label}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
+                {item.hasSubmenu && isSubmenuOpen(item.id) && (
+                  <div className={styles["submenu"]}>
+                    {item.submenuItems.map((subItem) => {
+                      const SubIconComponent = subItem.icon;
+                      return (
+                        <button
+                          key={subItem.id}
+                          className={[
+                            styles["submenu-item"],
+                            location.pathname === subItem.path
+                              ? styles["active"]
+                              : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                          onClick={() => handleNavClick(subItem.path)}
+                        >
+                          <SubIconComponent
+                            className={styles["submenu-icon"]}
+                            size={16}
+                          />
+                          <span className={styles["submenu-label"]}>
+                            {subItem.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             );
           })}

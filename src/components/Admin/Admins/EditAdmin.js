@@ -15,6 +15,12 @@ import {
   X,
 } from "lucide-react";
 import styles from "./AdminForm.module.css";
+import {
+  getAdminDirectory,
+  getAdminDisplayName,
+  getDescendantIds,
+  saveAdminDirectory,
+} from "../../../config/adminHierarchy";
 
 const EditAdmin = () => {
   const navigate = useNavigate();
@@ -28,6 +34,7 @@ const EditAdmin = () => {
     isSuperAdmin: false,
     status: "active",
     roles: [],
+    managerId: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,6 +43,14 @@ const EditAdmin = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [availableRoles, setAvailableRoles] = useState([]);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
+  const adminId = Number.parseInt(id, 10);
+  const directory = getAdminDirectory();
+  const descendantIds = Number.isNaN(adminId)
+    ? []
+    : getDescendantIds(directory, adminId);
+  const availableManagers = directory.filter(
+    (admin) => admin.id !== adminId && !descendantIds.includes(admin.id)
+  );
 
   // Load available roles
   useEffect(() => {
@@ -45,29 +60,29 @@ const EditAdmin = () => {
         const sampleRoles = [
           {
             id: 1,
-            name: "Super Admin",
+            name: "Admin",
             description: "Full system access with all permissions",
           },
           {
             id: 2,
+            name: "Support Supervisor",
+            description: "Oversee support team workload and ticket quality",
+          },
+          {
+            id: 3,
+            name: "Support Agent",
+            description: "Handle assigned ticket queue and responses",
+          },
+          {
+            id: 4,
             name: "Content Manager",
             description:
               "Manage content including universities, courses, and countries",
           },
           {
-            id: 3,
-            name: "User Manager",
-            description: "Manage user accounts and profiles",
-          },
-          {
-            id: 4,
+            id: 5,
             name: "Analytics Viewer",
             description: "View system analytics and reports",
-          },
-          {
-            id: 5,
-            name: "Read Only",
-            description: "View-only access to most system features",
           },
         ];
         setAvailableRoles(sampleRoles);
@@ -82,39 +97,23 @@ const EditAdmin = () => {
     // Simulate API call delay
     setTimeout(() => {
       // Sample admin data - in real app, fetch by id from API
-      const sampleAdmin = {
-        id: parseInt(id),
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@edunigo.com",
-        isSuperAdmin: true,
-        status: "active",
-        roles: [
-          {
-            id: 1,
-            name: "Super Admin",
-            description: "Full system access with all permissions",
-          },
-          {
-            id: 2,
-            name: "Content Manager",
-            description:
-              "Manage content including universities, courses, and countries",
-          },
-        ],
-        createdAt: "2024-01-15",
-      };
+      const sampleAdmin =
+        getAdminDirectory().find((admin) => admin.id === parseInt(id)) ||
+        getAdminDirectory()[0];
 
-      setFormData({
-        firstName: sampleAdmin.firstName,
-        lastName: sampleAdmin.lastName,
-        email: sampleAdmin.email,
-        password: "", // Don't populate password fields
-        confirmPassword: "",
-        isSuperAdmin: sampleAdmin.isSuperAdmin,
-        status: sampleAdmin.status,
-        roles: sampleAdmin.roles,
-      });
+      if (sampleAdmin) {
+        setFormData({
+          firstName: sampleAdmin.firstName,
+          lastName: sampleAdmin.lastName,
+          email: sampleAdmin.email,
+          password: "", // Don't populate password fields
+          confirmPassword: "",
+          isSuperAdmin: sampleAdmin.isSuperAdmin,
+          status: sampleAdmin.status,
+          roles: sampleAdmin.roles || [],
+          managerId: sampleAdmin.managerId ? String(sampleAdmin.managerId) : "",
+        });
+      }
       setLoading(false);
     }, 1000);
   }, [id]);
@@ -210,6 +209,15 @@ const EditAdmin = () => {
       newErrors.email = "Please enter a valid email address";
     }
 
+    if (formData.managerId) {
+      const managerId = Number(formData.managerId);
+      if (managerId === adminId) {
+        newErrors.managerId = "Admin cannot report to themselves";
+      } else if (descendantIds.includes(managerId)) {
+        newErrors.managerId = "Manager cannot be a direct or indirect report";
+      }
+    }
+
     // Password validation (only if password is provided)
     if (formData.password && formData.password.length > 0) {
       if (formData.password.length < 8) {
@@ -261,8 +269,22 @@ const EditAdmin = () => {
         submitData.password = formData.password;
       }
 
-      // Here you would make the actual API call
-      console.log("Updating admin:", submitData);
+      const existingAdmins = getAdminDirectory();
+      const updatedAdmins = existingAdmins.map((admin) =>
+        admin.id === adminId
+          ? {
+              ...admin,
+              firstName: submitData.firstName,
+              lastName: submitData.lastName,
+              email: submitData.email,
+              isSuperAdmin: submitData.isSuperAdmin,
+              status: submitData.status,
+              roles: submitData.roles,
+              managerId: formData.managerId ? Number(formData.managerId) : null,
+            }
+          : admin
+      );
+      saveAdminDirectory(updatedAdmins);
 
       // Navigate back to admins list
       navigate("/admin/admins");
@@ -380,6 +402,34 @@ const EditAdmin = () => {
             />
             {errors.email && (
               <span className={styles["error-message"]}>{errors.email}</span>
+            )}
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>
+              <Users size={16} />
+              Manager / Reports To
+            </label>
+            <select
+              name="managerId"
+              value={formData.managerId}
+              onChange={handleInputChange}
+              className={`${styles["form-select"]} ${
+                errors.managerId ? styles["error"] : ""
+              }`}
+              disabled={isSubmitting}
+            >
+              <option value="">No manager (Top-level)</option>
+              {availableManagers.map((admin) => (
+                <option key={admin.id} value={admin.id}>
+                  {getAdminDisplayName(admin)} ({admin.email})
+                </option>
+              ))}
+            </select>
+            {errors.managerId && (
+              <span className={styles["error-message"]}>
+                {errors.managerId}
+              </span>
             )}
           </div>
 

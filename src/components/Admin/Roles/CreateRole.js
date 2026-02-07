@@ -15,6 +15,25 @@ import {
 } from "lucide-react";
 import styles from "./CreateRole.module.css";
 
+const scopeEntities = [
+  { key: "users", label: "Users", description: "User records and profiles." },
+  {
+    key: "tickets",
+    label: "Tickets",
+    description: "Support tickets and related conversations.",
+  },
+];
+
+const scopeLevels = [
+  { key: "own", label: "Own", description: "Only records assigned to them." },
+  {
+    key: "team",
+    label: "Team",
+    description: "Records owned by their team/subtree.",
+  },
+  { key: "all", label: "All", description: "All records in the system." },
+];
+
 const CreateRole = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -29,6 +48,11 @@ const CreateRole = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [scopeSelections, setScopeSelections] = useState({
+    users: "own",
+    tickets: "own",
+  });
+
 
   // Sample permissions data - replace with actual API call
   useEffect(() => {
@@ -36,6 +60,54 @@ const CreateRole = () => {
       // Simulate API call delay
       setTimeout(() => {
         const samplePermissions = [
+          {
+            id: 101,
+            name: "users.scope.own",
+            title: "Users Scope: Own Records",
+            category: "Scope - Users",
+            description: "Limit user records to those owned by the user",
+            status: "active",
+          },
+          {
+            id: 102,
+            name: "users.scope.team",
+            title: "Users Scope: Team Records",
+            category: "Scope - Users",
+            description: "Allow access to team-owned user records",
+            status: "active",
+          },
+          {
+            id: 103,
+            name: "users.scope.all",
+            title: "Users Scope: All Records",
+            category: "Scope - Users",
+            description: "Allow access to all user records",
+            status: "active",
+          },
+          {
+            id: 111,
+            name: "tickets.scope.own",
+            title: "Tickets Scope: Own Records",
+            category: "Scope - Tickets",
+            description: "Limit ticket records to those assigned to the user",
+            status: "active",
+          },
+          {
+            id: 112,
+            name: "tickets.scope.team",
+            title: "Tickets Scope: Team Records",
+            category: "Scope - Tickets",
+            description: "Allow access to team-owned ticket records",
+            status: "active",
+          },
+          {
+            id: 113,
+            name: "tickets.scope.all",
+            title: "Tickets Scope: All Records",
+            category: "Scope - Tickets",
+            description: "Allow access to all ticket records",
+            status: "active",
+          },
           {
             id: 1,
             name: "manage_users",
@@ -50,6 +122,94 @@ const CreateRole = () => {
             title: "View Users",
             category: "Users",
             description: "View user profiles and information",
+            status: "active",
+          },
+          {
+            id: 21,
+            name: "users.viewAny",
+            title: "View Users List",
+            category: "Users",
+            description: "View and search user lists",
+            status: "active",
+          },
+          {
+            id: 22,
+            name: "users.view",
+            title: "View User Detail",
+            category: "Users",
+            description: "Open and view user profiles",
+            status: "active",
+          },
+          {
+            id: 23,
+            name: "users.create",
+            title: "Create Users",
+            category: "Users",
+            description: "Create new user accounts",
+            status: "active",
+          },
+          {
+            id: 24,
+            name: "users.update",
+            title: "Update Users",
+            category: "Users",
+            description: "Edit user profiles and details",
+            status: "active",
+          },
+          {
+            id: 25,
+            name: "users.delete",
+            title: "Delete Users",
+            category: "Users",
+            description: "Remove user accounts from the system",
+            status: "active",
+          },
+          {
+            id: 11,
+            name: "tickets.viewAny",
+            title: "View Tickets",
+            category: "Tickets",
+            description: "View and list support tickets",
+            status: "active",
+          },
+          {
+            id: 12,
+            name: "tickets.view",
+            title: "View Ticket Detail",
+            category: "Tickets",
+            description: "Open and read ticket details",
+            status: "active",
+          },
+          {
+            id: 13,
+            name: "tickets.create",
+            title: "Create Tickets",
+            category: "Tickets",
+            description: "Create new tickets for users",
+            status: "active",
+          },
+          {
+            id: 14,
+            name: "tickets.update",
+            title: "Update Tickets",
+            category: "Tickets",
+            description: "Update ticket status, priority, and details",
+            status: "active",
+          },
+          {
+            id: 15,
+            name: "tickets.assign",
+            title: "Assign Tickets",
+            category: "Tickets",
+            description: "Assign tickets to support users or teams",
+            status: "active",
+          },
+          {
+            id: 16,
+            name: "tickets.close",
+            title: "Close Tickets",
+            category: "Tickets",
+            description: "Resolve and close tickets",
             status: "active",
           },
           {
@@ -127,6 +287,52 @@ const CreateRole = () => {
     fetchPermissions();
   }, []);
 
+  const isScopePermission = (permissionName) =>
+    permissionName.split(".")[1] === "scope";
+
+  const getScopeKey = (permissionName) => {
+    const [entityKey, , scopeKey] = permissionName.split(".");
+    return { entityKey, scopeKey };
+  };
+
+  useEffect(() => {
+    if (!permissions.length) return;
+    setFormData((prev) => {
+      let nextPermissions = [...prev.permissions];
+      scopeEntities.forEach((entity) => {
+        const hasScope = nextPermissions.some((permission) =>
+          permission.name.startsWith(`${entity.key}.scope.`)
+        );
+        if (!hasScope) {
+          const defaultScope = permissions.find(
+            (permission) => permission.name === `${entity.key}.scope.own`
+          );
+          if (defaultScope) {
+            nextPermissions = [...nextPermissions, defaultScope];
+          }
+        }
+      });
+
+      return nextPermissions === prev.permissions
+        ? prev
+        : { ...prev, permissions: nextPermissions };
+    });
+  }, [permissions, scopeEntities]);
+
+  useEffect(() => {
+    if (!permissions.length) return;
+    const nextSelections = {};
+    scopeEntities.forEach((entity) => {
+      const scopePermission = formData.permissions.find((permission) =>
+        permission.name.startsWith(`${entity.key}.scope.`)
+      );
+      nextSelections[entity.key] = scopePermission
+        ? getScopeKey(scopePermission.name).scopeKey
+        : "own";
+    });
+    setScopeSelections(nextSelections);
+  }, [permissions, formData.permissions, scopeEntities]);
+
   // Filter and search functionality
   useEffect(() => {
     let filtered = permissions;
@@ -174,6 +380,12 @@ const CreateRole = () => {
   };
 
   const handlePermissionToggle = (permission) => {
+    if (isScopePermission(permission.name)) {
+      const { entityKey, scopeKey } = getScopeKey(permission.name);
+      handleScopeChange(entityKey, scopeKey);
+      return;
+    }
+
     setFormData((prev) => {
       const isSelected = prev.permissions.some((p) => p.id === permission.id);
       if (isSelected) {
@@ -190,6 +402,23 @@ const CreateRole = () => {
     });
   };
 
+  const handleScopeChange = (entityKey, scopeKey) => {
+    setScopeSelections((prev) => ({ ...prev, [entityKey]: scopeKey }));
+    const scopePermission =
+      permissions.find(
+        (permission) => permission.name === `${entityKey}.scope.${scopeKey}`
+      ) || null;
+
+    setFormData((prev) => {
+      const withoutScope = prev.permissions.filter(
+        (permission) => !permission.name.startsWith(`${entityKey}.scope.`)
+      );
+      return scopePermission
+        ? { ...prev, permissions: [...withoutScope, scopePermission] }
+        : { ...prev, permissions: withoutScope };
+    });
+  };
+
   const handleCategoryToggle = (category) => {
     setExpandedCategories((prev) => ({
       ...prev,
@@ -199,6 +428,9 @@ const CreateRole = () => {
 
   const handleSelectAllInCategory = (category) => {
     const categoryPermissions = groupedPermissions[category];
+    if (category.toLowerCase().startsWith("scope")) {
+      return;
+    }
     const allSelected = categoryPermissions.every((permission) =>
       formData.permissions.some((p) => p.id === permission.id)
     );
@@ -339,6 +571,57 @@ const CreateRole = () => {
               placeholder="Describe what this role is for..."
               rows={4}
             />
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>Data Scope</label>
+            <div className={styles["scope-options"]}>
+              {scopeEntities.map((entity) => (
+                <div key={entity.key} className={styles["scope-entity"]}>
+                  <div className={styles["scope-entity-header"]}>
+                    <div className={styles["scope-entity-title"]}>
+                      {entity.label}
+                    </div>
+                    <div className={styles["scope-entity-description"]}>
+                      {entity.description}
+                    </div>
+                  </div>
+                  <div className={styles["scope-choices"]}>
+                    {scopeLevels.map((level) => (
+                      <label
+                        key={`${entity.key}-${level.key}`}
+                        className={[
+                          styles["scope-card"],
+                          scopeSelections[entity.key] === level.key
+                            ? styles["selected"]
+                            : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      >
+                        <input
+                          type="radio"
+                          name={`${entity.key}-scope`}
+                          value={level.key}
+                          checked={scopeSelections[entity.key] === level.key}
+                          onChange={() =>
+                            handleScopeChange(entity.key, level.key)
+                          }
+                        />
+                        <div>
+                          <div className={styles["scope-title"]}>
+                            {level.label}
+                          </div>
+                          <div className={styles["scope-description"]}>
+                            {level.description}
+                          </div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className={styles["selected-permissions-summary"]}>

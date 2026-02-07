@@ -28,6 +28,10 @@ const Roles = () => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const scopeEntities = [
+    { key: "users", label: "Users" },
+    { key: "tickets", label: "Tickets" },
+  ];
 
   // Sample data - replace with actual API call
   useEffect(() => {
@@ -37,38 +41,63 @@ const Roles = () => {
         const sampleRoles = [
           {
             id: 1,
-            name: "Super Admin",
+            name: "Admin",
             description: "Full system access with all permissions",
             permissions: [
-              { id: 1, name: "manage_users", title: "Manage Users" },
-              { id: 2, name: "view_users", title: "View Users" },
-              { id: 3, name: "manage_admins", title: "Manage Admins" },
+              { id: 103, name: "users.scope.all", title: "Users Scope: All Records" },
+              { id: 113, name: "tickets.scope.all", title: "Tickets Scope: All Records" },
               { id: 4, name: "manage_roles", title: "Manage Roles" },
-              {
-                id: 5,
-                name: "manage_permissions",
-                title: "Manage Permissions",
-              },
-              {
-                id: 6,
-                name: "manage_universities",
-                title: "Manage Universities",
-              },
-              { id: 7, name: "manage_courses", title: "Manage Courses" },
-              { id: 8, name: "manage_countries", title: "Manage Countries" },
-              { id: 9, name: "view_analytics", title: "View Analytics" },
-              { id: 10, name: "manage_settings", title: "Manage Settings" },
+              { id: 5, name: "manage_permissions", title: "Manage Permissions" },
+              { id: 1, name: "manage_users", title: "Manage Users" },
+              { id: 11, name: "tickets.viewAny", title: "View Tickets" },
+              { id: 12, name: "tickets.view", title: "View Ticket Detail" },
+              { id: 13, name: "tickets.create", title: "Create Tickets" },
+              { id: 14, name: "tickets.update", title: "Update Tickets" },
+              { id: 15, name: "tickets.assign", title: "Assign Tickets" },
+              { id: 16, name: "tickets.close", title: "Close Tickets" },
             ],
-            userCount: 2,
+            userCount: 1,
             status: "active",
             createdAt: "2024-01-15",
           },
           {
             id: 2,
+            name: "Support Supervisor",
+            description: "Oversee support team workload and ticket quality",
+            permissions: [
+              { id: 103, name: "users.scope.all", title: "Users Scope: All Records" },
+              { id: 112, name: "tickets.scope.team", title: "Tickets Scope: Team Records" },
+              { id: 11, name: "tickets.viewAny", title: "View Tickets" },
+              { id: 12, name: "tickets.view", title: "View Ticket Detail" },
+              { id: 14, name: "tickets.update", title: "Update Tickets" },
+              { id: 15, name: "tickets.assign", title: "Assign Tickets" },
+            ],
+            userCount: 2,
+            status: "active",
+            createdAt: "2024-01-20",
+          },
+          {
+            id: 3,
+            name: "Support Agent",
+            description: "Handle assigned ticket queue and responses",
+            permissions: [
+              { id: 103, name: "users.scope.all", title: "Users Scope: All Records" },
+              { id: 111, name: "tickets.scope.own", title: "Tickets Scope: Own Records" },
+              { id: 11, name: "tickets.viewAny", title: "View Tickets" },
+              { id: 12, name: "tickets.view", title: "View Ticket Detail" },
+              { id: 14, name: "tickets.update", title: "Update Tickets" },
+            ],
+            userCount: 6,
+            status: "active",
+            createdAt: "2024-02-01",
+          },
+          {
+            id: 4,
             name: "Content Manager",
             description:
               "Manage content including universities, courses, and countries",
             permissions: [
+              { id: 103, name: "users.scope.all", title: "Users Scope: All Records" },
               {
                 id: 6,
                 name: "manage_universities",
@@ -76,44 +105,10 @@ const Roles = () => {
               },
               { id: 7, name: "manage_courses", title: "Manage Courses" },
               { id: 8, name: "manage_countries", title: "Manage Countries" },
-              { id: 2, name: "view_users", title: "View Users" },
-            ],
-            userCount: 5,
-            status: "active",
-            createdAt: "2024-01-20",
-          },
-          {
-            id: 3,
-            name: "User Manager",
-            description: "Manage user accounts and profiles",
-            permissions: [
-              { id: 1, name: "manage_users", title: "Manage Users" },
-              { id: 2, name: "view_users", title: "View Users" },
             ],
             userCount: 3,
             status: "active",
-            createdAt: "2024-02-01",
-          },
-          {
-            id: 4,
-            name: "Analytics Viewer",
-            description: "View system analytics and reports",
-            permissions: [
-              { id: 9, name: "view_analytics", title: "View Analytics" },
-              { id: 2, name: "view_users", title: "View Users" },
-            ],
-            userCount: 1,
-            status: "active",
             createdAt: "2024-02-10",
-          },
-          {
-            id: 5,
-            name: "Read Only",
-            description: "View-only access to most system features",
-            permissions: [{ id: 2, name: "view_users", title: "View Users" }],
-            userCount: 0,
-            status: "inactive",
-            createdAt: "2024-02-15",
           },
         ];
 
@@ -197,6 +192,47 @@ const Roles = () => {
 
   const getPermissionCount = (permissions) => {
     return permissions.length;
+  };
+
+  const getScopeSummary = (permissions) => {
+    const scopeConfig = {
+      own: { label: "Own", className: styles["scope-own"] },
+      team: { label: "Team", className: styles["scope-team"] },
+      all: { label: "All", className: styles["scope-all"] },
+    };
+
+    return (
+      <div className={styles["scope-list"]}>
+        {scopeEntities.map((entity) => {
+          const scopePermission = permissions.find((permission) =>
+            permission.name.startsWith(`${entity.key}.scope.`)
+          );
+          const scopeKey = scopePermission
+            ? scopePermission.name.split(".")[2]
+            : "unassigned";
+          const config =
+            scopeConfig[scopeKey] || { label: "Unassigned", className: "" };
+
+          return (
+            <div key={entity.key} className={styles["scope-item"]}>
+              <span className={styles["scope-entity-name"]}>
+                {entity.label}
+              </span>
+              <span
+                className={[
+                  styles["scope-badge"],
+                  config.className,
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                {config.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   const getPermissionPreview = (permissions) => {
@@ -292,6 +328,7 @@ const Roles = () => {
               <tr>
                 <th>Role</th>
                 <th>Permissions</th>
+                <th>Scopes</th>
                 <th>Users</th>
                 <th>Status</th>
                 <th>Created</th>
@@ -325,6 +362,7 @@ const Roles = () => {
                       </div>
                     </div>
                   </td>
+                  <td>{getScopeSummary(role.permissions)}</td>
                   <td>
                     <div className={styles["user-count"]}>
                       <Users size={12} />
