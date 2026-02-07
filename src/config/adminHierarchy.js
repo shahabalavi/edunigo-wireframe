@@ -11,6 +11,7 @@ export const defaultAdmins = [
     roles: [{ id: 1, name: "Admin" }],
     createdAt: "2024-01-15",
     managerId: null,
+    departmentId: "director",
   },
   {
     id: 7,
@@ -22,6 +23,7 @@ export const defaultAdmins = [
     roles: [{ id: 2, name: "Support Supervisor" }],
     createdAt: "2024-01-20",
     managerId: 4,
+    departmentId: "support",
   },
   {
     id: 9,
@@ -33,6 +35,7 @@ export const defaultAdmins = [
     roles: [{ id: 3, name: "Support Agent" }],
     createdAt: "2024-02-01",
     managerId: 7,
+    departmentId: "support",
   },
   {
     id: 11,
@@ -44,6 +47,7 @@ export const defaultAdmins = [
     roles: [{ id: 4, name: "Content Manager" }],
     createdAt: "2024-02-10",
     managerId: 4,
+    departmentId: "marketing",
   },
   {
     id: 12,
@@ -55,18 +59,29 @@ export const defaultAdmins = [
     roles: [{ id: 5, name: "Analytics Viewer" }],
     createdAt: "2024-02-15",
     managerId: 4,
+    departmentId: "finance",
   },
 ];
 
+const defaultDepartmentId = "director";
+
+function migrateAdmins(admins) {
+  return admins.map((admin) => ({
+    ...admin,
+    departmentId: admin.departmentId ?? defaultDepartmentId,
+  }));
+}
+
 export const getAdminDirectory = () => {
-  if (typeof window === "undefined") return defaultAdmins;
+  if (typeof window === "undefined") return migrateAdmins(defaultAdmins);
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (!stored) return defaultAdmins;
+    if (!stored) return migrateAdmins(defaultAdmins);
     const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) ? parsed : defaultAdmins;
+    const list = Array.isArray(parsed) ? parsed : defaultAdmins;
+    return migrateAdmins(list);
   } catch (error) {
-    return defaultAdmins;
+    return migrateAdmins(defaultAdmins);
   }
 };
 
@@ -115,5 +130,38 @@ export const buildAdminTree = (admins) => {
     }
   });
 
+  return roots;
+};
+
+/**
+ * Build admin tree for a single department (reporting lines within that department).
+ * Admins whose manager is in another department are treated as roots.
+ */
+export const buildAdminTreeForDepartment = (directory, departmentId) => {
+  const deptId = departmentId || "director";
+  const inDept = directory.filter(
+    (a) => (a.departmentId || "director") === deptId
+  );
+  const nodes = inDept.map((admin) => ({ ...admin, children: [] }));
+  const byId = {};
+  nodes.forEach((n) => { byId[n.id] = n; });
+  const roots = [];
+  nodes.forEach((admin) => {
+    const manager =
+      admin.managerId != null
+        ? directory.find((a) => a.id === admin.managerId)
+        : null;
+    const managerInDept =
+      manager && (manager.departmentId || "director") === deptId;
+    if (
+      admin.managerId != null &&
+      managerInDept &&
+      byId[admin.managerId]
+    ) {
+      byId[admin.managerId].children.push(admin);
+    } else {
+      roots.push(admin);
+    }
+  });
   return roots;
 };

@@ -20,6 +20,10 @@ import {
   getAdminDisplayName,
   saveAdminDirectory,
 } from "../../../config/adminHierarchy";
+import {
+  getDepartments,
+  buildDepartmentTree,
+} from "../../../config/departments";
 
 const CreateAdmin = () => {
   const navigate = useNavigate();
@@ -32,6 +36,7 @@ const CreateAdmin = () => {
     isSuperAdmin: false,
     status: "active",
     roles: [],
+    departmentId: "",
     managerId: "",
   });
   const [errors, setErrors] = useState({});
@@ -40,7 +45,6 @@ const CreateAdmin = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [availableRoles, setAvailableRoles] = useState([]);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
-  const [availableManagers, setAvailableManagers] = useState([]);
 
   // Load available roles
   useEffect(() => {
@@ -82,9 +86,23 @@ const CreateAdmin = () => {
     fetchRoles();
   }, []);
 
-  useEffect(() => {
-    setAvailableManagers(getAdminDirectory());
-  }, []);
+  const directory = getAdminDirectory();
+  const departmentTree = buildDepartmentTree(getDepartments());
+  const flattenDeptForSelect = (nodes, depth = 0) => {
+    const out = [];
+    nodes.forEach((n) => {
+      out.push({ id: n.id, name: n.name, depth });
+      if (n.children?.length) out.push(...flattenDeptForSelect(n.children, depth + 1));
+    });
+    return out;
+  };
+  const departmentOptions = flattenDeptForSelect(departmentTree);
+  const availableManagers = formData.departmentId
+    ? directory.filter(
+        (admin) =>
+          (admin.departmentId || "director") === formData.departmentId
+      )
+    : [];
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -111,17 +129,22 @@ const CreateAdmin = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((prev) => {
+      const next = { ...prev, [name]: type === "checkbox" ? checked : value };
+      if (name === "departmentId") {
+        const managersInDept = directory.filter(
+          (a) => (a.departmentId || "director") === value
+        );
+        const managerStillValid =
+          next.managerId &&
+          managersInDept.some((a) => a.id === Number(next.managerId));
+        if (!managerStillValid) next.managerId = "";
+      }
+      return next;
+    });
 
-    // Clear error when user starts typing
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -177,8 +200,13 @@ const CreateAdmin = () => {
       newErrors.email = "Please enter a valid email address";
     }
 
-    if (formData.managerId && !availableManagers.length) {
-      newErrors.managerId = "Manager selection is not available";
+    // Department (required)
+    if (!formData.departmentId) {
+      newErrors.departmentId = "Please select a department";
+    }
+
+    if (formData.managerId && !availableManagers.some((a) => a.id === Number(formData.managerId))) {
+      newErrors.managerId = "Selected manager must be in the same department";
     }
 
     // Password validation
@@ -239,6 +267,7 @@ const CreateAdmin = () => {
         status: submitData.status,
         roles: submitData.roles,
         createdAt: new Date().toISOString().split("T")[0],
+        departmentId: formData.departmentId || "director",
         managerId: formData.managerId ? Number(formData.managerId) : null,
       };
       saveAdminDirectory([...existingAdmins, newAdmin]);
@@ -359,6 +388,37 @@ const CreateAdmin = () => {
           <div className={styles["form-group"]}>
             <label className={styles["form-label"]}>
               <Users size={16} />
+              Department *
+            </label>
+            <select
+              name="departmentId"
+              value={formData.departmentId}
+              onChange={handleInputChange}
+              className={`${styles["form-select"]} ${
+                errors.departmentId ? styles["error"] : ""
+              }`}
+              disabled={isSubmitting}
+            >
+              <option value="">Select department</option>
+              {departmentOptions.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {"— ".repeat(opt.depth)}{opt.name}
+                </option>
+              ))}
+            </select>
+            <p className={styles["field-help"]}>
+              Organizational grouping; managers list is scoped to this department.
+            </p>
+            {errors.departmentId && (
+              <span className={styles["error-message"]}>
+                {errors.departmentId}
+              </span>
+            )}
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>
+              <Users size={16} />
               Manager / Reports To
             </label>
             <select
@@ -368,15 +428,22 @@ const CreateAdmin = () => {
               className={`${styles["form-select"]} ${
                 errors.managerId ? styles["error"] : ""
               }`}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !formData.departmentId}
             >
-              <option value="">No manager (Top-level)</option>
+              <option value="">
+                {formData.departmentId
+                  ? "No manager (top-level in department)"
+                  : "Select department first"}
+              </option>
               {availableManagers.map((admin) => (
                 <option key={admin.id} value={admin.id}>
                   {getAdminDisplayName(admin)} ({admin.email})
                 </option>
               ))}
             </select>
+            <p className={styles["field-help"]}>
+              Only admins in the selected department can be chosen as manager.
+            </p>
             {errors.managerId && (
               <span className={styles["error-message"]}>
                 {errors.managerId}

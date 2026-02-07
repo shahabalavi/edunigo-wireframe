@@ -49,6 +49,7 @@ import Admins from "./Admins/Admins";
 import CreateAdmin from "./Admins/CreateAdmin";
 import EditAdmin from "./Admins/EditAdmin";
 import AdminOrgChart from "./Admins/AdminOrgChart";
+import Departments from "./Departments/Departments";
 import { Agents, CreateAgent, EditAgent } from "./Agents";
 import { Users as UsersModule, EditUser } from "./Users";
 import {
@@ -106,7 +107,8 @@ const AdminDashboard = ({ onLogout }) => {
   const [isPeopleOpen, setIsPeopleOpen] = useState(
     location.pathname.startsWith("/admin/admins") ||
       location.pathname.startsWith("/admin/agents") ||
-      location.pathname.startsWith("/admin/users")
+      location.pathname.startsWith("/admin/users") ||
+      location.pathname.startsWith("/admin/departments")
   );
   const [isAccessOpen, setIsAccessOpen] = useState(
     location.pathname.startsWith("/admin/roles") ||
@@ -173,6 +175,12 @@ const AdminDashboard = ({ onLogout }) => {
           label: "Users",
           icon: Users,
           path: "/admin/users",
+        },
+        {
+          id: "departments",
+          label: "Departments",
+          icon: Building2,
+          path: "/admin/departments",
         },
       ],
     },
@@ -435,6 +443,9 @@ const AdminDashboard = ({ onLogout }) => {
     if (currentPath.startsWith("/admin/users")) {
       return "Users";
     }
+    if (currentPath.startsWith("/admin/departments")) {
+      return "Departments";
+    }
     if (currentPath.startsWith("/admin/roles")) {
       return "Roles";
     }
@@ -557,7 +568,8 @@ const AdminDashboard = ({ onLogout }) => {
       return (
         location.pathname.startsWith("/admin/admins") ||
         location.pathname.startsWith("/admin/agents") ||
-        location.pathname.startsWith("/admin/users")
+        location.pathname.startsWith("/admin/users") ||
+        location.pathname.startsWith("/admin/departments")
       );
     }
     if (path === "/admin/access") {
@@ -672,6 +684,9 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/users":
       case "/admin/users/":
         return <UsersModule />;
+      case "/admin/departments":
+      case "/admin/departments/":
+        return <Departments />;
       case "/admin/tickets":
       case "/admin/tickets/":
         return <Tickets />;

@@ -21,6 +21,10 @@ import {
   getDescendantIds,
   saveAdminDirectory,
 } from "../../../config/adminHierarchy";
+import {
+  getDepartments,
+  buildDepartmentTree,
+} from "../../../config/departments";
 
 const EditAdmin = () => {
   const navigate = useNavigate();
@@ -34,6 +38,7 @@ const EditAdmin = () => {
     isSuperAdmin: false,
     status: "active",
     roles: [],
+    departmentId: "",
     managerId: "",
   });
   const [errors, setErrors] = useState({});
@@ -48,9 +53,24 @@ const EditAdmin = () => {
   const descendantIds = Number.isNaN(adminId)
     ? []
     : getDescendantIds(directory, adminId);
-  const availableManagers = directory.filter(
-    (admin) => admin.id !== adminId && !descendantIds.includes(admin.id)
-  );
+  const departmentTree = buildDepartmentTree(getDepartments());
+  const flattenDeptForSelect = (nodes, depth = 0) => {
+    const out = [];
+    nodes.forEach((n) => {
+      out.push({ id: n.id, name: n.name, depth });
+      if (n.children?.length) out.push(...flattenDeptForSelect(n.children, depth + 1));
+    });
+    return out;
+  };
+  const departmentOptions = flattenDeptForSelect(departmentTree);
+  const availableManagers = formData.departmentId
+    ? directory.filter(
+        (admin) =>
+          admin.id !== adminId &&
+          !descendantIds.includes(admin.id) &&
+          (admin.departmentId || "director") === formData.departmentId
+      )
+    : [];
 
   // Load available roles
   useEffect(() => {
@@ -111,6 +131,7 @@ const EditAdmin = () => {
           isSuperAdmin: sampleAdmin.isSuperAdmin,
           status: sampleAdmin.status,
           roles: sampleAdmin.roles || [],
+          departmentId: sampleAdmin.departmentId || "director",
           managerId: sampleAdmin.managerId ? String(sampleAdmin.managerId) : "",
         });
       }
@@ -143,17 +164,22 @@ const EditAdmin = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((prev) => {
+      const next = { ...prev, [name]: type === "checkbox" ? checked : value };
+      if (name === "departmentId") {
+        const managersInDept = directory.filter(
+          (a) => (a.departmentId || "director") === value
+        );
+        const managerStillValid =
+          next.managerId &&
+          managersInDept.some((a) => a.id === Number(next.managerId));
+        if (!managerStillValid) next.managerId = "";
+      }
+      return next;
+    });
 
-    // Clear error when user starts typing
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -209,12 +235,22 @@ const EditAdmin = () => {
       newErrors.email = "Please enter a valid email address";
     }
 
+    // Department (required)
+    if (!formData.departmentId) {
+      newErrors.departmentId = "Please select a department";
+    }
+
     if (formData.managerId) {
       const managerId = Number(formData.managerId);
       if (managerId === adminId) {
         newErrors.managerId = "Admin cannot report to themselves";
       } else if (descendantIds.includes(managerId)) {
         newErrors.managerId = "Manager cannot be a direct or indirect report";
+      } else if (
+        formData.departmentId &&
+        !availableManagers.some((a) => a.id === managerId)
+      ) {
+        newErrors.managerId = "Selected manager must be in the same department";
       }
     }
 
@@ -280,6 +316,7 @@ const EditAdmin = () => {
               isSuperAdmin: submitData.isSuperAdmin,
               status: submitData.status,
               roles: submitData.roles,
+              departmentId: formData.departmentId || "director",
               managerId: formData.managerId ? Number(formData.managerId) : null,
             }
           : admin
@@ -408,6 +445,37 @@ const EditAdmin = () => {
           <div className={styles["form-group"]}>
             <label className={styles["form-label"]}>
               <Users size={16} />
+              Department *
+            </label>
+            <select
+              name="departmentId"
+              value={formData.departmentId}
+              onChange={handleInputChange}
+              className={`${styles["form-select"]} ${
+                errors.departmentId ? styles["error"] : ""
+              }`}
+              disabled={isSubmitting}
+            >
+              <option value="">Select department</option>
+              {departmentOptions.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {"— ".repeat(opt.depth)}{opt.name}
+                </option>
+              ))}
+            </select>
+            <p className={styles["field-help"]}>
+              Organizational grouping; managers list is scoped to this department.
+            </p>
+            {errors.departmentId && (
+              <span className={styles["error-message"]}>
+                {errors.departmentId}
+              </span>
+            )}
+          </div>
+
+          <div className={styles["form-group"]}>
+            <label className={styles["form-label"]}>
+              <Users size={16} />
               Manager / Reports To
             </label>
             <select
@@ -417,15 +485,22 @@ const EditAdmin = () => {
               className={`${styles["form-select"]} ${
                 errors.managerId ? styles["error"] : ""
               }`}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !formData.departmentId}
             >
-              <option value="">No manager (Top-level)</option>
+              <option value="">
+                {formData.departmentId
+                  ? "No manager (top-level in department)"
+                  : "Select department first"}
+              </option>
               {availableManagers.map((admin) => (
                 <option key={admin.id} value={admin.id}>
                   {getAdminDisplayName(admin)} ({admin.email})
                 </option>
               ))}
             </select>
+            <p className={styles["field-help"]}>
+              Only admins in the selected department can be chosen as manager.
+            </p>
             {errors.managerId && (
               <span className={styles["error-message"]}>
                 {errors.managerId}
