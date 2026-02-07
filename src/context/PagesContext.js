@@ -1,16 +1,48 @@
 import React, { createContext, useContext, useCallback, useMemo, useState, useEffect } from "react";
 import { getDefaultConfig } from "../config/pageWidgets";
+import { WIDGET_TYPES } from "../config/pageWidgets";
 
 const STORAGE_KEY = "edunigo_pages";
 
 const PagesContext = createContext(null);
 
+const getDefaultHomePage = () => {
+  const widgetTypes = [
+    WIDGET_TYPES.HERO_VISA_BANNER,
+    WIDGET_TYPES.COUNTRIES_WE_SUPPORT,
+    WIDGET_TYPES.WHY_CHOOSE_STUDY_ABROAD,
+    WIDGET_TYPES.VISA_CONSULTATION_CTA,
+    WIDGET_TYPES.IMMIGRATION_FOOTER,
+  ];
+  const widgets = widgetTypes.map((type, order) => ({
+    id: `w_home_${type}_${order}`,
+    type,
+    config: getDefaultConfig(type),
+    order,
+  }));
+  return {
+    id: "page_home_prebuilt",
+    title: "Home",
+    slug: "home",
+    layout: "ltr",
+    widgets,
+  };
+};
+
 const loadFromStorage = () => {
+  let loaded = [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) loaded = parsed;
+    }
   } catch (_) {}
-  return [];
+  const hasHome = loaded.some((p) => p.slug === "home");
+  if (!hasHome) {
+    loaded = [getDefaultHomePage(), ...loaded];
+  }
+  return loaded.length > 0 ? loaded : [getDefaultHomePage()];
 };
 
 const saveToStorage = (pages) => {
