@@ -15,7 +15,7 @@ const CountriesWeSupport = ({ config = {}, isRtl = false }) => {
   const {
     layout = "grid",
     cardStyle = "default",
-    countryDetailLink = "/visa/",
+    countryDetailLink = "/pages/",
     countries = DEFAULT_COUNTRIES,
   } = config;
 

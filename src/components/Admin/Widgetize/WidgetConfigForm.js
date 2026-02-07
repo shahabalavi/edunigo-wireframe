@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { getWidgetDefinition, getDefaultConfig } from "../../../config/visaWidgets";
+import { getWidgetDefinition, getDefaultConfig } from "../../../config/pageWidgets";
 import { getWidgetEditor } from "./widgetEditors";
-import styles from "./VisaPageBuilder.module.css";
+import styles from "./PageBuilder.module.css";
 
 const WidgetConfigForm = ({ widget, onSave, onClose }) => {
   const def = getWidgetDefinition(widget?.type);

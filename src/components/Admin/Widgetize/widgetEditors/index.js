@@ -1,4 +1,4 @@
-import { WIDGET_TYPES } from "../../../../config/visaWidgets";
+import { WIDGET_TYPES } from "../../../../config/pageWidgets";
 import HeroVisaBannerEditor from "./HeroVisaBannerEditor";
 import CountriesWeSupportEditor from "./CountriesWeSupportEditor";
 import WhyChooseStudyAbroadEditor from "./WhyChooseStudyAbroadEditor";

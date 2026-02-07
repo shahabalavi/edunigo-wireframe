@@ -9,28 +9,28 @@ import {
   Globe,
   Layout,
 } from "lucide-react";
-import { useVisaPages } from "../../../context/VisaPagesContext";
+import { usePages } from "../../../context/PagesContext";
 import DeleteConfirmationModal from "../Tickets/DeleteConfirmationModal";
-import styles from "./VisaPagesList.module.css";
+import styles from "./PagesList.module.css";
 
-const VisaPagesList = () => {
+const PagesList = () => {
   const navigate = useNavigate();
-  const { pages, createPage, deletePage, duplicatePage } = useVisaPages();
+  const { pages, createPage, deletePage, duplicatePage } = usePages();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [pageToDelete, setPageToDelete] = useState(null);
 
   const handleCreate = () => {
-    const id = createPage({ title: "New Visa Page", slug: "" });
-    navigate(`/admin/widgetize/visa-pages/builder/${id}`);
+    const id = createPage({ title: "New Page", slug: "" });
+    navigate(`/admin/widgetize/pages/builder/${id}`);
   };
 
   const handleEdit = (page) => {
-    navigate(`/admin/widgetize/visa-pages/builder/${page.id}`);
+    navigate(`/admin/widgetize/pages/builder/${page.id}`);
   };
 
   const handleDuplicate = (page) => {
     const newId = duplicatePage(page.id);
-    if (newId) navigate(`/admin/widgetize/visa-pages/builder/${newId}`);
+    if (newId) navigate(`/admin/widgetize/pages/builder/${newId}`);
   };
 
   const handleDeleteClick = (page) => {
@@ -47,15 +47,15 @@ const VisaPagesList = () => {
   };
 
   const handleViewLive = (page) => {
-    window.open(`/visa/${page.slug}`, "_blank");
+    window.open(`/pages/${page.slug}`, "_blank");
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Visa Landing Pages</h1>
+        <h1 className={styles.title}>Pages</h1>
         <p className={styles.subtitle}>
-          Build and manage study abroad / student visa landing pages with widgets.
+          Build and manage dynamic pages with widgets. Any page can be created and published.
         </p>
         <button type="button" className={styles.createBtn} onClick={handleCreate}>
           <Plus size={20} />
@@ -66,11 +66,11 @@ const VisaPagesList = () => {
       {pages.length === 0 ? (
         <div className={styles.empty}>
           <Globe size={48} className={styles.emptyIcon} />
-          <h2>No visa pages yet</h2>
+          <h2>No pages yet</h2>
           <p>Create your first page and add widgets (Hero, Countries, FAQ, etc.).</p>
           <button type="button" className={styles.createBtn} onClick={handleCreate}>
             <Plus size={20} />
-            Create Visa Page
+            Create Page
           </button>
         </div>
       ) : (
@@ -79,7 +79,7 @@ const VisaPagesList = () => {
             <div key={page.id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <h3 className={styles.cardTitle}>{page.title}</h3>
-                <span className={styles.slug}>/visa/{page.slug}</span>
+                <span className={styles.slug}>/pages/{page.slug}</span>
               </div>
               <div className={styles.meta}>
                 <span className={styles.layout}>
@@ -141,11 +141,11 @@ const VisaPagesList = () => {
           }}
           onConfirm={handleDeleteConfirm}
           itemName={pageToDelete?.title ?? "this page"}
-          itemType="Visa Page"
+          itemType="Page"
         />
       )}
     </div>
   );
 };
 
-export default VisaPagesList;
+export default PagesList;

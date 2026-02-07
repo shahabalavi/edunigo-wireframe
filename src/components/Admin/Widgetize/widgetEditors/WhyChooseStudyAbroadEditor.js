@@ -1,6 +1,6 @@
 import React from "react";
 import { FormField, FormSelect, ListEditor } from "./WidgetEditorFormFields";
-import styles from "../VisaPageBuilder.module.css";
+import styles from "../PageBuilder.module.css";
 
 const ICON_OPTIONS = [
   { value: "graduation", label: "Graduation" },

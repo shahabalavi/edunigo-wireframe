@@ -1,6 +1,7 @@
 /**
- * Visa Landing Page Widget Registry
+ * Page Widget Registry
  * Each widget type can be added, removed, reordered, and configured in admin.
+ * Used by the Widgetize module for any dynamic page (landing pages, visa, etc.).
  */
 
 export const WIDGET_TYPES = {
@@ -41,7 +42,7 @@ export const WIDGET_REGISTRY = [
     defaultConfig: {
       layout: "grid",
       cardStyle: "default",
-      countryDetailLink: "/visa/",
+      countryDetailLink: "/pages/",
       countries: [
         { code: "CA", name: "Canada", flag: "🇨🇦" },
         { code: "DE", name: "Germany", flag: "🇩🇪" },
@@ -163,7 +164,7 @@ export const WIDGET_REGISTRY = [
   {
     type: WIDGET_TYPES.PRICING_SERVICE_PACKAGES,
     label: "Pricing / Service Packages",
-    description: "Visa support plans",
+    description: "Service plans",
     defaultConfig: {
       featuredPlanId: "standard",
       plans: [
@@ -182,7 +183,7 @@ export const WIDGET_REGISTRY = [
       whatsAppLink: "",
       showSocialMedia: true,
       showLegalDisclaimer: true,
-      contactEmail: "visa@edunigo.com",
+      contactEmail: "contact@edunigo.com",
     },
   },
 ];

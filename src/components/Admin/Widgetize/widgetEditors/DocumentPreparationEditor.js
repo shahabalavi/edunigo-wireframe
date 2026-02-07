@@ -1,6 +1,6 @@
 import React from "react";
 import { FormField, FormCheckbox, ListEditor } from "./WidgetEditorFormFields";
-import styles from "../VisaPageBuilder.module.css";
+import styles from "../PageBuilder.module.css";
 
 const DocumentPreparationEditor = ({ config = {}, onChange }) => {
   const update = (key, value) => onChange({ ...config, [key]: value });

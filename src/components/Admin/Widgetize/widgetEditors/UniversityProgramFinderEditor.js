@@ -1,6 +1,6 @@
 import React from "react";
 import { FormInput, FormField, ListEditor } from "./WidgetEditorFormFields";
-import styles from "../VisaPageBuilder.module.css";
+import styles from "../PageBuilder.module.css";
 
 const UniversityProgramFinderEditor = ({ config = {}, onChange }) => {
   const update = (key, value) => onChange({ ...config, [key]: value });

@@ -84,8 +84,8 @@ import AIImportCampus from "./AIImport/Campus/Campus";
 import AIImportCourse from "./AIImport/Course/Course";
 import AIImportIntake from "./AIImport/Intake/Intake";
 import ImportEngine from "./AIImport/ImportEngine/ImportEngine";
-import VisaPagesList from "./Widgetize/VisaPagesList";
-import VisaPageBuilder from "./Widgetize/VisaPageBuilder";
+import PagesList from "./Widgetize/PagesList";
+import PageBuilder from "./Widgetize/PageBuilder";
 import styles from "../Dashboard.module.css";
 
 const AdminDashboard = ({ onLogout }) => {
@@ -349,10 +349,10 @@ const AdminDashboard = ({ onLogout }) => {
       hasSubmenu: true,
       submenuItems: [
         {
-          id: "visa-pages",
-          label: "Visa Pages",
+          id: "pages",
+          label: "Pages",
           icon: Globe,
-          path: "/admin/widgetize/visa-pages",
+          path: "/admin/widgetize/pages",
         },
       ],
     },
@@ -475,8 +475,8 @@ const AdminDashboard = ({ onLogout }) => {
       return "Guidance Articles";
     }
     if (currentPath.startsWith("/admin/widgetize")) {
-      if (currentPath === "/admin/widgetize/visa-pages") return "Visa Pages";
-      if (currentPath.match(/^\/admin\/widgetize\/visa-pages\/builder\//)) return "Page Builder";
+      if (currentPath === "/admin/widgetize/pages") return "Pages";
+      if (currentPath.match(/^\/admin\/widgetize\/pages\/builder\//)) return "Page Builder";
       return "Widgetize";
     }
     if (currentPath === "/admin/tickets") {
@@ -727,9 +727,9 @@ const AdminDashboard = ({ onLogout }) => {
       case "/admin/ai-import/engine":
       case "/admin/ai-import/engine/":
         return <ImportEngine />;
-      case "/admin/widgetize/visa-pages":
-      case "/admin/widgetize/visa-pages/":
-        return <VisaPagesList />;
+      case "/admin/widgetize/pages":
+      case "/admin/widgetize/pages/":
+        return <PagesList />;
       default:
         // Handle dynamic edit routes
         if (currentPath.startsWith("/admin/universities/edit/")) {
@@ -771,8 +771,8 @@ const AdminDashboard = ({ onLogout }) => {
         if (currentPath.startsWith("/admin/roles/edit/")) {
           return <EditRole />;
         }
-        if (currentPath.match(/^\/admin\/widgetize\/visa-pages\/builder\/.+/)) {
-          return <VisaPageBuilder />;
+        if (currentPath.match(/^\/admin\/widgetize\/pages\/builder\/.+/)) {
+          return <PageBuilder />;
         }
         return <AdminDashboardHome />;
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Plus, Trash2 } from "lucide-react";
-import styles from "../VisaPageBuilder.module.css";
+import styles from "../PageBuilder.module.css";
 
 export function FormField({ label, children, hint }) {
   return (

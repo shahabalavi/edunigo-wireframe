@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { VisaPagesProvider } from "./context/VisaPagesContext";
+import { PagesProvider } from "./context/PagesContext";
 import LandingPage from "./components/Home/LandingPage";
 import WidgetizedLandingPage from "./components/Widgetize/WidgetizedLandingPage";
 import Login from "./components/Auth/Login";
@@ -34,10 +34,10 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <VisaPagesProvider>
+        <PagesProvider>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/visa/:slug" element={<WidgetizedLandingPage />} />
+            <Route path="/pages/:slug" element={<WidgetizedLandingPage />} />
             <Route path="/gocheck" element={<GoCheck />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
@@ -71,7 +71,7 @@ function App() {
           {/* Redirect any unknown routes to landing page */}
           <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </VisaPagesProvider>
+        </PagesProvider>
       </Router>
     </div>
   );

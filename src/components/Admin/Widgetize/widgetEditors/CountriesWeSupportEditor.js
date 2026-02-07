@@ -1,6 +1,6 @@
 import React from "react";
 import { FormField, FormInput, FormSelect, ListEditor } from "./WidgetEditorFormFields";
-import styles from "../VisaPageBuilder.module.css";
+import styles from "../PageBuilder.module.css";
 
 const COUNTRY_PRESETS = [
   { code: "CA", name: "Canada", flag: "🇨🇦" },
@@ -40,7 +40,7 @@ const CountriesWeSupportEditor = ({ config = {}, onChange }) => {
         label="Country detail link (base path)"
         value={config.countryDetailLink}
         onChange={(v) => update("countryDetailLink", v)}
-        placeholder="/visa/"
+        placeholder="/pages/"
         hint="Clicking a country goes to {base}/{countryCode}"
       />
       <FormField label="Countries">

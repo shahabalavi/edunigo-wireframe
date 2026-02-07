@@ -10,7 +10,7 @@ import VisaConsultationCTA from "./VisaConsultationCTA";
 import FAQStudentVisa from "./FAQStudentVisa";
 import PricingServicePackages from "./PricingServicePackages";
 import ImmigrationFooterWidget from "./ImmigrationFooterWidget";
-import { WIDGET_TYPES } from "../../../config/visaWidgets";
+import { WIDGET_TYPES } from "../../../config/pageWidgets";
 
 export const WIDGET_COMPONENTS = {
   [WIDGET_TYPES.HERO_VISA_BANNER]: HeroVisaBanner,

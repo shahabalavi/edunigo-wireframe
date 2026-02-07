@@ -12,16 +12,15 @@ import {
   Layout,
   X,
 } from "lucide-react";
-import { useVisaPages } from "../../../context/VisaPagesContext";
-import { WIDGET_REGISTRY, getWidgetDefinition } from "../../../config/visaWidgets";
+import { usePages } from "../../../context/PagesContext";
+import { WIDGET_REGISTRY, getWidgetDefinition } from "../../../config/pageWidgets";
 import WidgetConfigForm from "./WidgetConfigForm";
-import styles from "./VisaPageBuilder.module.css";
+import styles from "./PageBuilder.module.css";
 
-const VisaPageBuilder = () => {
+const PageBuilder = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // Admin uses pathname-based routing (no :pageId route), so extract pageId from URL
-  const pathMatch = location.pathname.match(/\/admin\/widgetize\/visa-pages\/builder\/([^/]+)/);
+  const pathMatch = location.pathname.match(/\/admin\/widgetize\/pages\/builder\/([^/]+)/);
   const pageId = pathMatch ? pathMatch[1] : null;
   const {
     getPageById,
@@ -31,7 +30,7 @@ const VisaPageBuilder = () => {
     removeWidget,
     reorderWidgets,
     duplicateWidget,
-  } = useVisaPages();
+  } = usePages();
 
   const page = getPageById(pageId);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -91,8 +90,8 @@ const VisaPageBuilder = () => {
     return (
       <div className={styles.wrapper}>
         <p>Page not found.</p>
-        <button type="button" onClick={() => navigate("/admin/widgetize/visa-pages")}>
-          Back to Visa Pages
+        <button type="button" onClick={() => navigate("/admin/widgetize/pages")}>
+          Back to Pages
         </button>
       </div>
     );
@@ -108,15 +107,15 @@ const VisaPageBuilder = () => {
         <button
           type="button"
           className={styles.backBtn}
-          onClick={() => navigate("/admin/widgetize/visa-pages")}
+          onClick={() => navigate("/admin/widgetize/pages")}
         >
           <ArrowLeft size={18} />
-          Back to Visa Pages
+          Back to Pages
         </button>
         <button
           type="button"
           className={styles.viewLiveBtn}
-          onClick={() => window.open(`/visa/${page.slug}`, "_blank")}
+          onClick={() => window.open(`/pages/${page.slug}`, "_blank")}
         >
           <ExternalLink size={16} />
           View Live
@@ -132,7 +131,7 @@ const VisaPageBuilder = () => {
             value={localTitle}
             onChange={(e) => setLocalTitle(e.target.value)}
             onBlur={handleSavePageMeta}
-            placeholder="e.g. Canada Student Visa"
+            placeholder="e.g. Home, Canada Study, Contact"
           />
         </div>
         <div className={styles.metaRow}>
@@ -143,9 +142,9 @@ const VisaPageBuilder = () => {
             value={localSlug}
             onChange={(e) => setLocalSlug(e.target.value)}
             onBlur={handleSavePageMeta}
-            placeholder="e.g. canada-student-visa"
+            placeholder="e.g. home, canada-study"
           />
-          <span className={styles.slugHint}>/visa/{localSlug || "..."}</span>
+          <span className={styles.slugHint}>/pages/{localSlug || "..."}</span>
         </div>
         <div className={styles.metaRow}>
           <label className={styles.label}>Layout</label>
@@ -320,4 +319,4 @@ const VisaPageBuilder = () => {
   );
 };
 
-export default VisaPageBuilder;
+export default PageBuilder;

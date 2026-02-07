@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useCallback, useMemo, useState, useEffect } from "react";
-import { getDefaultConfig } from "../config/visaWidgets";
+import { getDefaultConfig } from "../config/pageWidgets";
 
-const STORAGE_KEY = "edunigo_visa_pages";
+const STORAGE_KEY = "edunigo_pages";
 
-const VisaPagesContext = createContext(null);
+const PagesContext = createContext(null);
 
 const loadFromStorage = () => {
   try {
@@ -19,7 +19,7 @@ const saveToStorage = (pages) => {
   } catch (_) {}
 };
 
-export function VisaPagesProvider({ children }) {
+export function PagesProvider({ children }) {
   const [pages, setPages] = useState(loadFromStorage);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function VisaPagesProvider({ children }) {
 
   const createPage = useCallback((payload = {}) => {
     const id = `page_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-    const title = payload.title || "New Visa Page";
+    const title = payload.title || "New Page";
     const slug =
       payload.slug ||
       title
@@ -193,14 +193,14 @@ export function VisaPagesProvider({ children }) {
   );
 
   return (
-    <VisaPagesContext.Provider value={value}>
+    <PagesContext.Provider value={value}>
       {children}
-    </VisaPagesContext.Provider>
+    </PagesContext.Provider>
   );
 }
 
-export function useVisaPages() {
-  const ctx = useContext(VisaPagesContext);
-  if (!ctx) throw new Error("useVisaPages must be used within VisaPagesProvider");
+export function usePages() {
+  const ctx = useContext(PagesContext);
+  if (!ctx) throw new Error("usePages must be used within PagesProvider");
   return ctx;
 }

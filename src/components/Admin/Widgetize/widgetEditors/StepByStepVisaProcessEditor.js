@@ -1,6 +1,6 @@
 import React from "react";
 import { FormField, FormSelect, ListEditor } from "./WidgetEditorFormFields";
-import styles from "../VisaPageBuilder.module.css";
+import styles from "../PageBuilder.module.css";
 
 const StepByStepVisaProcessEditor = ({ config = {}, onChange }) => {
   const update = (key, value) => onChange({ ...config, [key]: value });
