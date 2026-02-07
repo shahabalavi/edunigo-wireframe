@@ -22,9 +22,7 @@ const AdminOrgChart = () => {
           <User size={18} />
         </div>
         <div className={styles["node-body"]}>
-          <div className={styles["node-name"]}>
-            {getAdminDisplayName(node)}
-          </div>
+          <div className={styles["node-name"]}>{getAdminDisplayName(node)}</div>
           <div className={styles["node-meta"]}>{node.email}</div>
           <div className={styles["node-roles"]}>
             {node.roles && node.roles.length
@@ -59,7 +57,12 @@ const AdminOrgChart = () => {
           </h2>
           {hasAdmins && (
             <span className={styles["dept-count"]}>
-              {directory.filter((a) => (a.departmentId || "director") === deptNode.id).length} admin(s)
+              {
+                directory.filter(
+                  (a) => (a.departmentId || "director") === deptNode.id
+                ).length
+              }{" "}
+              admin(s)
             </span>
           )}
         </div>
@@ -91,7 +94,8 @@ const AdminOrgChart = () => {
           <div>
             <h1>Admin Org Chart</h1>
             <p>
-              By department tree: each section shows the reporting structure within that department
+              By department tree: each section shows the reporting structure
+              within that department
             </p>
           </div>
         </div>
