@@ -11,6 +11,7 @@ import VisaConsultationCTAEditor from "./VisaConsultationCTAEditor";
 import FAQStudentVisaEditor from "./FAQStudentVisaEditor";
 import PricingServicePackagesEditor from "./PricingServicePackagesEditor";
 import ImmigrationFooterEditor from "./ImmigrationFooterEditor";
+import DynamicCourseListEditor from "./DynamicCourseListEditor";
 
 export const WIDGET_EDITORS = {
   [WIDGET_TYPES.HERO_VISA_BANNER]: HeroVisaBannerEditor,
@@ -25,6 +26,7 @@ export const WIDGET_EDITORS = {
   [WIDGET_TYPES.FAQ_STUDENT_VISA]: FAQStudentVisaEditor,
   [WIDGET_TYPES.PRICING_SERVICE_PACKAGES]: PricingServicePackagesEditor,
   [WIDGET_TYPES.IMMIGRATION_FOOTER]: ImmigrationFooterEditor,
+  [WIDGET_TYPES.DYNAMIC_COURSE_LIST]: DynamicCourseListEditor,
 };
 
 export function getWidgetEditor(type) {

@@ -17,6 +17,7 @@ export const WIDGET_TYPES = {
   FAQ_STUDENT_VISA: "faq_student_visa",
   PRICING_SERVICE_PACKAGES: "pricing_service_packages",
   IMMIGRATION_FOOTER: "immigration_footer",
+  DYNAMIC_COURSE_LIST: "dynamic_course_list",
 };
 
 export const WIDGET_REGISTRY = [
@@ -184,6 +185,21 @@ export const WIDGET_REGISTRY = [
       showSocialMedia: true,
       showLegalDisclaimer: true,
       contactEmail: "contact@edunigo.com",
+    },
+  },
+  {
+    type: WIDGET_TYPES.DYNAMIC_COURSE_LIST,
+    label: "Dynamic Course List",
+    description: "Fetch and display courses from Courses API with filters",
+    defaultConfig: {
+      title: "Featured Programs",
+      description: "Explore programs that match your goals.",
+      apiEndpointUrl: "mock",
+      sortBy: "newest",
+      university: "",
+      country: "",
+      category: "",
+      limit: 8,
     },
   },
 ];

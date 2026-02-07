@@ -10,6 +10,7 @@ import VisaConsultationCTA from "./VisaConsultationCTA";
 import FAQStudentVisa from "./FAQStudentVisa";
 import PricingServicePackages from "./PricingServicePackages";
 import ImmigrationFooterWidget from "./ImmigrationFooterWidget";
+import DynamicCourseListWidget from "./DynamicCourseListWidget";
 import { WIDGET_TYPES } from "../../../config/pageWidgets";
 
 export const WIDGET_COMPONENTS = {
@@ -25,6 +26,7 @@ export const WIDGET_COMPONENTS = {
   [WIDGET_TYPES.FAQ_STUDENT_VISA]: FAQStudentVisa,
   [WIDGET_TYPES.PRICING_SERVICE_PACKAGES]: PricingServicePackages,
   [WIDGET_TYPES.IMMIGRATION_FOOTER]: ImmigrationFooterWidget,
+  [WIDGET_TYPES.DYNAMIC_COURSE_LIST]: DynamicCourseListWidget,
 };
 
 export {
@@ -40,4 +42,5 @@ export {
   FAQStudentVisa,
   PricingServicePackages,
   ImmigrationFooterWidget,
+  DynamicCourseListWidget,
 };
